@@ -7,5 +7,7 @@
         <page name='15. 3Sum'/>
         <page name='16. 3Sum Closest'/>
         <page name='18. 4Sum'/>
+        <page name='26. Remove Duplicates from Sorted Array'/>
+        <page name='27. Remove Element'/>
     </pages>
 </playground>
