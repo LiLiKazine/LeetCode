@@ -5,5 +5,7 @@
         <page name='4. Median of Two Sorted Arrays'/>
         <page name='11. Container With Most Water'/>
         <page name='15. 3Sum'/>
+        <page name='16. 3Sum Closest'/>
+        <page name='18. 4Sum'/>
     </pages>
 </playground>
