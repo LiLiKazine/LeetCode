@@ -11,5 +11,6 @@
         <page name='27. Remove Element'/>
         <page name='31. Next Permutation'/>
         <page name='33. Search in Rotated Sorted Array'/>
+        <page name='34. Find First and Last Position of Element in Sorted Array'/>
     </pages>
 </playground>
