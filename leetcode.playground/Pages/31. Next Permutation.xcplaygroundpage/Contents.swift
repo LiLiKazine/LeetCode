@@ -16,7 +16,7 @@
  1,1,5 → 1,5,1
 
  */
-//                4 0 3 2 1
+
 import Foundation
 
 class Solution {
@@ -55,5 +55,5 @@ let test = Solution()
 var arr = [1,2]
 test.nextPermutation(&arr)
 arr
-// [4,2,0,3,0,2,2]
+
 //: [Next](@next)
