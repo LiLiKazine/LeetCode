@@ -15,5 +15,6 @@
         <page name='35. Search Insert Position'/>
         <page name='39. Combination Sum'/>
         <page name='40. Combination Sum II'/>
+        <page name='41. First Missing Positive'/>
     </pages>
 </playground>
