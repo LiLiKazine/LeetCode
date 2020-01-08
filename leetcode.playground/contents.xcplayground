@@ -13,5 +13,6 @@
         <page name='33. Search in Rotated Sorted Array'/>
         <page name='34. Find First and Last Position of Element in Sorted Array'/>
         <page name='35. Search Insert Position'/>
+        <page name='39. Combination Sum'/>
     </pages>
 </playground>

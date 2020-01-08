@@ -35,23 +35,25 @@ import Foundation
 class Solution {
     func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
         let candidates = candidates.sorted()
+        let result = backTracing([], candidates, target)
+        return result
+    }
+    
+    func backTracing(_ heads: [Int], _ candidates: [Int], _ target: Int) -> [[Int]] {
+        var result: [[Int]] = []
         for i in 0..<candidates.count {
-            let remain = target - candidates[i]
-            if remain == 0 {
-                return [[candidates[i]]]
-                
-            } else if remain > 0 {
-                return combinationSum(Array(candidates[i..<candidates.count]), remain)
-                    .map { arr -> [Int] in
-                        var copy = arr
-                        copy.insert(candidates[i], at: 0)
-                        return copy
-                }
+            let diff = target - candidates[i]
+            if diff == 0 {
+                result.append(heads+[candidates[i]])
+                break
+            } else if diff > 0 {
+                let tails = backTracing(heads+[candidates[i]], Array(candidates[i..<candidates.count]), diff)
+                result.append(contentsOf: tails)
             } else {
-                return []
+                break
             }
         }
-        return []
+        return result
     }
 }
 
