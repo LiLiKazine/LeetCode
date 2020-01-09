@@ -20,5 +20,6 @@
         <page name='45. Jump Game II'/>
         <page name='48. Rotate Image'/>
         <page name='53. Maximum Subarray'/>
+        <page name='54. Spiral Matrix'/>
     </pages>
 </playground>
