@@ -1,2 +1,2 @@
 # LeetCode
-My leetcode solutions in Swift
+My LeetCode solutions in Swift
