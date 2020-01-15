@@ -21,5 +21,6 @@
         <page name='48. Rotate Image'/>
         <page name='53. Maximum Subarray'/>
         <page name='54. Spiral Matrix'/>
+        <page name='344. Reverse String'/>
     </pages>
 </playground>
