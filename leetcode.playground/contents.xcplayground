@@ -25,5 +25,7 @@
         <page name='345. Reverse Vowels of a String'/>
         <page name='104. Maximum Depth of Binary Tree'/>
         <page name='136. Single Number'/>
+        <page name='412. Fizz Buzz'/>
+        <page name='94. Binary Tree Inorder Traversal'/>
     </pages>
 </playground>
