@@ -39,7 +39,16 @@ public class TreeNode {
  
 class Solution {
     func maxDepth(_ root: TreeNode?) -> Int {
-        return 0
+        let depth = trace(root, lev: 0)
+        return depth
+    }
+    
+    func trace(_ node: TreeNode?, lev: Int) -> Int {
+        if node == nil {
+            return lev
+        }
+        let depth = max(trace(node?.left, lev: lev+1), trace(node?.right, lev: lev+1))
+        return depth
     }
 }
 
