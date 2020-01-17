@@ -22,7 +22,6 @@
 
 import Foundation
 
-
 public class TreeNode {
     public var val: Int
     public var left: TreeNode?
