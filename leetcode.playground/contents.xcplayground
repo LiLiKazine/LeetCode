@@ -27,6 +27,8 @@
         <page name='136. Single Number'/>
         <page name='412. Fizz Buzz'/>
         <page name='94. Binary Tree Inorder Traversal'/>
-        <page name='Untitled Page'/>
+        <page name='22. Generate Parentheses'/>
+        <page name='46. Permutations'/>
+        <page name='95. Unique Binary Search Trees II(undone)'/>
     </pages>
 </playground>
