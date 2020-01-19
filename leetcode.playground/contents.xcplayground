@@ -34,5 +34,7 @@
         <page name='347. Top K Frequent Elements'/>
         <page name='238. Product of Array Except Self'/>
         <page name='237. Delete Node in a Linked List(undone)'/>
+        <page name='283. Move Zeroes'/>
+        <page name='78. Subsets'/>
     </pages>
 </playground>
