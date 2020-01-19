@@ -21,7 +21,16 @@ import Foundation
 
 class Solution {
     func productExceptSelf(_ nums: [Int]) -> [Int] {
-        return []
+        var ans: [Int] = Array(repeating: 1, count: nums.count)
+        for i in 1..<nums.count {
+            ans[i] = ans[i-1] * nums[i-1]
+        }
+        var r = 1
+        for i in stride(from: nums.count-1, through: 0, by: -1) {
+            ans[i] = ans[i] * r
+            r = r * nums[i]
+        }
+        return ans
     }
 }
 
