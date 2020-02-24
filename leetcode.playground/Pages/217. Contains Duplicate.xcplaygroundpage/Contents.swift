@@ -27,7 +27,7 @@ import Foundation
 
 class Solution {
     func containsDuplicate(_ nums: [Int]) -> Bool {
-        var nums = nums.sorted()
+        let nums = nums.sorted()
         if nums.count == 0 {
             return false
         }
