@@ -26,8 +26,40 @@ import Foundation
 
 class Solution {
     func jump(_ nums: [Int]) -> Int {
-        return 0
+        return greedy(nums)
+    }
+    
+    func greedy(_ nums: [Int]) -> Int {
+        if nums.count == 1 {
+            return 0
+        }
+        var i = 0, step = 1
+        while i < nums.count && i + nums[i] < nums.count - 1 {
+            if nums[i] == 0 {
+                break
+            }
+            i = findMax(i, i+nums[i], nums: nums)
+            if i < nums.count-1 {
+                step += 1
+            }
+        }
+        return step
+    }
+    
+    func findMax(_ h: Int, _ t: Int, nums: [Int]) -> Int {
+        var index = h, max = 0
+        for i in h+1...t {
+            if nums[i] + i >= max {
+                max = nums[i] + i
+                index = i
+            }
+        }
+        return index
     }
 }
+
+let test = Solution()
+let res = test.jump([10,9,8,7,6,5,4,3,2,1,1,0])
+res
 
 //: [Next](@next)
