@@ -50,5 +50,7 @@
         <page name='106. Construct Binary Tree from Inorder and Postorder Traversal'/>
         <page name='146. LRU Cache(undone)'/>
         <page name='135. Candy'/>
+        <page name='1111. Maximum Nesting Depth of Two Valid Parentheses Strings'/>
+        <page name='321. Create Maximum Number'/>
     </pages>
 </playground>
