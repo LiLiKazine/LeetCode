@@ -51,6 +51,8 @@
         <page name='146. LRU Cache(undone)'/>
         <page name='135. Candy'/>
         <page name='1111. Maximum Nesting Depth of Two Valid Parentheses Strings'/>
-        <page name='321. Create Maximum Number'/>
+        <page name='321. Create Maximum Number(buggy)'/>
+        <page name='289. Game of Life'/>
+        <page name='1234. Replace the Substring for Balanced String'/>
     </pages>
 </playground>
