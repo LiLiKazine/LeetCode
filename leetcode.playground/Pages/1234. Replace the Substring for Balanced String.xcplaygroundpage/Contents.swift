@@ -49,8 +49,117 @@ import Foundation
 
 class Solution {
     func balancedString(_ s: String) -> Int {
+        let target = s.count / 4
+        var arr: [Character: Int] = [:], element: [Character: Int] = [:]
+        for c in s {
+            if arr[c] == nil {
+                arr[c] = 1
+            }  else {
+                arr[c]! += 1
+            }
+        }
+        for key in arr.keys {
+            let num = arr[key]! - target
+            if num > 0 {
+                element[key] = num
+            }
+        }
+        if element.isEmpty {
+            return 0
+        }
+        let s = Array<Character>(s)
 
+        var l = 0, r = 0, count = s.count
+        while l <= r, r < s.count {
+
+            if element[s[r]] != nil {
+                element[s[r]]! -= 1
+            }
+            let res = element.values.reduce(0) { (res, val) -> Int in
+                res + max(val, 0)
+            }
+            if res == 0 {
+                count = min(count, r - l + 1)
+                if element[s[l]] != nil {
+                    element[s[l]]! += 1
+                }
+                if element[s[r]] != nil {
+                    element[s[r]]! += 1
+                }
+                l += 1
+            } else {
+                r += 1
+            }
+        }
+        return count
     }
-} 
+}
+
+let solution = Solution()
+let ans = solution.balancedString("WQWRQQQW")
+
+/*
+ 
+ func contain(_ parent: [Character], _ child: [Character]) -> Bool {
+        var child = child, parent = parent
+        while !child.isEmpty {
+            if let index = parent.firstIndex(of: child.removeFirst()) {
+                parent.remove(at: index)
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+    
+    func exceeded(_ s: String) -> Int {
+        let target = s.count / 4
+        var arr: [Character: Int] = [:], element: [Character] = []
+        for c in s {
+            if arr[c] == nil {
+                arr[c] = 1
+            }  else {
+                arr[c]! += 1
+            }
+        }
+        for key in arr.keys {
+            let num = arr[key]! - target
+            if num > 0 {
+                element.append(contentsOf: Array(repeating: key, count: num))
+            }
+        }
+        if element.isEmpty {
+            return 0
+        }
+        var count = Int.max
+        let characters = Array<Character>(s)
+        print(characters.count, element)
+        for i in 0...characters.count-element.count {
+            if element.contains(characters[i]) {
+                count = min(count, subString(characters, begin: i, element: element, count: count))
+            }
+        }
+        return count
+    }
+    
+    func subString(_ characters: [Character], begin: Int, element: [Character], count: Int) -> Int {
+        var element = element, i = begin
+        while i < characters.count && !element.isEmpty {
+            if let index = element.firstIndex(of: characters[i]) {
+                element.remove(at: index)
+            }
+            i += 1
+            if i-begin >= count {
+                return Int.max
+            }
+        }
+        if element.isEmpty {
+            return i-begin
+        } else {
+            return Int.max
+        }
+    }
+ 
+ */
 
 //: [Next](@next)
