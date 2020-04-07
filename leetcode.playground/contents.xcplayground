@@ -56,5 +56,7 @@
         <page name='1234. Replace the Substring for Balanced String'/>
         <page name='329. Longest Increasing Path in a Matrix'/>
         <page name='8. String to Integer (atoi)'/>
+        <page name='460. LFU Cache'/>
+        <page name='面试题 01.07. Rotate Matrix LCCI'/>
     </pages>
 </playground>
