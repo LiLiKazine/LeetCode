@@ -34,13 +34,39 @@
 import Foundation
 
 class Solution {
+    let dir: [[Int]] = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    var cache: [[Int]] = []
     func longestIncreasingPath(_ matrix: [[Int]]) -> Int {
-        return 0
+        var ans = 0
+        if matrix.count > 0 {
+            cache = Array(repeating: Array(repeating: 0, count: matrix[0].count), count: matrix.count)
+            for i in 0..<matrix.count {
+                for j in 0..<matrix[0].count {
+                    ans = max(ans, dfs(matrix, i, j))
+                }
+            }
+        }
+        return ans
     }
-    
-    func dfs() {
-        
+    func dfs(_ matrix: [[Int]], _ i: Int, _ j: Int) -> Int {
+        if cache[i][j] > 0 {
+            return cache[i][j]
+        }
+        for d in dir {
+            let x = i + d[0], y = j + d[1]
+            if x < matrix.count && x >= 0 && y < matrix[0].count && y >= 0 && matrix[x][y] > matrix[i][j] {
+                cache[i][j] = max(cache[i][j], dfs(matrix, x, y))
+            }
+        }
+        cache[i][j] += 1
+        return cache[i][j]
     }
 }
+
+let solution = Solution()
+let input = [[3,4,5],
+             [3,2,6],
+             [2,2,1]]
+let res = solution.longestIncreasingPath(input)
 
 //: [Next](@next)

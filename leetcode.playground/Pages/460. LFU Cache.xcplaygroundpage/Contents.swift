@@ -44,7 +44,7 @@ class LFUCache {
     }
     
     func get(_ key: Int) -> Int {
-        
+        return 0
     }
     
     func put(_ key: Int, _ value: Int) {
