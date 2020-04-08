@@ -58,5 +58,6 @@
         <page name='8. String to Integer (atoi)'/>
         <page name='460. LFU Cache'/>
         <page name='面试题 01.07. Rotate Matrix LCCI'/>
+        <page name='面试题13. 机器人的运动范围'/>
     </pages>
 </playground>
