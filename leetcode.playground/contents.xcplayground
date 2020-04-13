@@ -60,6 +60,7 @@
         <page name='面试题 01.07. Rotate Matrix LCCI'/>
         <page name='面试题13. 机器人的运动范围'/>
         <page name='151. Reverse Words in a String'/>
-        <page name='1169. Invalid Transactions'/>
+        <page name='1169. Invalid Transactions (wrong)'/>
+        <page name='365. Water and Jug Problem'/>
     </pages>
 </playground>
