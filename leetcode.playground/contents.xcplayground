@@ -65,6 +65,7 @@
         <page name='355. Design Twitter'/>
         <page name='445. Add Two Numbers II'/>
         <page name='200. Number of Islands'/>
-        <page name='335. Self Crossing'/>
+        <page name='335. Self Crossing(undone)'/>
+        <page name='883. Projection Area of 3D Shapes'/>
     </pages>
 </playground>

@@ -44,6 +44,9 @@ import Foundation
 
 class Solution {
     func isSelfCrossing(_ x: [Int]) -> Bool {
+        for i in 0..<x.count {
+            
+        }
         return true
     }
 }
