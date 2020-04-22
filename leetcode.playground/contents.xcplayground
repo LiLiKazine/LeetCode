@@ -75,5 +75,7 @@
         <page name='面试题 10.05. Sparse Array Search LCCI'/>
         <page name='62. Unique Paths'/>
         <page name='199. Binary Tree Right Side View'/>
+        <page name='990. Satisfiability of Equality Equations'/>
+        <page name='897. Increasing Order Search Tree'/>
     </pages>
 </playground>
