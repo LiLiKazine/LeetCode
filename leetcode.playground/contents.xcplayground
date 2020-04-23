@@ -77,5 +77,8 @@
         <page name='199. Binary Tree Right Side View'/>
         <page name='990. Satisfiability of Equality Equations'/>
         <page name='897. Increasing Order Search Tree'/>
+        <page name='481. Magical String(undone)'/>
+        <page name='1209. Remove All Adjacent Duplicates in String II'/>
+        <page name='面试题 08.11. Coin LCCI'/>
     </pages>
 </playground>
