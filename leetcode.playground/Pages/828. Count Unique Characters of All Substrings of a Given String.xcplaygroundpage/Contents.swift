@@ -39,6 +39,10 @@
 
 import Foundation
 
-var str = "Hello, playground"
+class Solution {
+    func uniqueLetterString(_ s: String) -> Int {
+        return 0
+    }
+}
 
 //: [Next](@next)

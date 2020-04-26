@@ -34,22 +34,6 @@ import Foundation
 
 class Solution {
     
-    /*
-     
-     int waysToChange(int n) {
-             vector<int> f(n + 1);
-             f[0] = 1;
-             for (int c = 0; c < 4; ++c) {
-                 int coin = coins[c];
-                 for (int i = coin; i <= n; ++i) {
-                     f[i] = (f[i] + f[i - coin]) % mod;
-                 }
-             }
-             return f[n];
-         }
-
-     */
-    
     var record: [Key: Int] = [:]
     
     func waysToChange(_ n: Int) -> Int {
