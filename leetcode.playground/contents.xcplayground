@@ -84,5 +84,6 @@
         <page name='面试题51. 数组中的逆序对(undone)'/>
         <page name='23. Merge k Sorted Lists'/>
         <page name='179. Largest Number'/>
+        <page name='1276. Number of Burgers with No Waste of Ingredients'/>
     </pages>
 </playground>
