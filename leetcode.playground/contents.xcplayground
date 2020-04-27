@@ -85,5 +85,7 @@
         <page name='23. Merge k Sorted Lists'/>
         <page name='179. Largest Number'/>
         <page name='1276. Number of Burgers with No Waste of Ingredients'/>
+        <page name='1092. Shortest Common Supersequence(undone)'/>
+        <page name='226. Invert Binary Tree'/>
     </pages>
 </playground>
