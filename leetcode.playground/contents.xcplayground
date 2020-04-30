@@ -89,7 +89,9 @@
         <page name='226. Invert Binary Tree'/>
         <page name='943. Find the Shortest Superstring(undone)'/>
         <page name='888. Fair Candy Swap'/>
-        <page name='650. 2 Keys Keyboard'/>
+        <page name='650. 2 Keys Keyboard(undone)'/>
         <page name='面试题56 - I. 数组中数字出现的次数'/>
+        <page name='115. Distinct Subsequences(undone)'/>
+        <page name='494. Target Sum(undone)'/>
     </pages>
 </playground>
