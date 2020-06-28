@@ -96,5 +96,6 @@
         <page name='202. Happy Number'/>
         <page name='209. Minimum Size Subarray Sum'/>
         <page name='343. Integer Break'/>
+        <page name='1313. Decompress Run-Length Encoded List'/>
     </pages>
 </playground>
