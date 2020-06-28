@@ -93,5 +93,7 @@
         <page name='面试题56 - I. 数组中数字出现的次数'/>
         <page name='115. Distinct Subsequences(undone)'/>
         <page name='494. Target Sum(undone)'/>
+        <page name='202. Happy Number'/>
+        <page name='209. Minimum Size Subarray Sum'/>
     </pages>
 </playground>
