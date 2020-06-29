@@ -98,5 +98,6 @@
         <page name='343. Integer Break'/>
         <page name='1313. Decompress Run-Length Encoded List'/>
         <page name='1309. Decrypt String from Alphabet to Integer Mapping'/>
+        <page name='215. Kth Largest Element in an Array'/>
     </pages>
 </playground>
