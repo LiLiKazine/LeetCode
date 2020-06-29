@@ -97,5 +97,6 @@
         <page name='209. Minimum Size Subarray Sum'/>
         <page name='343. Integer Break'/>
         <page name='1313. Decompress Run-Length Encoded List'/>
+        <page name='1309. Decrypt String from Alphabet to Integer Mapping'/>
     </pages>
 </playground>
