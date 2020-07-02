@@ -101,5 +101,7 @@
         <page name='215. Kth Largest Element in an Array'/>
         <page name='剑指 Offer 09. 用两个栈实现队列'/>
         <page name='718. Maximum Length of Repeated Subarray'/>
+        <page name='434. Number of Segments in a String'/>
+        <page name='378. Kth Smallest Element in a Sorted Matrix'/>
     </pages>
 </playground>
