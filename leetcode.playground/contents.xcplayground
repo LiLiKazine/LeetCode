@@ -104,5 +104,6 @@
         <page name='434. Number of Segments in a String'/>
         <page name='378. Kth Smallest Element in a Sorted Matrix'/>
         <page name='63. Unique Paths II'/>
+        <page name='112. Path Sum'/>
     </pages>
 </playground>
