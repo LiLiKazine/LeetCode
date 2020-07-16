@@ -109,5 +109,7 @@
         <page name='309. Best Time to Buy and Sell Stock with Cooldown'/>
         <page name='350. Intersection of Two Arrays II'/>
         <page name='120. Triangle'/>
+        <page name='96. Unique Binary Search Trees'/>
+        <page name='785. Is Graph Bipartite?'/>
     </pages>
 </playground>
