@@ -111,5 +111,6 @@
         <page name='120. Triangle'/>
         <page name='96. Unique Binary Search Trees'/>
         <page name='785. Is Graph Bipartite?'/>
+        <page name='167. Two Sum II - Input array is sorted'/>
     </pages>
 </playground>
