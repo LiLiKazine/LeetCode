@@ -42,19 +42,42 @@ public class TreeNode {
 }
 
 class Solution {
+    
     func generateTrees(_ n: Int) -> [TreeNode?] {
-        return []
+        if n == 0 {
+            return []
+        }
+        let ans: [TreeNode?] = build(1, n)
+        return ans
     }
     
-    func tree(_ l: ClosedRange<Int>, _ r: ClosedRange<Int>, _ node: TreeNode) -> [TreeNode] {
-        var nodes: [TreeNode] = []
-        for i in l {
-            let n = TreeNode(i)
-            node.left = n
-            let new = tree(l.lowerBound, <#T##r: ClosedRange<Int>##ClosedRange<Int>#>, node.left!)
+    func build(_ start: Int, _ end: Int) -> [TreeNode?] {
+        if start > end {
+            return [nil]
         }
+
+        var ans: [TreeNode?] = []
         
+        for i in start...end {
+            let left = build(start, i-1),
+            right = build(i+1, end)
+            
+            for j in 0..<left.count {
+                for k in 0..<right.count {
+                    let root = TreeNode(i)
+                    root.left = left[j]
+                    root.right = right[k]
+                    ans.append(root)
+                }
+            }
+        }
+        return ans
     }
+    
 }
+
+let solution = Solution()
+let ans = solution.generateTrees(3)
+ans
 
 //: [Next](@next)
