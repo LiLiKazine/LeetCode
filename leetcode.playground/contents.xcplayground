@@ -117,5 +117,6 @@
         <page name='415. Add Strings'/>
         <page name='326. Power of Three'/>
         <page name='410. Split Array Largest Sum'/>
+        <page name='687. Longest Univalue Path'/>
     </pages>
 </playground>
