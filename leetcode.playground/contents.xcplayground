@@ -114,5 +114,7 @@
         <page name='167. Two Sum II - Input array is sorted'/>
         <page name='剑指 Offer 11. 旋转数组的最小数字'/>
         <page name='64. Minimum Path Sum'/>
+        <page name='415. Add Strings'/>
+        <page name='326. Power of Three'/>
     </pages>
 </playground>
