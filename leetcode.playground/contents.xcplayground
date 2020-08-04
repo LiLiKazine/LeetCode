@@ -118,5 +118,7 @@
         <page name='326. Power of Three'/>
         <page name='410. Split Array Largest Sum'/>
         <page name='687. Longest Univalue Path'/>
+        <page name='剑指 Offer 51. 数组中的逆序对(undone)'/>
+        <page name='207. Course Schedule'/>
     </pages>
 </playground>
