@@ -138,5 +138,6 @@
         <page name='973. K Closest Points to Origin'/>
         <page name='538. Convert BST to Greater Tree'/>
         <page name='面试题 08.02. Robot in a Grid LCCI'/>
+        <page name='617. Merge Two Binary Trees'/>
     </pages>
 </playground>
