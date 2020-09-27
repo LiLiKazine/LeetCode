@@ -141,5 +141,6 @@
         <page name='617. Merge Two Binary Trees'/>
         <page name='501. Find Mode in Binary Search Tree'/>
         <page name='947. Most Stones Removed with Same Row or Column(undone)'/>
+        <page name='235. Lowest Common Ancestor of a Binary Search Tree'/>
     </pages>
 </playground>
