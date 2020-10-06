@@ -145,5 +145,6 @@
         <page name='117. Populating Next Right Pointers in Each Node II'/>
         <page name='145. Binary Tree Postorder Traversal'/>
         <page name='701. Insert into a Binary Search Tree'/>
+        <page name='1200. Minimum Absolute Difference'/>
     </pages>
 </playground>
