@@ -155,5 +155,7 @@
         <page name='面试题 03.06. Animal Shelter LCCI'/>
         <page name='面试题 08.02. Robot in a Grid LCCI'/>
         <page name='面试题 16.26. Calculator LCCI'/>
+        <page name='530. Minimum Absolute Difference in BST'/>
+        <page name='645. Set Mismatch'/>
     </pages>
 </playground>
