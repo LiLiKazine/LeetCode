@@ -157,5 +157,6 @@
         <page name='面试题 16.26. Calculator LCCI'/>
         <page name='530. Minimum Absolute Difference in BST'/>
         <page name='645. Set Mismatch'/>
+        <page name='24. Swap Nodes in Pairs'/>
     </pages>
 </playground>
