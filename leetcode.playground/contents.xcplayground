@@ -160,5 +160,6 @@
         <page name='24. Swap Nodes in Pairs'/>
         <page name='1190. Reverse Substrings Between Each Pair of Parentheses'/>
         <page name='1002. Find Common Characters'/>
+        <page name='116. Populating Next Right Pointers in Each Node'/>
     </pages>
 </playground>
