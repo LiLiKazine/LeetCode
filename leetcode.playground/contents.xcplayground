@@ -161,5 +161,6 @@
         <page name='1190. Reverse Substrings Between Each Pair of Parentheses'/>
         <page name='1002. Find Common Characters'/>
         <page name='116. Populating Next Right Pointers in Each Node'/>
+        <page name='977. Squares of a Sorted Array'/>
     </pages>
 </playground>
