@@ -164,5 +164,6 @@
         <page name='977. Squares of a Sorted Array'/>
         <page name='1592. Rearrange Spaces Between Words'/>
         <page name='19. Remove Nth Node From End of List'/>
+        <page name='1288. Remove Covered Intervals'/>
     </pages>
 </playground>
