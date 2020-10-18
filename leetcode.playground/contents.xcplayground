@@ -163,5 +163,6 @@
         <page name='116. Populating Next Right Pointers in Each Node'/>
         <page name='977. Squares of a Sorted Array'/>
         <page name='1592. Rearrange Spaces Between Words'/>
+        <page name='19. Remove Nth Node From End of List'/>
     </pages>
 </playground>
