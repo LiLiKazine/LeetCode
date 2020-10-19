@@ -165,5 +165,6 @@
         <page name='1592. Rearrange Spaces Between Words'/>
         <page name='19. Remove Nth Node From End of List'/>
         <page name='1288. Remove Covered Intervals'/>
+        <page name='844. Backspace String Compare'/>
     </pages>
 </playground>
