@@ -166,5 +166,9 @@
         <page name='19. Remove Nth Node From End of List'/>
         <page name='1288. Remove Covered Intervals'/>
         <page name='844. Backspace String Compare'/>
+        <page name='143. Reorder List'/>
+        <page name='925. Long Pressed Name'/>
+        <page name='1261. Find Elements in a Contaminated Binary Tree'/>
+        <page name='419. Battleships in a Board'/>
     </pages>
 </playground>
