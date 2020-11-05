@@ -3,6 +3,7 @@
 /*
  
  127. Word Ladder
+ 
  Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation sequence from beginWord to endWord, such that:
 
  Only one letter can be changed at a time.
@@ -110,15 +111,15 @@
 class Solution {
     var edges: [String: [String]] = [:]
     func ladderLength(_ beginWord: String, _ endWord: String, _ wordList: [String]) -> Int {
-        addEdge(beginWord, wordList)
+        addEdge(beginWord)
         for word in wordList {
-            addEdge(word, wordList)
+            addEdge(word)
         }
         if edges[endWord] == nil || edges[endWord]!.isEmpty {
             return 0
         }
-        var currentWords = [beginWord], wordDict:[String: Int] = [beginWord: 0]
-        for word in wordList {
+        var currentWords = [beginWord], wordDict:[String: Int] = [:]
+        for word in edges.keys {
             wordDict[word] = 0
         }
         while true {
@@ -140,17 +141,21 @@ class Solution {
             }
             currentWords = temp
         }
-        return wordDict[endWord]! + 1
+        return wordDict[endWord]!/2 + 1
     }
     
-    func addEdge(_ word: String, _ wordList: [String]) {
-        var routes = [String]()
-        for target in wordList {
-            if transferable(word, target) {
-                routes.append(target)
+    func addEdge(_ word: String) {
+        edges[word] = []
+        for i in 0..<word.count {
+            var virtual = Array(word)
+            virtual.replaceSubrange(i..<i+1, with: [Character("*")])
+            let vs = String(virtual)
+            edges[word]?.append(vs)
+            if edges[vs] == nil {
+                edges[vs] = []
             }
+            edges[vs]?.append(word)
         }
-        edges[word] = routes
     }
     
     func exceededTime(_ beginWord: String, _ endWord: String, _ wordList: [String]) -> Int {
