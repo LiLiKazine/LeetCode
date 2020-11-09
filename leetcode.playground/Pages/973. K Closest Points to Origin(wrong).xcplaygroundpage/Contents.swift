@@ -111,34 +111,54 @@ import Darwin
 
 class Solution {
     func kClosest(_ points: [[Int]], _ K: Int) -> [[Int]] {
-        return stupid(points, K)
+        return divideNcouquer(points, K)
     }
     
-    func stupid(_ points: [[Int]], _ k: Int) -> [[Int]] {
-        var pipe = [(Int, Double)]()
-        for i in 0..<points.count {
-            var inserted = false
-            let distance = sqrt(pow(abs(Double(points[i][0])), 2) + pow(abs(Double(points[i][1])), 2))
-            for j in 0..<pipe.count {
-                if distance < pipe[j].1 {
-                    pipe.insert((i, distance), at: j)
-                    inserted = true
+    func divideNcouquer(_ points: [[Int]], _ K: Int) -> [[Int]] {
+        guard points.count > K else {
+            return points
+        }
+        var points = points, i = 0, j = points.count - 1, swaped = false
+        while swaped {
+            swaped = false
+            let dis = distance(points[i])
+            while i < j {
+                while i < j && distance(points[i]) <= dis {
+                    i += 1
+                }
+                while i < j && distance(points[j]) >= dis {
+                    j -= 1
+                }
+                if i < j {
+                    let temp = points[i]
+                    points[i] = points[j]
+                    points[j] = temp
+                    swaped = true
+                } else {
                     break
                 }
             }
-            if !inserted {
-                pipe.append((i, distance))
+            if i < K - 1 {
+                i += 1
+                j = points.count - 1
+            } else {
+                i = 0
+                j = i - 1
             }
         }
-        let ans = pipe[0..<k].map { (i, _) -> [Int] in
-            return points[i]
-        }
-        return ans
+        return Array(points[0..<K])
+    }
+    
+    func distance(_ point: [Int]) -> Double {
+        let dis = sqrt(pow(abs(Double(point[0])), 2) + pow(abs(Double(point[1])), 2))
+        return dis
     }
 }
-
-let points = [[-5,4],[-3,2],[0,1],[-3,7],[-2,0],[-4,-6],[0,-5]], K = 6
-
+//[[0,1],[1,0]]
+//2
+//let points = [[-5,4],[-3,2],[0,1],[-3,7],[-2,0],[-4,-6],[0,-5]], K = 6
+let points = [[-2,10],[-4,-8],[10,7],[-4,-7]],
+K = 3
 let solution = Solution()
 let ans = solution.kClosest(points, K)
 ans
