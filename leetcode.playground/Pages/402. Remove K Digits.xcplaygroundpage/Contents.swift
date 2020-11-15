@@ -69,27 +69,28 @@
 
 class Solution {
     func removeKdigits(_ num: String, _ k: Int) -> String {
-        var dp: [[String]] = Array(repeating: Array(repeating: "0", count: k), count: num.count)
-        for i in 1..<num.count {
-            let pres = dp[i]
-            for j in 1..<pres.count {
-//                if j == pres.count - 1 {
-//                    dp[i][j] = dp[i-1][j] + String(Array(num)[i])
-//                    continue
-//                }
-                if i == num.count-1 {
-                    dp[i][j] = dp[i-1][j] + String(Array(num)[i])
-                    continue
-                }
-                let s1 = dp[i-1][j-1] + String(Array(num)[i+1])
-                let s2 = dp[i-1][j] + String(Array(num)[i])
-                dp[i][j] = String(min(Int(s1)!, Int(s2)!))
+        var ascending = [Character](), k = k
+        for n in num {
+            while !ascending.isEmpty && k > 0 && ascending.last! > n {
+                ascending.removeLast()
+                k -= 1
             }
-
+            ascending.append(n)
         }
-        dp
-        print(dp)
-        return dp[num.count-1][k-1]
+        if k > 0 {
+            if ascending.count >= k {
+                ascending.removeLast(k)
+            } else {
+                ascending.removeAll()
+            }
+        }
+        while ascending.first == Character("0") {
+            ascending.removeFirst()
+        }
+        if ascending.count == 0 {
+            return "0"
+        }
+        return String(ascending)
     }
 }
 
