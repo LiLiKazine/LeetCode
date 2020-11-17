@@ -42,8 +42,24 @@
 
 class Solution {
     func allCellsDistOrder(_ R: Int, _ C: Int, _ r0: Int, _ c0: Int) -> [[Int]] {
-        return []
+        let numOfBuckets = max(r0, R - r0 - 1) + max(c0, C - c0 - 1) + 1
+        var buckets = Array(repeating: [[Int]](), count: numOfBuckets)
+        for i in 0..<R {
+            for j in 0..<C {
+                let index = abs(i-r0) + abs(j-c0)
+                buckets[index].append([i, j])
+            }
+        }
+        let ans = buckets.reduce([[Int]]()) { (res, bucket) -> [[Int]] in
+            return res + bucket
+        }
+        return ans
     }
 }
+
+let R = 2, C = 3, r0 = 1, c0 = 2
+let solution = Solution()
+let ans = solution.allCellsDistOrder(R, C, r0, c0)
+ans
 
 //: [Next](@next)
