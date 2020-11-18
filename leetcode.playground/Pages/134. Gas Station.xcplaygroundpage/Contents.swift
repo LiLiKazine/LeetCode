@@ -51,8 +51,31 @@
 
 class Solution {
     func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
-        return 0
+        var leftover = 0, start = 0
+        while start < gas.count {
+            var through = true
+            for i in start..<gas.count + start {
+                let j = i < gas.count ? i : i - gas.count
+                leftover = gas[j] + leftover - cost[j]
+                if leftover < 0 {
+                    start = i + 1
+                    through = false
+                    leftover = 0
+                    break
+                }
+            }
+            if through {
+                return start
+            }
+        }
+        return -1
     }
 }
+
+let  gas  = [1,2,3,4,5],
+cost = [3,4,5,1,2]
+let solution = Solution()
+let ans = solution.canCompleteCircuit(gas, cost)
+ans
 
 //: [Next](@next)
