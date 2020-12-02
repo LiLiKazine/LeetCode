@@ -36,27 +36,72 @@
  
  */
 
+/*
+ 
+ public int[] maxSubsequence(int[] nums, int k) {
+       int length = nums.length;
+       int[] stack = new int[k];
+       int top = -1;
+       int remain = length - k;
+       for (int i = 0; i < length; i++) {
+           int num = nums[i];
+           while (top >= 0 && stack[top] < num && remain > 0) {
+               top--;
+               remain--;
+           }
+           if (top < k - 1) {
+               stack[++top] = num;
+           } else {
+               remain--;
+           }
+       }
+       return stack;
+   }
+ 
+ public int[] merge(int[] subsequence1, int[] subsequence2) {
+     int x = subsequence1.length, y = subsequence2.length;
+     if (x == 0) {
+         return subsequence2;
+     }
+     if (y == 0) {
+         return subsequence1;
+     }
+     int mergeLength = x + y;
+     int[] merged = new int[mergeLength];
+     int index1 = 0, index2 = 0;
+     for (int i = 0; i < mergeLength; i++) {
+         if (compare(subsequence1, index1, subsequence2, index2) > 0) {
+             merged[i] = subsequence1[index1++];
+         } else {
+             merged[i] = subsequence2[index2++];
+         }
+     }
+     return merged;
+ }
+
+作者：LeetCode-Solution
+链接：https://leetcode-cn.com/problems/create-maximum-number/solution/pin-jie-zui-da-shu-by-leetcode-solution/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ 
+ */
+
+
 import Foundation
 
 class Solution {
     
     func maxNumber(_ nums1: [Int], _ nums2: [Int], _ k: Int) -> [Int] {
-        var arr: [Int] = [], a1: [Int] = [], a2: [Int] = []
+        var arr: [Int] = []
         
         for i in 0...k {
             let arr1 = findMax(nums1, i)
             let arr2 = findMax(nums2, k-i)
             let temp = merge(arr1, arr2)
-            if arr1.count + arr2.count == k {
-                print(temp)
-            }
             if larger(temp, arr) {
                 arr = temp
-                a1 = arr1
-                a2 = arr2
             }
         }
-//        print(a1, a2)
         return arr
     }
     
@@ -68,7 +113,7 @@ class Solution {
         while residue > 0 {
             let idx = findMax(nums, lastIdx, h: nums.count-residue)
             arr.append(nums[idx])
-            lastIdx = idx+1
+            lastIdx = idx + 1
             residue -= 1
         }
         return arr
@@ -86,43 +131,40 @@ class Solution {
     }
     
     func merge(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
-        var nums1 = nums1, nums2 = nums2, res: [Int] = []
-        while !nums1.isEmpty || !nums2.isEmpty {
-            guard let v1 = nums1.first else {
-                return res + nums2
-            }
-            guard let v2 = nums2.first else {
-                return res + nums1
-            }
-            if v1 > v2 {
-                res.append(nums1.removeFirst())
-            } else if v2 > v1 {
-                res.append(nums2.removeFirst())
-            } else {
-                var i = 0
-                while i < nums1.count && i < nums2.count && nums1[i] == nums2[i] {
-                    i += 1
-                }
-                if i == nums1.count {
-                    res.append(contentsOf: nums2[0..<i])
-                    nums2.removeSubrange(0..<i)
-                    continue
-                }
-                if i == nums2.count {
-                    res.append(contentsOf: nums1[0..<i])
-                    nums1.removeSubrange(0..<i)
-                    continue
-                }
-                if nums1[i] > nums2[i] {
-                    res.append(contentsOf: nums1[0..<i])
-                    nums1.removeSubrange(0..<i)
+        let length1 = nums1.count, length2 = nums2.count
+        if length1 == 0 {
+            return nums2
+        }
+        if length2 == 0 {
+            return nums1
+        }
+        var ans = [Int]()
+
+        var i1 = 0, i2 = 0
+        while i1 < length1 && i2 < length2 {
+            if nums1[i1] == nums2[i2] {
+                if larger(Array(nums1[i1..<nums1.endIndex]), Array(nums2[i2..<nums2.endIndex])) {
+                    ans.append(nums1[i1])
+                    i1 += 1
                 } else {
-                    res.append(contentsOf: nums2[0..<i])
-                    nums2.removeSubrange(0..<i)
+                    ans.append(nums2[i2])
+                    i2 += 2
                 }
+            } else if nums1[i1] > nums2[i2] {
+                ans.append(nums1[i1])
+                i1 += 1
+            } else {
+                ans.append(nums2[i2])
+                i2 += 2
             }
         }
-        return res
+        if i1 < length1 {
+            ans.append(contentsOf: nums1[i1..<nums1.endIndex])
+        }
+        if i2 < length2 {
+            ans.append(contentsOf: nums2[i1..<nums2.endIndex])
+        }
+        return ans
     }
     
     func larger(_ n1: [Int], _ n2: [Int]) -> Bool {
