@@ -46,8 +46,49 @@
  */
 
 class Solution {
+    
+    var S: [Character] = []
+    var ans: [Int] = []
+    
+    
     func splitIntoFibonacci(_ S: String) -> [Int] {
-        return []
+        self.S = Array(S)
+        backTrace(0, 0, 0)
+        return ans
+    }
+    
+    func backTrace(_ startIndex: Int, _ sum: Int, _ prev: Int) -> Bool {
+        if startIndex == S.count {
+            return ans.count > 2
+        }
+        var cur: Int64 = 0
+        let zero = Character("0")
+        for i in startIndex..<S.count {
+            if i > startIndex && S[startIndex] == zero {
+                break
+            }
+            let val = S[i].asciiValue! - zero.asciiValue!
+            cur = cur * 10 + Int64(val)
+            if cur > Int32.max {
+                break
+            }
+            if ans.count >= 2 {
+                if cur < sum {
+                    continue
+                } else if cur > sum {
+                    break
+                }
+            }
+            
+            ans.append(Int(cur))
+            let res = backTrace(i + 1, prev + Int(cur), Int(cur))
+            if !res && !ans.isEmpty {
+                ans.removeLast()
+            } else {
+                return res
+            }
+        }
+        return false
     }
 }
 
