@@ -88,48 +88,51 @@
  
  */
 
+/*
+ 
+ class Solution {
+ public:
+     int totalFruit(vector<int>& tree) {
+         int K = 2;
+         int i = 0, j = 0, max_res = 0;
+         unordered_map<int, int> map;
+         for (i = 0; i < tree.size(); i++) {
+              map[tree[i]]++;
+              while(map.size() > K) {
+                  max_res = max(max_res,  i - j);
+                  map[tree[j]]--;
+                  if(map[tree[j]] == 0) map.erase(tree[j]);
+                  j++;
+              }
+         }
+         max_res = max(max_res,  i - j);
+         return max_res;
+     }
+ };
+ 
+ */
+
 class Solution {
     func totalFruit(_ tree: [Int]) -> Int {
-        var head = 0, tail = 0, longest = 0, types: [Int] = [], mark = 0, _mark = 0
-        while tail < tree.count {
-            let type = tree[tail]
-            if types.isEmpty {
-                types.append(type)
-                mark = tail
-                _mark = tail
-                tail += 1
-            } else if types.count == 1 {
-                if types[0] != type {
-                    types.append(type)
-                    _mark = tail
-                } else {
-                    mark = tail
+        var j = 0, ans = 0, cache: [Int: Int] = [:]
+        for i in 0..<tree.count {
+            cache[tree[i]] = (cache[tree[i]] ?? 0) + 1
+            while cache.keys.count > 2 {
+                ans = max(ans, i - j)
+                cache[tree[j]]! -= 1;
+                if cache[tree[j]]! == 0 {
+                    cache.removeValue(forKey: tree[j])
                 }
-                tail += 1
-            } else if types.contains(type) {
-                if types[0] == type {
-                    mark = tail
-                }
-                tail += 1
-            } else {
-                print(head, tail, mark, _mark)
-                longest = max(longest, tail - head)
-                head = mark
-                print(head)
-                mark = _mark
-                types.removeFirst()
+                j += 1
             }
         }
-//        if types.count == 2 {
-        print(head, tail, mark)
-        longest = max(longest, tail - head)
-//        }
-        return longest
+        ans = max(ans, tree.count - j)
+        return ans
     }
 }
 
 let solution = Solution()
-let ans = solution.totalFruit([1,1,6,5,6,6,1,1,1,1])
+let ans = solution.totalFruit([3,3,3,1,2,1,1,2,3,3,4])
 ans
 
 //: [Next](@next)
