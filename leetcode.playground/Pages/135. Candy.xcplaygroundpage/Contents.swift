@@ -96,11 +96,11 @@ class Solution {
                 right[i] = right[i+1] + 1
             }
         }
-        print(left, right)
+//        print(left, right)
         for i in 0..<ratings.count {
             left[i] = max(left[i], right[i])
         }
-        print(left)
+//        print(left)
         return left.reduce(0, +)
     }
 }
