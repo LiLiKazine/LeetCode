@@ -30,35 +30,41 @@
  */
 
 class Solution {
+    var map: [[Int: Int]] = [], traversed: [Int: Bool] = [:]
     func networkDelayTime(_ times: [[Int]], _ N: Int, _ K: Int) -> Int {
-        var time = 0, map: [[Int: Int]] = Array(repeating: [:], count: N + 1)
+        map = Array(repeating: [:], count: N + 1)
+        map[0][K] = 0
         for t in times {
             map[t[0]][t[1]] = t[2]
         }
-        var ans = Array(repeating: -1, count: N + 1),
-        points = [K]
-        ans[0] = 0
-        ans[K] = 0
-        while !points.isEmpty {
-            var temp = [Int](), maxTime = 0
-            for point in points {
-                let nexts = map[point]
-                for key in nexts.keys {
-                    if ans[key] == -1 {
-                        ans[key] = nexts[key]!
-                        temp.append(key)
-                    }
-                }
-            }
-            points = temp
-            time += 1
+        traversed[K] = true
+        let time = traverse(0, [K])
+        if traversed.keys.count != N {
+            return -1
         }
-        
+        return time
+    }
+    
+    func traverse(_ from: Int, _ points: [Int]) -> Int {
+        var time = 0
+        for point in points {
+            traversed[point] = true
+            let nexts = map[point]
+            var temp: [Int] = []
+            for key in nexts.keys {
+                if traversed[key] == true {
+                    continue
+                }
+                temp.append(key)
+            }
+            time = max(time, map[from][point]! + traverse(point, temp))
+        }
         return time
     }
 }
 
-let times = [[2,1,1],[2,3,1],[3,4,1]], N = 4, K = 2
+
+let times = [[1,2,1],[2,3,2],[1,3,2]], N = 3, K = 1
 let solution = Solution()
 let ans = solution.networkDelayTime(times, N, K)
 ans
