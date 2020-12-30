@@ -29,6 +29,11 @@
 
 class Solution {
     func minPatches(_ nums: [Int], _ n: Int) -> Int {
+        var cap = 1
+        while cap < n / 2 - 1 {
+            
+        }
+        
         return 0
     }
 }
