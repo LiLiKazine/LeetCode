@@ -23,22 +23,7 @@
  
  */
 
-class Solution {
-    func numEquivDominoPairs(_ dominoes: [[Int]]) -> Int {
-        var group: [Int: Int] = [:], ans = 0
-        for domino in dominoes {
-            let key = min(domino[0], domino[1]) * 10 + max(domino[0], domino[1])
-            group[key] = (group[key] ?? 0) + 1
-        }
-        for val in group.values {
-            guard val > 1 else {
-                continue
-            }
-            ans += (val - 1) * val / 2
-        }
-        return ans
-    }
-}
+-
 
 let dominoes = [[1,2],[2,1],[3,4],[5,6]]
 let solution = Solution()
