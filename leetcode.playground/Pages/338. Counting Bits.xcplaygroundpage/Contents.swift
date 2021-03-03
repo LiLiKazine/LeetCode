@@ -242,10 +242,31 @@
  著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
 
+/*
+ 
+ 方法一：i & (i - 1)可以去掉i最右边的一个1（如果有），因此 i & (i - 1）是比 i 小的，而且i & (i - 1)的1的个数已经在前面算过了，所以i的1的个数就是 i & (i - 1)的1的个数加上1
+ 
+ public int[] countBits(int num) {
+     int[] res = new int[num + 1];
+     for(int i = 1;i<= num;i++){  //注意要从1开始，0不满足
+         res[i] = res[i & (i - 1)] + 1;
+     }
+     return res;
+ }
+ 
+ */
+
 class Solution {
     
     func countBits(_ num: Int) -> [Int] {
-        return []
+        guard num > 0 else {
+            return [0]
+        }
+        var ans = Array(repeating: 0, count: num + 1)
+        for i in 1...num {
+            ans[i] = ans[i & (i - 1)] + 1
+        }
+        return ans
     }
     
     func stupid(_ num: Int) -> [Int] {
