@@ -27,16 +27,48 @@
  
  */
 
+/*
+ 
+ class Solution {
+     public boolean checkSubarraySum(int[] nums, int k) {
+         int m = nums.length;
+         if (m < 2) {
+             return false;
+         }
+         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+         map.put(0, -1);
+         int remainder = 0;
+         for (int i = 0; i < m; i++) {
+             remainder = (remainder + nums[i]) % k;
+             if (map.containsKey(remainder)) {
+                 int prevIndex = map.get(remainder);
+                 if (i - prevIndex >= 2) {
+                     return true;
+                 }
+             } else {
+                 map.put(remainder, i);
+             }
+         }
+         return false;
+     }
+ }
+ 
+ */
+
 class Solution {
     func checkSubarraySum(_ nums: [Int], _ k: Int) -> Bool {
-        var cache = Array(repeating: 0, count: nums.count + 1)
-        for i in 0..<nums.count {
-            cache[i+1] = cache[i] + nums[i]
+        let m = nums.count
+        if m < 2 {
+            return false
         }
-        for start in 0..<nums.count {
-            for end in stride(from: nums.count-1, to: start, by: -1) {
-                let sum = cache[end] - cache[start] + nums[end]
-                if (k != 0 && sum % k == 0) || sum == k {
+        var map: [Int: Int] = [0: -1], remainder = 0
+        for i in 0..<m {
+            remainder = (remainder + nums[i]) % k
+            if map[remainder] == nil {
+                map[remainder] = i
+            } else {
+                let prevIndex = map[remainder]!
+                if i - prevIndex >= 2 {
                     return true
                 }
             }
