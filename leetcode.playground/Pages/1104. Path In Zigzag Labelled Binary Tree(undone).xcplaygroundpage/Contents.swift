@@ -42,40 +42,22 @@ public List<Integer> pathInZigZagTree(int label) {
     Collections.reverse(integers); //7.翻转数组
     return integers;//1.返回结果
 }
-
-作者：gre-z
-链接：https://leetcode-cn.com/problems/path-in-zigzag-labelled-binary-tree/solution/jian-dan-yi-dong-de-gong-shi-shi-jian-guo-100-by-a/
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 */
 
 import Foundation
 
 class Solution {
     func pathInZigZagTree(_ label: Int) -> [Int] {
-        var targetLev = 0, local = 0, lastLocal = -1, ans = [Int](), curLabel = label
-        for i in 0...1000000 {
-            if label >= pow2(2, i) && label < pow2(2, i+1) {
-                targetLev = i + 1
-                break
-            }
+        var label = label, vals: [Int] = [], a = Int(log(Float(label)) / log(2))
+        while label > 1 {
+            vals.append(label)
+            a -= 1
+            label = 3 * Int(pow(2, Double(a))) - label / 2 - 1
         }
-        for i in pow2(2, targetLev-1)..<pow2(2, targetLev) {
-            if i == curLabel {
-                local = i - pow2(2, targetLev-1)
-                if lastLocal < 0 || abs(lastLocal - 2 * local) <= 1 {
-                    
-                }
-            }
-        }
+        vals.append(1)
+        vals.reverse()
+        return vals
         
-        
-        return ans
-    }
-    
-    func pow2(_ i: Int, _ j: Int) -> Int {
-        let res = pow(Double(i), Double(j))
-        return Int(res)
     }
 }
 
