@@ -30,37 +30,31 @@
  */
 
 class Solution {
-    var map: [[Int: Int]] = [], traversed: [Int: Bool] = [:]
     func networkDelayTime(_ times: [[Int]], _ N: Int, _ K: Int) -> Int {
-        map = Array(repeating: [:], count: N + 1)
-        map[0][K] = 0
+        let inf = Int.max / 2
+        var g: [[Int]] = Array(repeating: Array(repeating: inf, count: N), count: N)
         for t in times {
-            map[t[0]][t[1]] = t[2]
+            let x = t[0] - 1, y = t[1] - 1
+            g[x][y] = t[2]
         }
-        traversed[K] = true
-        let time = traverse(0, [K])
-        if traversed.keys.count != N {
-            return -1
-        }
-        return time
-    }
-    
-    func traverse(_ from: Int, _ points: [Int]) -> Int {
-        var time = 0
-        for point in points {
-            traversed[point] = true
-            let nexts = map[point]
-            var temp: [Int] = []
-            for key in nexts.keys {
-                if traversed[key] == true {
-                    continue
+        var dist: [Int] = Array(repeating: inf, count: N), used = Array(repeating: false, count: N)
+        dist[K - 1] = 0
+        for _ in 0..<N {
+            var x = -1
+            for y in 0..<N {
+                if !used[y] && (x == -1 || dist[y] < dist[x]) {
+                    x = y
                 }
-                temp.append(key)
             }
-            time = max(time, map[from][point]! + traverse(point, temp))
+            used[x] = true
+            for y in 0..<N {
+                dist[y] = min(dist[y], dist[x] + g[x][y])
+            }
         }
-        return time
+        let ans = dist.max() ?? inf
+        return ans == inf ? -1 : ans
     }
+ 
 }
 
 
