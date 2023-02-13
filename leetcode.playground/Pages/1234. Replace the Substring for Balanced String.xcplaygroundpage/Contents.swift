@@ -49,54 +49,103 @@ import Foundation
 
 class Solution {
     func balancedString(_ s: String) -> Int {
-        let target = s.count / 4
-        var arr: [Character: Int] = [:], element: [Character: Int] = [:]
+        
+        let s = Array(s).map { String($0) }
+        let count = s.count / 4
+        
+        var dict: [String: Int] = [
+            "Q": 0,
+            "W": 0,
+            "E": 0,
+            "R": 0
+        ]
+        
         for c in s {
-            if arr[c] == nil {
-                arr[c] = 1
-            }  else {
-                arr[c]! += 1
-            }
+            dict[c]! += 1
         }
-        for key in arr.keys {
-            let num = arr[key]! - target
-            if num > 0 {
-                element[key] = num
-            }
-        }
-        if element.isEmpty {
+        
+        if !dict.values.contains(where: { $0 != count }) {
             return 0
         }
-        let s = Array<Character>(s)
-
-        var l = 0, r = 0, count = s.count
-        while l <= r, r < s.count {
-
-            if element[s[r]] != nil {
-                element[s[r]]! -= 1
-            }
-            let res = element.values.reduce(0) { (res, val) -> Int in
-                res + max(val, 0)
-            }
-            if res == 0 {
-                count = min(count, r - l + 1)
-                if element[s[l]] != nil {
-                    element[s[l]]! += 1
-                }
-                if element[s[r]] != nil {
-                    element[s[r]]! += 1
-                }
-                l += 1
-            } else {
+        
+        var l = 0, r = 0
+        
+        var ans = Int.max
+        
+        while l <= r && r < s.count {
+            dict[s[r]]! -= 1
+            if dict.values.contains(where: { $0 > count }) {
                 r += 1
+            } else {
+                ans = min(ans, r - l + 1)
+                dict[s[l]]! += 1
+                dict[s[r]]! += 1
+                l += 1
             }
         }
-        return count
+        return ans
     }
+    
 }
 
+//let s = "QWER"
+//let s = "QQWE"
+//let s = "QQQW"
+let s = "WWQQRRRRQRQQ"
 let solution = Solution()
-let ans = solution.balancedString("WQWRQQQW")
+let ans = solution.balancedString(s)
+print(ans)
+
+
+/*
+ 
+ func balancedString(_ s: String) -> Int {
+     let target = s.count / 4
+     var arr: [Character: Int] = [:], element: [Character: Int] = [:]
+     for c in s {
+         if arr[c] == nil {
+             arr[c] = 1
+         }  else {
+             arr[c]! += 1
+         }
+     }
+     for key in arr.keys {
+         let num = arr[key]! - target
+         if num > 0 {
+             element[key] = num
+         }
+     }
+     if element.isEmpty {
+         return 0
+     }
+     let s = Array<Character>(s)
+
+     var l = 0, r = 0, count = s.count
+     while l <= r, r < s.count {
+
+         if element[s[r]] != nil {
+             element[s[r]]! -= 1
+         }
+         let res = element.values.reduce(0) { (res, val) -> Int in
+             res + max(val, 0)
+         }
+         if res == 0 {
+             count = min(count, r - l + 1)
+             if element[s[l]] != nil {
+                 element[s[l]]! += 1
+             }
+             if element[s[r]] != nil {
+                 element[s[r]]! += 1
+             }
+             l += 1
+         } else {
+             r += 1
+         }
+     }
+     return count
+ }
+ 
+ */
 
 /*
  
