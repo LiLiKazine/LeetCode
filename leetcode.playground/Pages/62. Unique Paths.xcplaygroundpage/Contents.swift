@@ -41,32 +41,18 @@ import Foundation
 
 class Solution {
     
-    struct Key: Hashable {
-        var x: Int
-        var y: Int
-        init(_ x: Int, _ y: Int) {
-            self.x = x
-            self.y = y
-        }
-    }
-    
-    var cache: [Key: Int] = [:]
-    
     func uniquePaths(_ m: Int, _ n: Int) -> Int {
-        if m == 1 || n == 1 {
-            let k = Key(m, n)
-            cache[k] = 1
-            return cache[k]!
+        var dp: [[Int]] = Array(repeating: Array(repeating: 0, count: n), count: m)
+        for i in 0..<m {
+            for j in 0..<n {
+                if i == 0 || j == 0{
+                    dp[i][j] = 1
+                    continue
+                }
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+            }
         }
-        let k1 = Key(m-1, n)
-        if cache[k1] == nil {
-            cache[k1] = uniquePaths(m-1, n)
-        }
-        let k2 = Key(m, n-1)
-        if cache[k2] == nil {
-            cache[k2] = uniquePaths(m, n-1)
-        }
-        return cache[k1]! + cache[k2]!
+        return dp[m-1][n-1]
     }
 }
 
