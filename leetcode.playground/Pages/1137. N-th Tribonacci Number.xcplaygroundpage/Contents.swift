@@ -34,19 +34,18 @@
 
 class Solution {
     func tribonacci(_ n: Int) -> Int {
-        if n == 0 {
-            return 0
-        } else if n == 1 || n == 2 {
-            return 1
+        var dp = [0, 1, 1]
+        if n < 3 {
+            return dp[n]
         }
-        var t0 = 0, t1 = 1, t2 = 1
+        
         for _ in 3...n {
-            let tn = t0 + t1 + t2
-            t0 = t1
-            t1 = t2
-            t2 = tn
+            let val = dp[0] + dp[1] + dp[2]
+            dp[0] = dp[1]
+            dp[1] = dp[2]
+            dp[2] = val
         }
-        return t2
+        return dp[2]
     }
 }
 

@@ -37,14 +37,29 @@
 
 class Solution {
     func fib(_ n: Int) -> Int {
-        if n == 0 {
-            return 0
+//        if n == 0 {
+//            return 0
+//        }
+//        if n == 1 {
+//            return 1
+//        }
+//        return fib(n-1) + fib(n-2)
+        
+        var dp = [0, 1]
+        if n < 2 {
+            return dp[n]
         }
-        if n == 1 {
-            return 1
+        for _ in 2...n {
+            let val = dp[0] + dp[1]
+            dp[0] = dp[1]
+            dp[1] = val
         }
-        return fib(n-1) + fib(n-2)
+        return dp[1]
     }
 }
+
+let solution = Solution()
+let n = 4
+let ans = solution.fib(n)
 
 //: [Next](@next)
