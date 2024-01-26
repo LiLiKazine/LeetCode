@@ -23,38 +23,22 @@
 
 class Solution {
     func minPathSum(_ grid: [[Int]]) -> Int {
-        if grid.count == 0 || grid[0].count == 0 {
-            return 0
-        }
-        let lines = grid.count, rows = grid[0].count
-        var dp: [Key: Int] = [:]
-        dp[Key(0, 0)] = grid[0][0]
-        for i in 1..<lines {
-            dp[Key(i, 0)] = dp[Key(i-1, 0)]! + grid[i][0]
-        }
-        
-        for i in 1..<rows {
-            dp[Key(0, i)] = dp[Key(0, i-1)]! + grid[0][i]
-        }
-        
-        for i in 1..<lines {
-            for j in 1..<rows {
-                let top = dp[Key(i-1, j)]!
-                let left = dp[Key(i, j-1)]!
-                dp[Key(i, j)] = min(top, left) + grid[i][j]
+       var grid = grid
+        for i in 0..<grid.count {
+            for j in 0..<grid[i].count {
+                if i == 0 && j == 0 {
+                    continue
+                } else if i == 0 {
+                    grid[i][j] += grid[i][j-1]
+                } else if j == 0 {
+                    grid[i][j] += grid[i-1][j]
+                } else {
+                    grid[i][j] += min(grid[i-1][j], grid[i][j-1])
+                }
             }
         }
-        return dp[Key(lines-1, rows-1)]!
-    }
-    
-    struct Key: Hashable {
-        var x: Int
-        var y: Int
         
-        init(_ x: Int, _ y: Int) {
-            self.x = x
-            self.y = y
-        }
+        return grid.last!.last!
     }
 }
 
