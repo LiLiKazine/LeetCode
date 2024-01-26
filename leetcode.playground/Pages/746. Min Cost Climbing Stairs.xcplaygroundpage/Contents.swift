@@ -24,19 +24,22 @@
 
 class Solution {
     func minCostClimbingStairs(_ cost: [Int]) -> Int {
-        guard cost.count > 1 else {
-            return 0
+        if cost.count == 2 {
+            return min(cost[0], cost[1])
         }
-        var dp: [Int] = Array(repeating: 0, count: cost.count + 1)
-        for i in 1..<cost.count {
-            dp[i+1] = min(dp[i] + cost[i], dp[i-1] + cost[i-1])
+        var dp: [Int] = [cost[0], cost[1]]
+        for i in 2..<cost.count {
+            let val = min(dp[1] + cost[i], dp[0] + cost[i])
+            dp[0] = dp[1]
+            dp[1] = val
         }
-        return dp.last!
+        return min(dp[0], dp[1])
     }
 }
 
 let solution = Solution()
-let ans = solution.minCostClimbingStairs([1, 100, 1, 1, 1, 100, 1, 1, 100, 1])
+let cost = [10,15,20]//15
+let ans = solution.minCostClimbingStairs(cost)
 ans
 
 //: [Next](@next)
