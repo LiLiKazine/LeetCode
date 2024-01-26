@@ -35,51 +35,52 @@
  
  */
 
-/*
- 
- class Solution {
- private:
-     int rob(vector<int> &nums) {
-         int size = nums.size();
-         int first = nums[0], second = max(nums[0], nums[1]);
-         for (int i = 2; i < size; i++) {
-             int temp = second;
-             second = max(first + nums[i], second);
-             first = temp;
-         }
-         return second;
-     }
-
- public:
-     int deleteAndEarn(vector<int> &nums) {
-         int maxVal = 0;
-         for (int val : nums) {
-             maxVal = max(maxVal, val);
-         }
-         vector<int> sum(maxVal + 1);
-         for (int val : nums) {
-             sum[val] += val;
-         }
-         return rob(sum);
-     }
- };
- 
- */
 
 class Solution {
     func deleteAndEarn(_ nums: [Int]) -> Int {
-        var arr: [Int] = Array(repeating: 0, count: 10001)
-        for n in nums {
-            arr[n] += n
+        var dict: [Int: Int] = [:]
+        for num in nums {
+            dict[num] = (dict[num] ?? 0) + num
         }
-        var first = arr[0], second = max(arr[0], arr[1])
-        for i in 2..<arr.count {
-            let temp = second
-            second = max(first + arr[i], second)
-            first = temp
+        
+        let keys = dict.keys.sorted()
+        
+        var gains = 0
+        var earns = [Int]()
+        for i in 0..<keys.count {
+            if earns.isEmpty || keys[i-1] + 1 == keys[i]{
+                earns.append(dict[keys[i]]!)
+            } else {
+                gains += houseRob(earns: earns)
+                earns.removeAll()
+                earns.append(dict[keys[i]]!)
+            }
         }
-        return second
+        if earns.count > 0 {
+            gains += houseRob(earns: earns)
+        }
+        return gains
+    }
+    
+    func houseRob(earns: [Int]) -> Int {
+        if earns.isEmpty { return  0 }
+        if earns.count == 1 { return earns[0] }
+        if earns.count == 2 { return max(earns[0], earns[1]) }
+        
+        var a = earns[0], b = earns[1]
+        for i in 2..<earns.count {
+            let val = a + earns[i]
+            a = max(a, b)
+            b = val
+        }
+        return max(a, b)
     }
 }
+
+let solution = Solution()
+//let nums = [2,2,3,3,3,4]
+//let nums = [3,4,2]
+let nums = [3,1]
+let ans = solution.deleteAndEarn(nums)
 
 //: [Next](@next)
