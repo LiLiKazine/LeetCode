@@ -22,41 +22,29 @@
  
  */
 
-/*
- 
- dp[i][j] = min(dp[i+1][j], dp[i+1][j+1) + triangle[i][j]
- 
- */
-
 class Solution {
-    var cache: [Int:Int] = [:]
     func minimumTotal(_ triangle: [[Int]]) -> Int {
-        let depth = triangle.count
-        if depth == 0 {
-            return 0
+        var n = triangle.last!.count
+        var dp = Array(repeating: Int.max, count: n)
+        dp[0] = triangle[0][0]
+        for i in 1..<triangle.count {
+            var cache = dp
+            print(cache)
+            for j in 0..<triangle[i].count {
+                if j == 0 {
+                    cache[j] = dp[j] + triangle[i][j]
+                } else if j == triangle[i].count - 1 {
+                    cache[j] = dp[j-1] + triangle[i][j]
+                } else {
+                    cache[j] = min(dp[j-1], dp[j]) + triangle[i][j]
+                }
+            }
+            dp = cache
         }
-        let width = triangle[depth-1].count
-        for j in 0..<width {
-            let i = depth-1
-            cache[index(i, j)] = triangle[i][j]
+        return dp.reduce(Int.max) { partialResult, val in
+            return partialResult < val ? partialResult : val
         }
-        dp(0, 0, triangle)
-        return cache[0] ?? 0
     }
-    
-    func dp(_ i: Int, _ j: Int, _ triangle: [[Int]]) -> Int {
-        if let val = cache[index(i, j)] {
-            return val
-        }
-        cache[index(i, j)] = min(dp(i+1, j, triangle), dp(i+1, j+1, triangle)) + triangle[i][j]
-        print(i, j, cache[index(i, j)]!)
-        return cache[index(i, j)]!
-    }
-    
-    func index(_ i: Int, _ j: Int) ->Int {
-        return Int(Double(i+1)*(Double(i)/2)) + j
-    }
-
 }
 
 let param =  [
