@@ -35,57 +35,28 @@
 
 class Solution {
     
-    struct Key: Hashable {
-        var x: Int
-        var y: Int
-        init(_ x: Int, _ y: Int) {
-            self.x = x
-            self.y = y
-        }
-    }
-    
-    var cache: [Key: Int] = [:]
-    
     func uniquePathsWithObstacles(_ obstacleGrid: [[Int]]) -> Int {
+        if obstacleGrid[0][0] == 1 { return 0 }
+        var dp = Array(repeating: Array(repeating: 0, count: obstacleGrid[0].count), count: obstacleGrid.count)
         
-        
-        let m = obstacleGrid.count, n = obstacleGrid.first?.count ?? 0
-        
-        guard m > 0 && n > 0 else {
-            return 0
+        for i in 0..<obstacleGrid.count {
+            for j in 0..<obstacleGrid[i].count {
+                let able = obstacleGrid[i][j] == 0
+                if i == 0 && j == 0 {
+                    dp[0][0] = able ? 1 : 0
+                } else if i == 0 && able {
+                    dp[i][j] = dp[i][j-1]
+                }
+                else if j == 0 && able {
+                    dp[i][j] = dp[i-1][j]
+                } else if i > 0 && j > 0 && able {
+                    dp[i][j] = dp[i][j-1] + dp[i-1][j]
+                }
+            }
         }
-        
-        if obstacleGrid[m-1][n-1] == 1 {
-            return 0
-        }
-        
-        if m == 1 && n == 1 {
-            return 1
-        }
-        cache[Key(m-1, n-1)] = 1
-        return dp(obstacleGrid, 0, 0)
+        return dp.last!.last!
     }
     
-    func dp(_ obstacleGrid: [[Int]], _ m: Int, _ n: Int) -> Int {
-        
-        guard m < obstacleGrid.count && n < obstacleGrid[0].count && obstacleGrid[m][n] != 1 else {
-            return 0
-        }
-
-        let key1 = Key(m+1, n)
-        if cache[key1] == nil {
-            cache[key1] = dp(obstacleGrid, m+1, n)
-        }
-        
-        let key2 = Key(m, n+1)
-        if cache[key2] == nil {
-            cache[key2] = dp(obstacleGrid, m, n+1)
-        }
-        
-        return cache[key1]! + cache[key2]!
-        
-    }
-
 }
 
 let input =  [
