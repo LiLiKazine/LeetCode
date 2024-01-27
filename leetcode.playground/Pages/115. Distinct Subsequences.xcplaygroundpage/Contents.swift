@@ -45,105 +45,49 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     int numDistinct(string s, string t) {
-         int m = s.length(), n = t.length();
-         if (m < n) {
-             return 0;
-         }
-         vector<vector<long>> dp(m + 1, vector<long>(n + 1));
-         for (int i = 0; i <= m; i++) {
-             dp[i][n] = 1;
-         }
-         for (int i = m - 1; i >= 0; i--) {
-             char sChar = s.at(i);
-             for (int j = n - 1; j >= 0; j--) {
-                 char tChar = t.at(j);
-                 if (sChar == tChar) {
-                     dp[i][j] = dp[i + 1][j + 1] + dp[i + 1][j];
-                 } else {
-                     dp[i][j] = dp[i + 1][j];
-                 }
-             }
-         }
-         return dp[0][0];
-     }
- };
- 
- */
 
 import Foundation
 
 class Solution {
     
     func numDistinct(_ s: String, _ t: String) -> Int {
-        let s = Array(s), t = Array(t), m = s.count, n = t.count
-        guard m >= n else {
+        guard s.count >= t.count else {
             return 0
         }
-        
-        var dp: [[Int]] = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
-        for i in 0...m {
-            dp[i][n] = 1
-        }
-        for i in stride(from: m - 1, to: -1, by: -1) {
-            let sc = s[i]
-            for j in stride(from: n - 1, to: -1, by: -1) {
-                let tc = t[j]
-                if sc == tc {
-                    dp[i][j] = dp[i + 1][j + 1] + dp[i + 1][j]
+        let s = s.map { String($0) }, t = t.map { String($0) }
+        var dp = Array(repeating: Array(repeating: 0, count: t.count + 1), count: s.count + 1)
+        for i in 0..<dp.count {
+            for j in 0..<dp[i].count {
+                if i < j {
+                    dp[i][j] = 0
+                    continue
+                }
+                if j == 0 {
+                    dp[i][j] = 1
+                    continue
+                }
+                if s[i-1] == t[j-1] {
+                    dp[i][j] = dp[i-1][j-1] % 1000001 + dp[i-1][j] % 1000001
                 } else {
-                    dp[i][j] = dp[i + 1][j]
+                    dp[i][j] = dp[i-1][j]
                 }
             }
         }
-        return dp[0][0]
+        return dp.last!.last!
     }
 }
 
-/* exceeded time
-class Solution {
-    
-    var temp: [Character] = []
-    var ans: Int = 0
-    var s: [Character] = []
-    var t: [Character] = []
-    
-    func numDistinct(_ s: String, _ t: String) -> Int {
-        self.s = Array(s)
-        self.t = Array(t)
-        recursive(cur: 0)
-        return ans
-    }
-    
-    private func recursive(cur: Int) {
-        if temp == t {
-            ans += 1
-            return
-        }
-        if cur >= s.count || temp.count >= t.count {
-            return
-        }
-        recursive(cur: cur + 1)
-        if cur >= s.count || s[cur] != t[temp.count] {
-            return
-        }
-        temp.append(s[cur])
-        recursive(cur: cur + 1)
-        temp.popLast()
-        
-    }
-}
-*/
 
-let S = "aabdbaabeeadcbbdedacbbeecbabebaeeecaeabaedadcbdbcdaabebdadbbaeabdadeaabbabbecebbebcaddaacccebeaeedababedeacdeaaaeeaecbe", T = "bddabdcae"
+//let S = "aabdbaabeeadcbbdedacbbeecbabebaeeecaeabaedadcbdbcdaabebdadbbaeabdadeaabbabbecebbebcaddaacccebeaeedababedeacdeaaaeeaecbe", T = "bddabdcae"
 //let S = "babgbag", T = "bag"
 //let S = "rabbbit", T = "rabbit"
-let solution = Solution()
-let ans = solution.numDistinct(S, T)
-ans
+let S =
+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", T = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+//let solution = Solution()
+//let ans = solution.numDistinct(S, T)
+//ans
+S.count
+T.count
+S == T
 
 //: [Next](@next)
