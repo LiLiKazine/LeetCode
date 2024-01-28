@@ -42,8 +42,6 @@ class Solution {
             for j in 0..<i {
                 if nums[i] > nums[j] {
                     dp[i] = max(dp[i], dp[j] + 1)
-                } else if nums[i] == nums[j] {
-                    dp[i] = max(dp[i], dp[j])
                 }
             }
         }
