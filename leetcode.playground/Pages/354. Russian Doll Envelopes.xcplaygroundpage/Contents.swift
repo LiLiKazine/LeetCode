@@ -21,26 +21,37 @@
 
 class Solution {
     func maxEnvelopes(_ envelopes: [[Int]]) -> Int {
-        guard envelopes.count > 0 else {
-            return 0
-        }
-        
         var envelopes = envelopes.sorted { (e1, e2) -> Bool in
             return e1[0] < e2[0] || (e1[0] == e2[0] && e1[1] > e2[1])
-        },
-        arr: [Int] = Array(repeating: 1, count: envelopes.count),
-        ans = 1
+        }
+        var f = [envelopes[0][1]]
         for i in 1..<envelopes.count {
-            for j in 0..<i {
-                if envelopes[i][1] > envelopes[j][1] {
-                    arr[i] = max(arr[i], arr[j] + 1)
-                }
+            let val = envelopes[i][1]
+            if f.last! < val {
+                f.append(val)
+            } else {
+                binarySearchInsert(&f, value: val)
             }
         }
-        for n in arr {
-            ans = max(ans, n)
+        return f.count
+    }
+    
+    func binarySearchInsert(_ f: inout [Int], value: Int) {
+        var l = 0, r = f.count - 1
+        while l < r {
+            let mid = (r - l) / 2 + l
+            if f[mid] == value {
+                f[mid] = value
+                return
+            } else if f[mid] > value {
+                r = mid
+            } else {
+                l = mid + 1
+            }
         }
-        return ans
+        if l == r {
+            f[l] = value
+        }
     }
 }
 
