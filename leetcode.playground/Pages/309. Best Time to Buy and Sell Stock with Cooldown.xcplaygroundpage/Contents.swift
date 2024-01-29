@@ -18,35 +18,23 @@
  
  */
 
-/*
- 
- fiA: 第i天结束持有1只股票
- fiB: 第i天结束没有股票
- fiC: 第i天结束处于冷却(第i天卖了股票)
- 
- maxi = max(fiA, fiB, fiC)
- 
- fiA = max(f[i-1]B - prices[i], f[i-1]A)
- fiB = max(f[i-1]C, f[i-1]B)
- fiC = max(f[i-1]A + prices[i])
- 
- */
 class Solution {
     
     func maxProfit(_ prices: [Int]) -> Int {
-        var rec: [Int] = [0, 0, 0]
-        for i in 0..<prices.count {
-            if i == 0 {
-                rec = [-prices[i], 0, 0]
-            } else {
-                let fa = rec[0], fb = rec[1], fc = rec[2]
-                rec[0] = max(fa, fb - prices[i])
-                rec[1] = i == 1 ? fb : max(fc, fb)
-                rec[2] = fa + prices[i]
-            }
+        var dp = Array(repeating: Array(repeating: 0, count: 3), count: prices.count)
+        //0 无持股无冷却
+        //1 无持股有冷却
+        //2 有持股
+        dp[0][2] = -prices[0]
+        var ans = 0
+        for i in 1..<prices.count {
+            let price = prices[i]
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1])
+            dp[i][1] = dp[i-1][0] + price
+            dp[i][2] = max(dp[i-1][0] - price, dp[i-1][2])
+            ans = max(ans, dp[i][0], dp[i][1], dp[i][2])
         }
-        
-        return max(rec[0], rec[1], rec[2])
+       return ans
     }
 
 }
