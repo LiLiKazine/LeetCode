@@ -39,22 +39,26 @@
 
 class Solution {
     func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
-        guard text1.count > 0 && text2.count > 0 else {
-            return 0
-        }
         let text1 = Array(text1), text2 = Array(text2)
-        var dp: [[Int]] = Array(repeating: Array(repeating: 0, count: text2.count + 1), count: text1.count + 1)
-        
-        for i in 1...text1.count {
-            for j in 1...text2.count {
-                if text1[i - 1] == text2[j - 1] {
-                    dp[i][j] = dp[i - 1][j - 1] + 1
+        var ans = 0
+        var dp = Array(repeating: Array(repeating: 0, count: text2.count), count: text1.count)
+        for i in 0..<text1.count {
+            for j in 0..<text2.count {
+                if i == 0 && j == 0 {
+                    dp[i][j] = text1[i] == text2[j] ? 1 : 0
                 } else {
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                    let val = text1[i] == text2[j] ? 1 : 0
+                    if i == 0 {
+                        dp[i][j] = max(dp[i][j-1], val)
+                    } else if j == 0 {
+                        dp[i][j] = max(dp[i-1][j], val)
+                    } else {
+                        dp[i][j] = max(dp[i-1][j], dp[i][j-1], dp[i-1][j-1] + val)
+                    }
                 }
+                ans = max(ans, dp[i][j])
             }
         }
-        let ans = dp.last?.last ?? 0
         return ans
     }
 }
