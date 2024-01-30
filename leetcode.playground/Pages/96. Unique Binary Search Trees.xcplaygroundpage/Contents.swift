@@ -21,39 +21,19 @@
  
  */
 
-/*
- 
-  for (int i = 2; i <= n; ++i) {
-             for (int j = 1; j <= i; ++j) {
-                 G[i] += G[j - 1] * G[i - j];
-             }
-         }
-
- */
-
 class Solution {
     
-    var cache: [Int: Int] = [:]
-    init() {
-        cache[0] = 1
-        cache[1] = 1
-    }
-    
     func numTrees(_ n: Int) -> Int {
-        
-        if let num = cache[n] {
-            return num
-        }
-        
+        var dp = Array(repeating: 0, count: n + 1)
+        dp[0] = 1
+        dp[1] = 1
         for i in 2...n {
             for j in 1...i {
-                cache[i] = (cache[i] ?? 0) + cache[j-1]! * cache[i-j]!
+                dp[i] += dp[j-1] * dp[i - j]
             }
         }
-        print(cache)
-        return cache[n]!
+        return dp[n]
     }
-    
 }
 
 let solution = Solution()
