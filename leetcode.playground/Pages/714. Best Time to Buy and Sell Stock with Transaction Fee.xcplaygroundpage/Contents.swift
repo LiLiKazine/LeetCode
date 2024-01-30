@@ -29,16 +29,17 @@
 
 class Solution {
     func maxProfit(_ prices: [Int], _ fee: Int) -> Int {
-        guard prices.count > 1 else {
-            return 0
-        }
-        var dp: [[Int]] = Array(repeating: [0, 0], count: prices.count)
-        dp[0] = [0, -prices[0]]
+        var dp = Array(repeating: Array(repeating: 0, count: 2), count: prices.count)
+        //0 有股票
+        //1 没股票
+        dp[0][0] = -prices[0] - fee
+        var ans = 0
         for i in 1..<prices.count {
-            dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i] - fee)
-            dp[i][1] = max(dp[i-1][0] - prices[i], dp[i-1][1])
+            dp[i][0] = max(dp[i-1][0], dp[i-1][1] - prices[i] - fee)
+            dp[i][1] = max(dp[i-1][0] + prices[i] - fee, dp[i-1][1])
+            ans = max(ans, dp[i][0], dp[i][1])
         }
-        return max(dp.last![0], dp.last![1])
+        return ans
     }
 }
 
