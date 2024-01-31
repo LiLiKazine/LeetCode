@@ -44,36 +44,28 @@ public class TreeNode {
 class Solution {
     
     func generateTrees(_ n: Int) -> [TreeNode?] {
-        if n == 0 {
-            return []
-        }
-        let ans: [TreeNode?] = build(1, n)
-        return ans
+        
+        return generateTrees(start: 1, end: n)
     }
     
-    func build(_ start: Int, _ end: Int) -> [TreeNode?] {
-        if start > end {
-            return [nil]
-        }
-
-        var ans: [TreeNode?] = []
-        
+    func generateTrees(start: Int, end: Int) -> [TreeNode?] {
+        if start > end { return [nil] }
+        if start == end { return [TreeNode(start)] }
+        var ans = [TreeNode?]()
         for i in start...end {
-            let left = build(start, i-1),
-            right = build(i+1, end)
-            
-            for j in 0..<left.count {
-                for k in 0..<right.count {
+            let l_trees = generateTrees(start: start, end: i-1)
+            let r_trees = generateTrees(start: i+1, end: end)
+            for l_tree in l_trees {
+                for r_tree in r_trees {
                     let root = TreeNode(i)
-                    root.left = left[j]
-                    root.right = right[k]
+                    root.left = l_tree
+                    root.right = r_tree
                     ans.append(root)
                 }
             }
         }
         return ans
     }
-    
 }
 
 let solution = Solution()
