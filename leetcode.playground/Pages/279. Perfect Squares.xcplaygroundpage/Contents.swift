@@ -28,37 +28,55 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     int numSquares(int n) {
-         vector<int> f(n + 1);
-         for (int i = 1; i <= n; i++) {
-             int minn = INT_MAX;
-             for (int j = 1; j * j <= i; j++) {
-                 minn = min(minn, f[i - j * j]);
-             }
-             f[i] = minn + 1;
-         }
-         return f[n];
-     }
- };
- 
- */
+import Foundation
+
 
 class Solution {
     func numSquares(_ n: Int) -> Int {
-        var dp: [Int] = Array(repeating: 0, count: n + 1)
-        for i in 1...n {
-            var minn = Int.max, j = 1
-            while j * j <= i {
-                minn = min(minn, dp[i - j * j])
-                j += 1
+        guard n > 1 else { return 1 }
+        var perfects = Array(repeating: false, count: n + 1)
+        perfects[0] = true
+        perfects[1] = true
+        for i in 2...n {
+            perfects[i] = i.isPerfect
+        }
+        var dp = Array(repeating: 0, count: n + 1)
+        dp[1] = 1
+        for i in 2...n {
+            if perfects[i] {
+                dp[i] = 1
+            } else {
+                var ans = Int.max
+                for j in 1..<i {
+                    let num = (perfects[j] ? 1 : dp[j]) + (perfects[i-j] ? 1 : dp[i-j])
+                    ans = min(ans, num)
+                }
+                dp[i] = ans
             }
-            dp[i] = minn + 1
         }
         return dp[n]
+    }
+}
+
+private extension Int {
+    var isPerfect: Bool {
+        if self <= 1 { return true }
+        var l = 0, r = self
+        while l < r {
+            let mid = (r - l) / 2 + l
+            let val = mid * mid
+            if val == self {
+                return true
+            }
+            if val > self {
+                r = mid
+            }
+            if val < self {
+                l = mid + 1
+            }
+            
+        }
+        return l * l == self
     }
 }
 
