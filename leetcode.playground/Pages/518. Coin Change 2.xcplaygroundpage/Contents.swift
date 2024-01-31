@@ -45,14 +45,12 @@
 
 class Solution {
     func change(_ amount: Int, _ coins: [Int]) -> Int {
-        var dp: [Int] = Array(repeating: 0, count: amount + 1)
+        if amount == 0 { return 0 }
+        var dp = Array(repeating: 0, count: amount + 1)
         dp[0] = 1
         for coin in coins {
-            if coin > amount {
-                break
-            }
             for i in coin...amount {
-                dp[i] += dp[i - coin]
+                dp[i] += dp[i-coin]
             }
         }
         return dp[amount]
