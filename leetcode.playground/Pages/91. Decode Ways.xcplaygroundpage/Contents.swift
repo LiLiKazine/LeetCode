@@ -53,85 +53,33 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     int numDecodings(string s) {
-         int n = s.size();
-         vector<int> f(n + 1);
-         f[0] = 1;
-         for (int i = 1; i <= n; ++i) {
-             if (s[i - 1] != '0') {
-                 f[i] += f[i - 1];
-             }
-             if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0') <= 26)) {
-                 f[i] += f[i - 2];
-             }
-         }
-         return f[n];
-     }
- };
- 
- */
-
 class Solution {
     func numDecodings(_ s: String) -> Int {
-        
-        var dp: [Int] = Array(repeating: 0, count: s.count + 1)
+        if s.count == 1 {
+            return isValid(s) ? 1 : 0
+        }
+        let s = s.map { String($0) }
+        var dp = Array(repeating: 0, count: s.count + 1)
         dp[0] = 1
-        for i in 1...s.count {
-            if s.str(at: i - 1) != "0" {
-                dp[i] += dp[i - 1]
+        dp[1] = isValid(s[0]) ? 1 : 0
+        for i in 2...s.count {
+            if isValid(s[i-1]) {
+                dp[i] += dp[i-1]
             }
-            if i > 1 && s.str(at: i - 2) != "0" {
-                if let str = s.subStr(from: i - 2, to: i - 1),
-                   let val = Int(str), val <= 26 {
-                    dp[i] += dp[i - 2]
-                }
+            if isValid(Array(s[i-2..<i]).joined()) {
+                dp[i] += dp[i-2]
             }
         }
-        
         return dp[s.count]
     }
-    /*
-    func numDecodings(_ s: String) -> Int {
-        
-        let ans = nums(s, 0)
-        
-        return ans
-    }
     
-    private func nums(_ s: String, _ i: Int) -> Int {
-        if i == s.count {
-            return 1
+    private func isValid(_ str: String) -> Bool {
+        if str.count == 1, let val = Int(str) {
+            return 1 <= val && 26 >= val
+        } else if str.count == 2 && str.first != Character("0"), let val = Int(str) {
+            return 1 <= val && 26 >= val
         }
-        let start = s.str(at: i)
-        guard let val = Int(start), val > 0, val <= 26 else {
-            return 0
-        }
-        let n = nums(s, i + 1)
-        
-        guard let start1 = s.subStr(from: i, to: i + 1), let val2 = Int(start1), val2 > 0, val2 <= 26 else {
-            return n
-        }
-        let m = nums(s, i + 2)
-        return n + m
-    }
- */
-    
-}
-
-extension String {
-    func str(at index: Int) -> String {
-        return String(self[self.index(self.startIndex, offsetBy: index)])
-    }
-    
-    func subStr(from begin: Int, to end: Int) -> String? {
-        if end >= self.count {
-            return nil
-        }
-        return String(self[self.index(self.startIndex, offsetBy: begin)...self.index(self.startIndex, offsetBy: end)])
+        return false
     }
 }
 
