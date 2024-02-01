@@ -44,31 +44,17 @@
 
 class Solution {
     
-    var dp: [Int: Int] = [:]
     func combinationSum4(_ nums: [Int], _ target: Int) -> Int {
-        let nums = nums.filter { $0 <= target }.sorted()
-        combines(nums, target)
-        return dp[target]!
-    }
-    
-    
-    private func combines(_ nums: [Int], _ target: Int) {
-        if let _ = dp[target] {
-            return
-        }
-        var ans = 0
-        for i in 0..<nums.count {
-            if nums[i] == target {
-                ans += 1
-            } else if nums[i] < target {
-                combines(nums, target - nums[i])
-                ans += dp[target - nums[i]]!
-            } else {
-                break
+        var dp = Array(repeating: 0, count: target + 1)
+        dp[0] = 1
+        for i in 1...target {
+            for num in nums {
+                if num <= i {
+                    dp[i] += dp[i-num] % 1000000001
+                }
             }
         }
-        dp[target] = ans
-        
+        return dp[target]
     }
 }
 
