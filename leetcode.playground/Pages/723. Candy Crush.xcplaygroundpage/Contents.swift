@@ -42,13 +42,49 @@ import Foundation
 class Solution {
     func candyCrush(_ board: [[Int]]) -> [[Int]] {
         
-        var copy = board
+        var record = Array(repeating: Array(repeating: false, count: board[0].count), count: board.count)
+        var todo = false
         for i in 0..<board.count {
-            for j in 0..<board[i].count {
-                
+            for j in 2..<board[i].count {
+                if board[i][j] != 0 && board[i][j] == board[i][j-1] && board[i][j] == board[i][j-2] {
+                    record[i][j] = true
+                    record[i][j-1] = true
+                    record[i][j-2] = true
+                    todo = true
+                }
             }
         }
         
+        for i in 2..<board.count {
+            for j in 0..<board[i].count {
+                if board[i][j] != 0 && board[i][j] == board[i-1][j] && board[i][j] == board[i-2][j] {
+                    record[i][j] = true
+                    record[i-1][j] = true
+                    record[i-2][j] = true
+                    todo = true
+                }
+            }
+        }
+        if !todo {
+            return board
+        }
+        var board = board
+        for c in 0..<board[0].count {
+            var w = board.count - 1
+            for r in stride(from: board.count - 1, through: 0, by: -1) {
+                if record[r][c] == false {
+                    board[w][c] = board[r][c]
+                    w -= 1
+                } else {
+                    board[r][c] = 0
+                }
+            }
+            while w >= 0 {
+                board[w][c] = 0
+                w -= 1
+            }
+        }
+        return candyCrush(board)
     }
 }
 
