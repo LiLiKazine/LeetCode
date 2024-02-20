@@ -37,6 +37,35 @@ import Foundation
 
 class Solution {
     func countComponents(_ n: Int, _ edges: [[Int]]) -> Int {
+        
+        var route = Array(0..<n)
+        var ans = n
+        for edge in edges {
+            if fcombineind(&route, a: edge[0], b: edge[1]) {
+                ans -= 1
+            }
+        }
+        return ans
+    }
+    
+    func combine(_ route: inout [Int], a: Int, b: Int) -> Bool {
+        let rootA = find(&route, value: a)
+        let rootB = find(&route, value: b)
+        if rootA == rootB { return false }
+        route[rootA] = rootB
+        return true
+    }
+    
+    func find(_ route: inout [Int], value: Int) -> Int {
+        if route[value] == value {
+            return value
+        }
+        route[value] = find(&route, value: route[value])
+        return route[value]
+    }
+    
+    /*
+    func countComponents(_ n: Int, _ edges: [[Int]]) -> Int {
 
         var route = Array(repeating: [Int](), count: n)
         for edge in edges {
@@ -69,6 +98,7 @@ class Solution {
             dfs(route: route, i: child, visited: &visited)
         }
     }
+     */
 }
 
 //: [Next](@next)
