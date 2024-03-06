@@ -37,36 +37,47 @@
  
  */
 
+class Solution {
+    
+    var route = [Int]()
+    
+    func findCircleNum(_ isConnected: [[Int]]) -> Int {
+
+        route = Array(0..<isConnected.count)
+        
+        for i in 0..<isConnected.count {
+            for j in 0..<isConnected[i].count {
+                if isConnected[i][j] == 1 {
+                    connect(i, j)
+                }
+            }
+        }
+        
+        var cnt = 0
+        for i in 0..<route.count {
+            if i == route[i] {
+                cnt += 1
+            }
+        }
+        return cnt
+    }
+
+    func connect(_ a: Int, _ b: Int) {
+        let a = find(a), b = find(b)
+        route[a] = b
+    }
+    
+    func find(_ a: Int) -> Int {
+        if a == route[a] {
+            return a
+        }
+        route[a] = find(route[a])
+        return route[a]
+    }
+    
+}
+
 /*
- 
- class Solution {
-     
-     public int findCircleNum(int[][] M) {
-         /**
-         使用一个visited数组, 依次判断每个节点, 如果其未访问, 朋友圈数加1并对该节点进行dfs搜索标记所有访问到的节点
-         **/
-         boolean[] visited = new boolean[M.length];
-         int ret = 0;
-         for(int i = 0; i < M.length; ++i) {
-             if(!visited[i]) {
-                 dfs(M, visited, i);
-                 ret++;
-             }
-         }
-         return ret;
-     }
-     
-     private void dfs(int[][] m, boolean[] visited, int i) {
-         for(int j = 0; j < m.length; ++j) {
-             if(m[i][j] == 1 && !visited[j]) {
-                 visited[j] = true;
-                 dfs(m, visited, j);
-             }
-         }
-     }
- }
- 
- */
 
 class Solution {
     func findCircleNum(_ isConnected: [[Int]]) -> Int {
@@ -93,6 +104,7 @@ class Solution {
         }
     }
 }
+ */
 
 let isConnected = [[1,0,0,1],
                    [0,1,1,0],
