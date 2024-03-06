@@ -38,6 +38,52 @@
  */
 
 class Solution {
+        
+    func eventualSafeNodes(_ graph: [[Int]]) -> [Int] {
+        var safe = Array(repeating: 0, count: graph.count)
+        var visited = Array(repeating: false, count: graph.count)
+        func search(from node: Int) -> Bool {
+            if safe[node] == 1 {
+                return true
+            }
+            if safe[node] == -1 {
+                return false
+            }
+            if visited[node] {
+                safe[node] = -1
+                return false
+            }
+            visited[node] = true
+            let nexts = graph[node]
+            if nexts.isEmpty {
+                safe[node] = 1
+                return true
+            }
+            var res = true
+            for next in nexts {
+                res = res && search(from: next)
+            }
+            safe[node] = res ? 1 : -1
+            return res
+        }
+        
+        for i in 0..<graph.count {
+            search(from: i)
+        }
+        
+        var ans = [Int]()
+        for i in 0..<graph.count {
+            if safe[i] == 1 {
+                ans.append(safe[i])
+            }
+        }
+        return ans
+    }
+    
+}
+
+/*
+class Solution {
     func eventualSafeNodes(_ graph: [[Int]]) -> [Int] {
         let n = graph.count
         var color = Array(repeating: 0, count: n)
@@ -65,39 +111,6 @@ class Solution {
         return ans
     }
 }
-
-/*
- 
- class Solution {
- public:
-     vector<int> eventualSafeNodes(vector<vector<int>> &graph) {
-         int n = graph.size();
-         vector<int> color(n);
-
-         function<bool(int)> safe = [&](int x) {
-             if (color[x] > 0) {
-                 return color[x] == 2;
-             }
-             color[x] = 1;
-             for (int y : graph[x]) {
-                 if (!safe(y)) {
-                     return false;
-                 }
-             }
-             color[x] = 2;
-             return true;
-         };
-
-         vector<int> ans;
-         for (int i = 0; i < n; ++i) {
-             if (safe(i)) {
-                 ans.push_back(i);
-             }
-         }
-         return ans;
-     }
- };
- 
- */
+*/
 
 //: [Next](@next)
