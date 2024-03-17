@@ -48,53 +48,51 @@ import Foundation
 
 class Solution {
     func equationsPossible(_ equations: [String]) -> Bool {
-        var equals: [Set<Character>] = [],
-        unequals: [[Character]] = [],
-        record: [Character: Int] = [:]
+        var equals = [[String]](), unequals = [[String]]()
+        var indexs = [String: Int]()
+        var n = 0
         for equation in equations {
-            let equation = [Character](equation)
-            let a = equation[0], b = equation[3], symbal = equation[1]
-            if symbal == "=" {
-                let i1 = record[a], i2 = record[b]
-                if i1 == nil && i2 == nil {
-                    equals.append(.init([a, b]))
-                    record[a] = equals.count-1
-                    record[b] = equals.count-1
-                } else if i1 == nil {
-                    equals[i2!].insert(a)
-                    equals[i2!].insert(b)
-                    record[a] = i2!
-                } else if i2 == nil {
-                    equals[i1!].insert(a)
-                    equals[i1!].insert(b)
-                    record[a] = i1!
-                } else if i1 != i2 {
-                    for c in equals[i2!] {
-                        record[c] = i1!
-                        equals[i1!].insert(c)
-                    }
-                }
-                if let idx = (record[a] ?? record[b]) {
-                    equals[idx].insert(a)
-                    equals[idx].insert(b)
-                    record[a] = idx
-                    record[b] = idx
-                } else {
-                }
+            let equation = Array(equation).map { String($0) }
+            let a = equation[0], b = equation[3]
+            if indexs[a] == nil {
+                indexs[a] = n
+                n += 1
+            }
+            if indexs[b] == nil {
+                indexs[b] = n
+                n += 1
+            }
+            if equation[1] == "!" {
+                unequals.append([a, b])
             } else {
-                if equation[0] == equation[3] {
-                    return false
-                }
-                unequals.append([equation[0],equation[3]])
+                equals.append([a, b])
             }
         }
         
+        var union = Array(0..<n)
+        
+        func connect(_ a: Int, b: Int) {
+            union[a] = find(union[b])
+        }
+        
+        func find(_ i: Int) -> Int {
+            if i == union[i] {
+                return i
+            }
+            union[i] = find(union[i])
+            return union[i]
+        }
+        
+        for equal in equals {
+            connect(indexs[equal[0]]!, b: indexs[equal[1]]!)
+        }
+        
         for unequal in unequals {
-            let a = unequal[0], b = unequal[1]
-            if let i1 = record[a], let i2 = record[b], i1 == i2 {
+            if find(indexs[unequal[0]]!) == find(indexs[unequal[1]]!) {
                 return false
             }
         }
+        
         return true
     }
 }
