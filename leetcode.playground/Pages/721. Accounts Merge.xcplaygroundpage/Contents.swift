@@ -44,7 +44,7 @@ class Solution {
             }
         }
         
-        var union = Array(0...n)
+        var union = Array(0..<n)
         
         func connect(_ a: Int, _ b: Int) {
             union[find(a)] = find(b)
