@@ -48,42 +48,59 @@
 
 class Solution {
     
-    struct Key: Hashable {
-        let a: Int
-        let b: Int
-    }
-    
     func maximalNetworkRank(_ n: Int, _ roads: [[Int]]) -> Int {
         if roads.isEmpty { return 0 }
         if roads.count == 1 { return 1 }
-        
-        var ans = 0, connection: Set<Key> = .init(), rank: [Int: Int] = [:]
-        
+        var degrees = Array(repeating: 0, count: n)
+        var set = Set<[Int]>()
         for road in roads {
-            
-            let key = Key(a: road[0], b: road[1])
-            connection.insert(key)
-            
-            rank[road[0]] = (rank[road[0]] ?? 0) + 1
-            rank[road[1]] = (rank[road[1]] ?? 0) + 1
-            
+            set.insert(road)
+            degrees[road[0]] += 1
+            degrees[road[1]] += 1
         }
         
-        let pairs = rank.sorted { $0.value > $1.value }
-        for i in 0..<pairs.count-1 {
-            for j in i+1..<pairs.count {
-                let v1 = pairs[i].value, a = pairs[i].key, v2 = pairs[j].value, b = pairs[j].key
-                var tmp = v1 + v2
-                if connection.contains(Key(a: a, b: b)) || connection.contains(Key(a: b, b: a)) {
-                    tmp -= 1
-                }
-                if tmp > ans {
-                    ans = tmp
-                } else {
-                    break
-                }
+        var ans = 0
+        
+        for i in 0..<n {
+            for j in 0..<n {
+                if i == j { continue }
+                let minus = set.contains([i, j]) || set.contains([j, i]) ? 1 : 0
+                let cnt = degrees[i] + degrees[j] - minus
+                ans = max(ans, cnt)
             }
         }
+//        var city1 = [Int](), city2 = [Int]()
+//        for (i, degree) in degrees.enumerated() {
+//            if city1.isEmpty || degrees[city1[0]] == degree {
+//                city1.append(i)
+//            }
+//            else if degree > degrees[city1[0]] {
+//                city2 = city1
+//                city1 = [i]
+//            } 
+//            else if city2.isEmpty || degrees[city2[0]] == degree {
+//                city2.append(i)
+//            }
+//            else if degree > degrees[city2[0]] {
+//                city2 = [i]
+//            }
+//        }
+//        
+//        if city1.count > 2 {
+//            for i in city1 {
+//                for j in city1 {
+//                    if i == j { continue }
+//                    let minus = set.contains([i, j]) || set.contains([j, i]) ? 1 : 0
+//                    ans = max(ans, degrees[i] + degrees[j] - minus)
+//                }
+//            }
+//        } else {
+//            let i = city1[0]
+//            for j in city2 {
+//                let minus = set.contains([i, j]) || set.contains([j, i]) ? 1 : 0
+//                ans = max(ans, degrees[i] + degrees[j] - minus)
+//            }
+//        }
         return ans
     }
 }
