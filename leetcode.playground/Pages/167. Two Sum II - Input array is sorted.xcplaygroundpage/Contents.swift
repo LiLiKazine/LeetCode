@@ -22,33 +22,21 @@
 
 class Solution {
     func twoSum(_ numbers: [Int], _ target: Int) -> [Int] {
-        
-        var ans: [Int] = []
-        
-        for i in 0..<numbers.count {
-            let remain = target - numbers[i]
-            let ret = oneSum(i, numbers, remain)
-            if ret != -1 {
-                ans = [i+1, ret+1]
+        var lo = 0, hi = numbers.count - 1
+     
+        while lo < hi {
+            let sum = numbers[lo] + numbers[hi]
+            if sum > target {
+                hi -= 1
+            } else if sum < target {
+                lo += 1
+            } else {
                 break
             }
         }
-
-        return ans
+        return [lo + 1, hi + 1]
     }
-    
-    func oneSum(_ i: Int, _ numbers: [Int], _ target: Int) -> Int {
-        guard numbers.count > i && (numbers.last ?? 0) >= target else {
-            return -1
-        }
-        
-        for j in i+1..<numbers.count {
-            if numbers[j] == target {
-                return j
-            }
-        }
-        return -1
-    }
+   
 }
 
 //: [Next](@next)
