@@ -25,18 +25,19 @@ import Foundation
 
 class Solution {
     func maxArea(_ height: [Int]) -> Int {
-        var head = 0
-        var tail = height.count - 1
-        var result = 0
-        while head < tail {
-            result = max(result, min(height[head], height[tail])*(tail-head))
-            if height[head] < height[tail] {
-                head += 1
+        
+        var lo = 0, hi = height.count - 1, ans = 0
+        
+        while lo < hi {
+            ans = max(ans, min(height[hi], height[lo]) * (hi - lo))
+            if height[lo] < height[hi] {
+                lo += 1
             } else {
-                tail -= 1
+                hi -= 1
             }
         }
-        return result
+        
+        return ans
     }
 }
 
