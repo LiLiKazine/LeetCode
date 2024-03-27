@@ -28,27 +28,25 @@
 
 class Solution {
     func checkInclusion(_ s1: String, _ s2: String) -> Bool {
-        var dict: [Character: Int] = [:]
+        var cnt: [Character: Int] = [:]
         for c in s1 {
-            dict[c] = (dict[c] ?? 0) + 1
+            cnt[c] = (cnt[c] ?? 0) + 1
         }
-        var left = 0, right = 0, s2 = Array(s2)
-        while right < s2.count {
-            let c = s2[right]
-            if dict[c] != nil && dict[c]! > 0 {
-                right += 1
-                dict[c]! -= 1
-            } else {
-                let c = s2[left]
-                dict[c] = (dict[c] ?? 0) + 1
-                left += 1
-            }
-            
-            if right - left == s1.count {
-                return true
+        let s2 = Array(s2)
+        var map = [Character: Int](), lo = 0
+        for hi in 0..<s2.count {
+            map[s2[hi]] = (map[s2[hi]] ?? 0) + 1
+            if hi - lo + 1 == s1.count {
+                if map == cnt {
+                    return true
+                }
+                map[s2[lo]] = map[s2[lo]]! - 1
+                if let n = map[s2[lo]], n == 0 {
+                    map.removeValue(forKey: s2[lo])
+                }
+                lo += 1
             }
         }
-        
         return false
     }
 }
