@@ -27,13 +27,12 @@ import Foundation
 class Solution {
 
     func isHappy(_ n: Int) -> Bool {
-        var record: [Int: Int] = [:]
-        var n = n
-        while n > 1 && record[n] == nil {
-            record[n] = process(n)
-            n = record[n]!
+        var slow = n, fast = process(n)
+        while fast != 1 && slow != fast {
+            slow = process(slow)
+            fast = process(process(fast))
         }
-        return n == 1
+        return fast == 1
     }
         
     func process(_ n: Int) -> Int {
