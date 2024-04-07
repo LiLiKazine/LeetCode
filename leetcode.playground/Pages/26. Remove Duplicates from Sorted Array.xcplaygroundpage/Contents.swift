@@ -44,25 +44,18 @@ import Foundation
 
 class Solution {
     func removeDuplicates(_ nums: inout [Int]) -> Int {
-        let size = nums.count
-        if size < 2 {
-            return size
-        }
-        var head = 0, i = 1
-        loop: while i < size {
-            if nums[i] == nums[head] {
-                while nums[head] == nums[i] {
-                    i+=1
-                    if i == size {
-                        break loop
-                    }
-                }
+        
+        guard nums.count > 1 else { return nums.count }
+        
+        var slo = 0
+        for fast in 1..<nums.count {
+            if nums[fast] == nums[slo] {
+                continue
             }
-            nums[head+1] = nums[i]
-            i+=1
-            head+=1
+            slo += 1
+            nums[slo] = nums[fast]
         }
-        return head+1
+        return slo + 1
     }
 }
 
