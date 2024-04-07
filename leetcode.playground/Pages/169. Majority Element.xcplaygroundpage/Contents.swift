@@ -24,15 +24,20 @@ import Foundation
 
 class Solution {
     func majorityElement(_ nums: [Int]) -> Int {
-        var count = 0
-        var candidates: Int? = nil
-        for i in 0..<nums.count {
-            if count == 0 {
-                candidates = nums[i]
+        if nums.count == 1 { return nums[0] }
+        var candidate = nums[0], cnt = 1
+        for i in 1..<nums.count {
+            let n = nums[i]
+            if cnt == 0 {
+                candidate = n
+                cnt = 1
+            } else if candidate == n {
+                cnt += 1
+            } else {
+                cnt -= 1
             }
-            count += candidates! == nums[i] ? 1 : -1
         }
-        return candidates!
+        return candidate
     }
 }
 
