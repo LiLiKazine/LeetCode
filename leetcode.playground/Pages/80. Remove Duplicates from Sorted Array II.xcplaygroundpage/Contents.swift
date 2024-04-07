@@ -48,19 +48,18 @@
 
 class Solution {
     func removeDuplicates(_ nums: inout [Int]) -> Int {
-        var c = 0, i = 1
-        while i < nums.count {
-            if nums[i] == nums[i - 1] && c == 0 {
-                c += 1
-                i += 1
-            } else if nums[i] == nums[i - 1] && c > 0 {
-                nums.remove(at: i)
-            } else {
-                c = 0
-                i += 1
+        
+        guard nums.count > 2 else { return nums.count }
+        
+        var lo = 1
+        
+        for i in 2..<nums.count {
+            if nums[i] != nums[lo] || nums[i] != nums[lo-1] {
+                lo += 1
+                nums[lo] = nums[i]
             }
         }
-        return nums.count
+        return lo + 1
     }
 }
 
