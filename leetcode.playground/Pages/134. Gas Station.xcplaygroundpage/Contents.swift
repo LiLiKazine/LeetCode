@@ -51,21 +51,21 @@
 
 class Solution {
     func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
-        var leftover = 0, start = 0
+        let cnt = gas.count
+        var start = 0
         while start < gas.count {
-            var through = true
-            for i in start..<gas.count + start {
-                let j = i < gas.count ? i : i - gas.count
-                leftover = gas[j] + leftover - cost[j]
+            var cur = start, leftover = 0
+            while true {
+                let i = cur % cnt
+                leftover += (gas[i] - cost[i])
+                cur += 1
                 if leftover < 0 {
-                    start = i + 1
-                    through = false
-                    leftover = 0
+                    start = cur
                     break
                 }
-            }
-            if through {
-                return start
+                if cur % cnt == start {
+                    return start
+                }
             }
         }
         return -1
