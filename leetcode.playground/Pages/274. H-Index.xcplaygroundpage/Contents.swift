@@ -34,13 +34,15 @@
 
 class Solution {
     func hIndex(_ citations: [Int]) -> Int {
-        let citations = citations.sorted()
-        var h = 0, i = citations.count - 1
-        while i >= 0 && citations[i] > h {
-            h += 1
-            i -= 1
+        var h = 0
+        let citations = citations.sorted(by: >)
+        for citation in citations {
+            if citation > h {
+                h += 1
+            } else {
+                break
+            }
         }
-        
         return h
     }
 }
