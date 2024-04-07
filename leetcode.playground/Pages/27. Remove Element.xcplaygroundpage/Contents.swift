@@ -48,24 +48,14 @@ import Foundation
 
 class Solution {
     func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
-        let size = nums.count
-        var head = 0, i = 0
-        loop: while i < size {
-            if nums[i] == val {
-                while nums[i] == val {
-                    i+=1
-                    if i == size {
-                        break loop
-                    }
-                }
-                nums[head] = nums[i]
-            } else {
-                nums[head] = nums[i]
+        var slo = 0
+        for fast in 0..<nums.count {
+            if nums[fast] != val {
+                nums[slo] = nums[fast]
+                slo += 1
             }
-            head+=1
-            i+=1
         }
-        return head
+        return slo
     }
 }
 //: [Next](@next)
