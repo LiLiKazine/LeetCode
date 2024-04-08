@@ -41,47 +41,8 @@ import Foundation
 
 class Solution {
     func reverseWords(_ s: String) -> String {
-        var cs = Array<Character>(s)
-        var l = 0, r = cs.count-1
-        while l <= r {
-            if cs[l] == " " {
-                l += 1
-            } else {
-                break
-            }
-        }
+        return s.split(separator: " ").reversed().joined(separator: " ")
         
-        while l <= r {
-            if cs[r] == " " {
-                r -= 1
-            } else {
-                break
-            }
-        }
-        guard l <= r else { return "" }
-        cs = Array(cs[l...r])
-        var words: [String] = []
-        while !cs.isEmpty {
-            var charSet: [Character] = []
-            while !cs.isEmpty {
-                let first = cs.removeFirst()
-                if first != " " {
-                    charSet.append(first)
-                } else {
-                    break
-                }
-            }
-            if !charSet.isEmpty {
-                words.insert(String(charSet), at: 0)
-            }
-        }
-        var word: String = ""
-        for w in words {
-            word += w
-            word += " "
-        }
-        let _ = word.removeLast()
-        return word
     }
 }
 
