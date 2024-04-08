@@ -29,81 +29,31 @@
 
 class Solution {
     func candy(_ ratings: [Int]) -> Int {
-        return greedy(ratings)
-    }
-    
-    func exceeded(_ ratings: [Int]) -> Int {
-        var cache: [Int: Int] = [:]
-        for i in 0..<ratings.count {
-            if i == 0 {
-                cache[i] = 1
-                continue
-            }
-            if ratings[i] > ratings[i-1] {
-                cache[i] = cache[i-1]! + 1
-            } else if ratings[i] <= ratings[i-1] {
-                if cache[i-1]! <= 1 && ratings[i] != ratings[i-1] {
-                    raise(ratings, cache: &cache, tail: i)
-                }
-                cache[i] = 1
-            }
-            print(i, cache)
-        }
-        let vals = cache.values
-        print(vals)
-        let sum = vals.reduce(0, +)
-        return sum
-    }
-    
-    func raise(_ ratings: [Int], cache: inout [Int: Int], tail: Int) {
-        for i in stride(from: tail-1, through: 0, by: -1) {
-            cache[i]! += 1
-            if i == 0 || ratings[i] >= ratings[i-1] || cache[i]! < cache[i-1]! {
-                break
-            }
-        }
-    }
-    
-    func brute(_ ratings: [Int]) -> Int {
-        var temp = Array(repeating: 1, count: ratings.count)
-        var flag = true
-        while flag {
-            flag = false
-            for i in 0..<ratings.count {
-                if i > 0 && ratings[i] > ratings[i-1] && temp[i] <= temp[i-1] {
-                    temp[i] = temp[i-1] + 1
-                    flag = true
-                }
-                if i + 1 < ratings.count && ratings[i] > ratings[i+1] && temp[i] <= temp[i+1] {
-                    temp[i] = temp[i+1] + 1
-                    flag = true
-                }
-            }
-        }
-        return temp.reduce(0, +)
-    }
-    
-    func greedy(_ ratings: [Int]) -> Int {
+        guard ratings.count > 1 else { return ratings.count }
+        
         var left = Array(repeating: 1, count: ratings.count)
-        var right = Array(repeating: 1, count: ratings.count)
-        for i in 0..<ratings.count {
-            if i > 0 && ratings[i] > ratings[i-1] {
+        for i in 1..<ratings.count {
+            let rating = ratings[i]
+            if rating > ratings[i-1] {
                 left[i] = left[i-1] + 1
+            } else {
+                left[i] = 1
             }
         }
-        for i in stride(from: ratings.count-1, through: 0, by: -1) {
-            if i + 1 < ratings.count && ratings[i] > ratings[i+1] {
-                right[i] = right[i+1] + 1
+        var ans = left.last!
+        var lastNum = 1, lastRating = ratings.last!
+        for i in stride(from: ratings.count - 2, through: 0, by: -1) {
+            if ratings[i] > lastRating {
+                lastNum += 1
+            } else {
+                lastNum = 1
             }
+            lastRating = ratings[i]
+            ans += max(left[i], lastNum)
         }
-//        print(left, right)
-        for i in 0..<ratings.count {
-            left[i] = max(left[i], right[i])
-        }
-//        print(left)
-        return left.reduce(0, +)
+        return ans
     }
-}
+ }
 
 let solution = Solution()
 let res = solution.candy([1,0,2])
