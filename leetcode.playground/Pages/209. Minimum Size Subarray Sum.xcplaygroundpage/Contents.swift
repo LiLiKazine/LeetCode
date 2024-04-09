@@ -18,26 +18,19 @@ If you have figured out the O(n) solution, try coding another solution of which 
  
 class Solution {
     func minSubArrayLen(_ s: Int, _ nums: [Int]) -> Int {
-        guard nums.count > 0 else {
-            return 0
-        }
-        var sum = 0, length = Int.max, i = 0, j = 0
-
-        while j < nums.count {
-            if sum < s {
-                sum += nums[j]
-            } else if i > 0 {
-                sum -= nums[i-1]
-            }
-            if sum < s {
-                 j += 1
-            } else {
-                length = min(j-i+1, length)
-                i += 1
-            }
-        }
         
-        return length == Int.max ? 0 : length
+        if nums.isEmpty { return 0 }
+        
+        var cnt = 0, len = Int.max, lo = 0
+        for hi in 0..<nums.count {
+            cnt += nums[hi]
+            while cnt >= s, lo <= hi {
+                len = min(hi - lo + 1, len)
+                cnt -= nums[lo]
+                lo += 1
+            }
+        }
+        return len > nums.count ? 0 : len
     }
 }
 
