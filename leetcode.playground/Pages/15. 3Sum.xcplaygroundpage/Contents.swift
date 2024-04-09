@@ -25,33 +25,42 @@ import Foundation
 
 class Solution {
     func threeSum(_ nums: [Int]) -> [[Int]] {
-        guard nums.count > 2 else { return  [] }
         let nums = nums.sorted()
-        var result: [[Int]] = []
-        for i in 0..<nums.count-2 {
-            guard i == 0 || nums[i] != nums[i-1] else { continue }
-            let target = 0 - nums[i]
-            var head = i + 1
-            var tail = nums.count - 1
-            while head < tail {
-                if nums[head] + nums[tail] == target {
-                    result.append([nums[i], nums[head], nums[tail]])
-                    head += 1
-                    tail -= 1
-                    while head < tail && head > 0 && nums[head] == nums[head-1] {
-                        head += 1
-                    }
-                    while head < tail && tail < nums.count-1 && nums[tail] == nums[tail+1] {
-                        tail -= 1
-                    }
-                } else if nums[head] + nums[tail] > target {
-                    tail -= 1
+        func twoSum(_ range: Range<Int>, _ target: Int) -> [[Int]] {
+            var ans = [[Int]]()
+            var lo = range.lowerBound, hi = range.upperBound - 1
+            while lo < hi {
+                let l = nums[lo], r = nums[hi]
+                if l + r == target {
+                    ans.append([-target, l, r])
+                    repeat {
+                        lo += 1
+                    } while lo < hi && nums[lo] == nums[lo-1]
+                } else if l + r < target {
+                    lo += 1
                 } else {
-                    head += 1
+                    hi -= 1
                 }
             }
+            return ans
         }
-        return result
+        
+        var ans = [[Int]]()
+        
+        for i in 0..<nums.count {
+            let num = nums[i]
+            if num > 0 {
+                break
+            }
+            if i > 0 && num == nums[i-1] {
+                continue
+            }
+            var pairs = twoSum(i+1..<nums.count, -num)
+            if pairs.isEmpty { continue }
+            ans += pairs
+        }
+        
+        return ans
     }
 }
 
