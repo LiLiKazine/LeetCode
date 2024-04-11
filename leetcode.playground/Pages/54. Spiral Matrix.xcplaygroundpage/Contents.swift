@@ -26,72 +26,46 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-         if (matrix.size() == 0 || matrix[0].size() == 0) {
-             return {};
-         }
-
-         int rows = matrix.size(), columns = matrix[0].size();
-         vector<int> order;
-         int left = 0, right = columns - 1, top = 0, bottom = rows - 1;
-         while (left <= right && top <= bottom) {
-             for (int column = left; column <= right; column++) {
-                 order.push_back(matrix[top][column]);
-             }
-             for (int row = top + 1; row <= bottom; row++) {
-                 order.push_back(matrix[row][right]);
-             }
-             if (left < right && top < bottom) {
-                 for (int column = right - 1; column > left; column--) {
-                     order.push_back(matrix[bottom][column]);
-                 }
-                 for (int row = bottom; row > top; row--) {
-                     order.push_back(matrix[row][left]);
-                 }
-             }
-             left++;
-             right--;
-             top++;
-             bottom--;
-         }
-         return order;
-     }
- };
- 
- */
-
 import Foundation
 
 class Solution {
     func spiralOrder(_ matrix: [[Int]]) -> [Int] {
-        let maxRow = matrix.count, maxCol = matrix.first?.count ?? 0
-        var ans: [Int] = [],
-            left = 0, right = maxCol - 1, top = 0, bottom = maxRow - 1
-        while left <= right && top <= bottom {
-            for i in left...right {
-                ans.append(matrix[top][i])
+        guard matrix.count > 0, matrix[0].count > 0 else {
+            return []
+        }
+        let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        var minRow = 0, minColumn = 0
+        var maxRow = matrix.count - 1, maxColumn = matrix[0].count - 1
+        var current = [0, 0]
+        var ans = [matrix[0][0]]
+        
+        func next(_ current: [Int], _ direction: [Int]) -> [Int]? {
+            let p = [current[0] + direction[0], current[1] + direction[1]]
+            if p[0] >= minRow && p[0] <= maxRow && p[1] >= minColumn && p[1] <= maxColumn {
+                return p
             }
-            if top + 1 <= bottom {
-                for i in (top + 1)...bottom {
-                    ans.append(matrix[i][right])
+            return nil
+        }
+        while minRow <= maxRow && minColumn <= maxColumn {
+            for direction in directions {
+                while let next = next(current, direction) {
+                    current = next
+                    ans.append(matrix[current[0]][current[1]])
+                }
+                if direction[0] < 0 {
+                    minColumn += 1
+                }
+                if direction[0] > 0 {
+                    maxColumn -= 1
+                }
+                if direction[1] > 0 {
+                    minRow += 1
+                }
+                if direction[1] < 0 {
+                    maxRow -= 1
                 }
             }
-            if left < right && top < bottom {
-                for i in stride(from: right - 1, to: left, by: -1) {
-                    ans.append(matrix[bottom][i])
-                }
-                for i in stride(from: bottom, to: top, by: -1) {
-                    ans.append(matrix[i][left])
-                }
-            }
-            left += 1
-            right -= 1
-            top += 1
-            bottom -= 1
+            
         }
         return ans
     }
