@@ -54,25 +54,25 @@ import Foundation
 
 class Solution {
     func rotate(_ matrix: inout [[Int]]) {
-        for i in 0..<matrix.count/2 {
-            let j = matrix.count - i - 1
-            let temp = matrix[i]
-            matrix[i] = matrix[j]
-            matrix[j] = temp
-        }
         for i in 0..<matrix.count {
-            for j in 0..<matrix.count {
-                if i <= j {
-                    continue
-                }
+            for j in 0...i {
                 let temp = matrix[i][j]
                 matrix[i][j] = matrix[j][i]
                 matrix[j][i] = temp
             }
         }
         
+        for i in 0..<matrix.count {
+            for j in 0..<(matrix[i].count/2) {
+                let temp = matrix[i][j]
+                let k = matrix[i].count - j - 1
+                matrix[i][j] = matrix[i][k]
+                matrix[i][k] = temp
+            }
+        }
     }
 }
+
 let test = Solution()
 var matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]
 test.rotate(&matrix)

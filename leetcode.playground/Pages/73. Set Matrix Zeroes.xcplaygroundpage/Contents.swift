@@ -34,66 +34,9 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     void setZeroes(vector<vector<int>>& matrix) {
-         int m = matrix.size();
-         int n = matrix[0].size();
-         int flag_col0 = false;
-         for (int i = 0; i < m; i++) {
-             if (!matrix[i][0]) {
-                 flag_col0 = true;
-             }
-             for (int j = 1; j < n; j++) {
-                 if (!matrix[i][j]) {
-                     matrix[i][0] = matrix[0][j] = 0;
-                 }
-             }
-         }
-         for (int i = m - 1; i >= 0; i--) {
-             for (int j = 1; j < n; j++) {
-                 if (!matrix[i][0] || !matrix[0][j]) {
-                     matrix[i][j] = 0;
-                 }
-             }
-             if (flag_col0) {
-                 matrix[i][0] = 0;
-             }
-         }
-     }
- };
- 
- */
-
 class Solution {
     func setZeroes(_ matrix: inout [[Int]]) {
-        let m = matrix.count, n = matrix.first?.count ?? 0
-        var isCol0 = false
-        
-        for i in 0..<m {
-            if matrix[i][0] == 0 {
-                isCol0 = true
-            }
-            for j in 1..<n {
-                if matrix[i][j] == 0 {
-                    matrix[0][j] = 0
-                    matrix[i][0] = 0
-                }
-            }
-        }
-        
-        for i in stride(from: m - 1, to: -1, by: -1) {
-            for j in stride(from: n - 1, to: 0, by: -1) {
-                if matrix[i][0] == 0 || matrix[0][j] == 0 {
-                    matrix[i][j] = 0
-                }
-            }
-            if isCol0 {
-                matrix[i][0] = 0
-            }
-        }
+       
     }
 }
 
