@@ -27,24 +27,29 @@
  
  */
 
+/*
+ s =
+ "badc"
+ t =
+ "baba"
+ */
+
 class Solution {
     func isIsomorphic(_ s: String, _ t: String) -> Bool {
-        guard s.count == t.count else {
-            return false
-        }
-        var cache1: [Character: Int] = [:], cache2: [Character: Int] = [:],
-            flag = 0,
-            s = Array(s), t = Array(t)
+        guard s.count == t.count else { return false }
+        var map = [Character: Character](), used = Set<Character>()
+        let s = Array(s), t = Array(t)
         for i in 0..<s.count {
-            let cs = s[i], ct = t[i]
-            if let i1 = cache1[cs], let i2 = cache2[ct], i1 == i2 {
-                continue
-            } else if cache1[cs] == nil && cache2[ct] == nil {
-                cache1[cs] = flag
-                cache2[ct] = flag
-                flag += 1
-            } else {
+            let charS = s[i], charT = t[i]
+            if let char = map[charS] {
+                if char != charT {
+                    return false
+                }
+            } else if used.contains(charT) {
                 return false
+            } else {
+                map[charS] = charT
+                used.insert(charT)
             }
         }
         return true
