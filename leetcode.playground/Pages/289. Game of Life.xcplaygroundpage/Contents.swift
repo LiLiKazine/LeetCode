@@ -41,68 +41,39 @@ import Foundation
 
 class Solution {
     func gameOfLife(_ board: inout [[Int]]) {
-        alphaReplace(&board)
+        let directions = [[1, 0], [0, 1], [-1, 0], [0, -1], [-1, -1], [-1, 1], [1, -1], [1, 1]]
+        func value(_ i: Int, _ j: Int) -> Int {
+            var cnt = 0
+            for direction in directions {
+                let x = i + direction[0], y = j + direction[1]
+                guard 0 <= x && x < board.count && 0 <= y && y < board[x].count else {
+                    continue
+                }
+                if board[x][y] & 0b1 == 1 {
+                    cnt += 1
+                }
+            }
+            var val = board[i][j], isLive = val & 0b1 == 1
+            if isLive {
+                if cnt < 2 || cnt > 3 {
+                } else {
+                    val += 2
+                }
+            } else if cnt == 3 {
+                val += 2
+            }
+            return val
+        }
+        
         for i in 0..<board.count {
             for j in 0..<board[i].count {
-                if board[i][j] == 2 {
-                    board[i][j] = 1
-                }
-                if board[i][j] == 3 {
-                    board[i][j] = 0
-                }
+                board[i][j] = value(i, j)
             }
         }
-    }
-    
-    func alphaReplace(_ board: inout [[Int]]) {
-        // 2 0 -> 1, 3 1 -> 0
         for i in 0..<board.count {
             for j in 0..<board[i].count {
-                let (live, _) = around(&board, i, j)
-                var to: Bool?
-                if live < 2 || live > 3 {
-                    to = false
-                } else if live == 3 {
-                    to = true
-                }
-                if let to = to {
-                    change(&board, i, j, to)
-                }
+                board[i][j] = (board[i][j] >> 1)
             }
-        }
-    }
-    
-    func around(_ board: inout [[Int]], _ line: Int, _ row: Int) -> (live: Int, dead: Int) {
-        var live = 0, dead = 0
-        for i in line-1 ... line+1 {
-            for j in row-1 ... row+1 {
-                guard i >= 0 && i < board.count &&
-                    j >= 0 && j < board[i].count &&
-                (i != line || j != row) else {
-                        continue
-                }
-                let val = board[i][j]
-                if val == 0 || val == 2 {
-                    dead += 1
-                }
-                if val == 1 || val == 3 {
-                    live += 1
-                }
-            }
-        }
-        print(live)
-        return (live, dead)
-    }
-    
-    func change(_ board: inout [[Int]], _ i: Int, _ j: Int, _ live: Bool) {
-        let old = board[i][j]
-        switch old {
-        case 0:
-            board[i][j] = live ? 2 : 0
-        case 1:
-            board[i][j] = live ? 1 : 3
-        default:
-            break
         }
     }
 }
