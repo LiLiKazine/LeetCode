@@ -36,7 +36,31 @@
 
 class Solution {
     func setZeroes(_ matrix: inout [[Int]]) {
-       
+        var hasZero = false
+
+        for i in 0..<matrix.count {
+            if matrix[i][0] == 0 {
+                hasZero = true
+            }
+            for j in 1..<matrix[i].count {
+                if matrix[i][j] == 0 {
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+                }
+            }
+        }
+        
+        for i in stride(from: matrix.count - 1, through: 0, by: -1) {
+            for j in 1..<matrix[i].count {
+                if matrix[i][0] == 0 || matrix[0][j] == 0 {
+                    matrix[i][j] = 0
+                }
+            }
+            if hasZero {
+                matrix[i][0] = 0
+            }
+        }
+        
     }
 }
 
