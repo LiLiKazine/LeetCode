@@ -34,14 +34,16 @@
 
 class Solution {
     func groupAnagrams(_ strs: [String]) -> [[String]] {
-        var catagoried: [String: [String]] = [:]
+        var categoried: [String: [String]] = [:]
         for str in strs {
             let key = String(str.sorted())
-            catagoried[key] = (catagoried[key] ?? []) + [str]
+            if categoried[key] == nil {
+                categoried[key] = [str]
+            } else {
+                categoried[key]?.append(str)
+            }
         }
-        return catagoried.reduce([[String]]()) { (res, tuple) -> [[String]] in
-            return res + [tuple.value]
-        }
+        return Array(categoried.values)
     }
 }
 
