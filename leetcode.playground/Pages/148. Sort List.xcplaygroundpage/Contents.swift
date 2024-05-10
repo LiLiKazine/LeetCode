@@ -33,77 +33,6 @@
  
  */
 
-/*
- 
- class Solution {
-     public ListNode sortList(ListNode head) {
-         if (head == null) {
-             return head;
-         }
-         int length = 0;
-         ListNode node = head;
-         while (node != null) {
-             length++;
-             node = node.next;
-         }
-         ListNode dummyHead = new ListNode(0, head);
-         for (int subLength = 1; subLength < length; subLength <<= 1) {
-             ListNode prev = dummyHead, curr = dummyHead.next;
-             while (curr != null) {
-                 ListNode head1 = curr;
-                 for (int i = 1; i < subLength && curr.next != null; i++) {
-                     curr = curr.next;
-                 }
-                 ListNode head2 = curr.next;
-                 curr.next = null;
-                 curr = head2;
-                 for (int i = 1; i < subLength && curr != null && curr.next != null; i++) {
-                     curr = curr.next;
-                 }
-                 ListNode next = null;
-                 if (curr != null) {
-                     next = curr.next;
-                     curr.next = null;
-                 }
-                 ListNode merged = merge(head1, head2);
-                 prev.next = merged;
-                 while (prev.next != null) {
-                     prev = prev.next;
-                 }
-                 curr = next;
-             }
-         }
-         return dummyHead.next;
-     }
-
-     public ListNode merge(ListNode head1, ListNode head2) {
-         ListNode dummyHead = new ListNode(0);
-         ListNode temp = dummyHead, temp1 = head1, temp2 = head2;
-         while (temp1 != null && temp2 != null) {
-             if (temp1.val <= temp2.val) {
-                 temp.next = temp1;
-                 temp1 = temp1.next;
-             } else {
-                 temp.next = temp2;
-                 temp2 = temp2.next;
-             }
-             temp = temp.next;
-         }
-         if (temp1 != null) {
-             temp.next = temp1;
-         } else if (temp2 != null) {
-             temp.next = temp2;
-         }
-         return dummyHead.next;
-     }
- }
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/sort-list/solution/pai-xu-lian-biao-by-leetcode-solution/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
 
 public class ListNode {
     public var val: Int
@@ -115,20 +44,63 @@ public class ListNode {
 
 class Solution {
     func sortList(_ head: ListNode?) -> ListNode? {
-        var length = 0, node = head
-        while node != nil {
-            node = node?.next
-            length += 1
+        guard let head else { return nil }
+        var len = 0, cur: ListNode? = head
+        while cur != nil {
+            len += 1
+            cur = cur?.next
         }
-        guard length > 0 else {
+        return sortList(head, len: len)
+    }
+    
+    func sortList(_ head: ListNode, len: Int) -> ListNode {
+        
+        if len > 2 {
+            let half = len / 2
+            var prev: ListNode? = nil, node = head, leftover = half
+            while leftover > 0, let next = node.next {
+                prev = node
+                node = next
+                leftover -= 1
+            }
+            prev?.next = nil
+            let part1 = sortList(head, len: half)
+            let part2 = sortList(node, len: len - half)
+            return merge(part1, part2)
+        } else if let next = head.next {
+            if next.val < head.val {
+                next.next = head
+                head.next = nil
+                return next
+            } else {
+                next.next = nil
+                return head
+            }
+        } else {
             return head
         }
-        let sentry = ListNode(0, head!)
-        var i = 1
-        while i < length {
-            <#code#>
+    }
+    
+    func merge(_ node1: ListNode, _ node2: ListNode) -> ListNode {
+        let sentry = ListNode(0)
+        var tail = sentry
+        var node1: ListNode? = node1, node2: ListNode? = node2
+        while let v1 = node1?.val, let v2 = node2?.val {
+            if v1 < v2 {
+                tail.next = node1
+                node1 = node1?.next
+            } else {
+                tail.next = node2
+                node2 = node2?.next
+            }
+            tail = tail.next!
         }
-        return nil
+        if node1 != nil {
+            tail.next = node1
+        } else {
+            tail.next = node2
+        }
+        return sentry.next!
     }
 }
 
