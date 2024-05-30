@@ -36,10 +36,10 @@ class Solution {
         var ans = 0, cur = 0, cnt = [Int: Int]()
         cnt[0] = 1
         
-        for (i, num) in nums.enumerated() {
+        for num in nums {
             cur += num
-            ans += (cnt[cur - k] ?? 0)
-            cnt[cur] = (cnt[cur] ?? 0) + 1
+            ans += cnt[cur - k, default: 0]
+            cnt[cur] = cnt[cur, default: 0] + 1
         }
         
         return ans
