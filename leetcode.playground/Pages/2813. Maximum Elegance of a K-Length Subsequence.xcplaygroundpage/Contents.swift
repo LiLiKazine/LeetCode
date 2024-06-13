@@ -58,6 +58,36 @@
 import Foundation
 
 class Solution {
+    func findMaximumElegance(_ items: [[Int]], _ k: Int) -> Int {
+        let items = items.sorted { a, b in
+            return a[0] >= b[0]
+        }
+        var ans = 0
+        var sum = 0
+        var categories = Set<Int>()
+        var stack = [Int]()
+        for (i, item) in items.enumerated() {
+            let profit = item[0], category = item[1]
+            if i < k {
+                sum += profit
+                if !categories.insert(category).inserted {
+                    stack.append(profit)
+                }
+            } else if stack.count > 0 && categories.insert(category).inserted {
+                sum = sum + profit - stack.popLast()!
+            }
+            ans = max(ans, sum + square(of: categories.count))
+        }
+        return ans
+    }
+             
+    func square(of value: Int) -> Int {
+        return value * value
+    }
+}
+
+/*
+class Solution {
     
     var ans = 0
     var sum = 0
@@ -66,9 +96,6 @@ class Solution {
     var distinct = 0
     
     func findMaximumElegance(_ items: [[Int]], _ k: Int) -> Int {
-        var items = items.sorted { a, b in
-            return a[0] <= b[0]
-        }
         find(items, k, 0)
         
         return ans
@@ -116,5 +143,6 @@ class Solution {
         return ans
     }
 }
+ */
 
 //: [Next](@next)
