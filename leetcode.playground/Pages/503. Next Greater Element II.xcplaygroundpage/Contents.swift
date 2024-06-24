@@ -16,43 +16,19 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     vector<int> nextGreaterElements(vector<int>& nums) {
-         int n = nums.size();
-         vector<int> ret(n, -1);
-         stack<int> stk;
-         for (int i = 0; i < n * 2 - 1; i++) {
-             while (!stk.empty() && nums[stk.top()] < nums[i % n]) {
-                 ret[stk.top()] = nums[i % n];
-                 stk.pop();
-             }
-             stk.push(i % n);
-         }
-         return ret;
-     }
- };
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/next-greater-element-ii/solution/xia-yi-ge-geng-da-yuan-su-ii-by-leetcode-bwam/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
-
 class Solution {
     func nextGreaterElements(_ nums: [Int]) -> [Int] {
-        guard nums.count > 0 else {
-            return []
-        }
-        var monotone: [Int] = [], ans: [Int] = Array(repeating: -1, count: nums.count)
-        for i in 0..<nums.count * 2 - 1 {
-            while !monotone.isEmpty && nums[monotone.last!] < nums[i % nums.count] {
-                ans[monotone.popLast()!] = nums[i % nums.count]
+        let len = nums.count
+        var ans = Array(repeating: -1, count: len)
+        var stack = [Int]()
+        for index in 0..<len*2-1 {
+            let i = index % len
+            let num = nums[i]
+            while let last = stack.last, nums[last] < num {
+                ans[last] = num
+                stack.popLast()
             }
-            monotone.append(i % nums.count)
+            stack.append(i)
         }
         return ans
     }
