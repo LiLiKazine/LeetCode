@@ -74,13 +74,13 @@ class Solution {
         let len = candies.count, m = len - k
         guard m > 0 else { return 0 }
         var cnt = [Int: Int](), ans = 0
-        for i in 0..<candies.count + m - 1 {
+        for i in k..<candies.count + m {
             let j = i % len
             let candy = candies[j]
             cnt[candy] = cnt[candy, default: 0] + 1
-            if i >= m - 1 {
+            if i >= k + m - 1 {
                 ans = max(ans, cnt.count)
-                let head = candies[i - m + 1]
+                let head = candies[(i - m + 1) % len]
                 let val = cnt[head, default: 0] - 1
                 if val == 0 {
                     cnt.removeValue(forKey: head)
