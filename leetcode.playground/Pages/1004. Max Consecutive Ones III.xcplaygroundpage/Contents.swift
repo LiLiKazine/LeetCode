@@ -34,69 +34,24 @@
  
  */
 
-/*
- class Solution {
-     public int longestOnes(int[] A, int K) {
-         int l = 0, r = 0, res = 0;
-         while (r < A.length) {
-             if (A[r] == 0) {
-                 if (K == 0) {
-                     while (A[l] == 1) l++;
-                     l++;
-                 } else {
-                     K--;
-                 }
-             }
-             res = Math.max(res, ++r - l);
-         }
-         return res;
-     }
- }
- */
-
 class Solution {
     func longestOnes(_ A: [Int], _ K: Int) -> Int {
-        var left = 0, right = 0, ans = 0, K = K
-        while right < A.count {
-            if A[right] == 0 {
-                if K == 0 {
-                    while A[left] == 1 {
-                        left += 1
-                    }
-                    left += 1
-                } else {
-                    K -= 1
-                }
-            }
-            right += 1
-            ans = max(ans, right - left)
-        }
+        var ans = 0, start = 0, k = K
         
-        return ans
-    }
-    
-    /* func longestOnes(_ A: [Int], _ K: Int) -> Int {
-        var left = 0, right = 0, ans = 0, pos: [Int] = []
-        while right < A.count {
-            if A[right] == 1 {
-                right += 1
-            } else if pos.count < K {
-                right += 1
-                pos.append(right)
-            } else {
-                ans = max(ans, right - left)
-                if K == 0 {
-                    right += 1
-                    left = right
-                } else {
-                    left = pos.removeFirst()
+        for (i, val) in A.enumerated() {
+            if val == 1 || k > 0 {
+                if val != 1 {
+                    k -= 1
                 }
+            } else {
+                repeat {
+                    start += 1
+                } while A[start-1] != 0
             }
+            ans = max(ans, i - start + 1)
         }
-        ans = max(ans, right - left)
         return ans
     }
- */
 }
 
 //let A = [0,0,0,1], K = 4
