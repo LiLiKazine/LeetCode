@@ -43,70 +43,32 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     int longestSubarray(vector<int>& nums, int limit) {
-         deque<int> queMax, queMin;
-         int n = nums.size();
-         int left = 0, right = 0;
-         int ret = 0;
-         while (right < n) {
-             while (!queMax.empty() && queMax.back() < nums[right]) {
-                 queMax.pop_back();
-             }
-             while (!queMin.empty() && queMin.back() > nums[right]) {
-                 queMin.pop_back();
-             }
-             queMax.push_back(nums[right]);
-             queMin.push_back(nums[right]);
-             while (!queMax.empty() && !queMin.empty() && queMax.front() - queMin.front() > limit) {
-                 if (nums[left] == queMin.front()) {
-                     queMin.pop_front();
-                 }
-                 if (nums[left] == queMax.front()) {
-                     queMax.pop_front();
-                 }
-                 left++;
-             }
-             ret = max(ret, right - left + 1);
-             right++;
-         }
-         return ret;
-     }
- };
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/solution/jue-dui-chai-bu-chao-guo-xian-zhi-de-zui-5bki/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
-
 class Solution {
     func longestSubarray(_ nums: [Int], _ limit: Int) -> Int {
-        var left = 0, right = 0, maxQueue: [Int] = [], minQueue: [Int] = [], ans = 0
-        while right < nums.count {
-            while !minQueue.isEmpty && nums[right] < nums[minQueue.last!] {
-                minQueue.removeLast()
+        var ans = 1, start = 0
+        var ascend = [Int]()
+        var descend = [Int]()
+        for (i, val) in nums.enumerated() {
+            while ascend.count > 0 && nums[ascend.last!] > val {
+                ascend.removeLast()
             }
-            minQueue.append(right)
-            
-            while !maxQueue.isEmpty && nums[right] > nums[maxQueue.last!] {
-                maxQueue.removeLast()
+            ascend.append(i)
+            while descend.count > 0 && nums[descend.last!] < val {
+                descend.removeLast()
             }
-            maxQueue.append(right)
-            while nums[maxQueue.first!] - nums[minQueue.first!] > limit {
-                if right == maxQueue.first! {
-                    left = minQueue.removeFirst() + 1
-                } else if right == minQueue.first! {
-                    left = maxQueue.removeFirst() + 1
+            descend.append(i)
+            while start < i && (abs(val - nums[ascend[0]]) > limit || abs(val - nums[descend[0]]) > limit) {
+                if ascend[0] == start {
+                    ascend.removeFirst()
                 }
+                if descend[0] == start {
+                    descend.removeFirst()
+                }
+                start += 1
             }
-            ans = max(ans, right - left + 1)
-            right += 1
+            ans = max(ans, i - start + 1)
         }
+        
         return ans
     }
 }
