@@ -37,65 +37,53 @@
  1 <= nums[i] <= nums.length
  0 <= k <= nums.length
  */
-
+/*
+ class Solution {
+     func longestEqualSubarray(_ nums: [Int], _ k: Int) -> Int {
+         let n = nums.count
+         if n < 2 {
+             return n
+         }
+         var cnt = [Int](repeating:0, count:n+1)
+         var li = 0, ans = 0
+         for (ri, v) in nums.enumerated() {
+             cnt[v] += 1
+             while ri - li + 1 - cnt[nums[li]] > k {
+                 cnt[nums[li]] -= 1
+                 li += 1
+             }
+             ans = max(ans, cnt[v])
+         }
+         return ans
+     }
+ }
+ */
 import Foundation
 
 class Solution {
     func longestEqualSubarray(_ nums: [Int], _ k: Int) -> Int {
         var ans = 0
-        
-        var posMap = [Int: [Int]]()
-        for i in 0..<nums.count {
-            let n = nums[i]
-            if posMap[n] == nil {
-                posMap[n] = [i]
-            } else {
-                posMap[n]?.append(i)
-            }
+        var pos = [Int: [Int]]()
+        for (i, num) in nums.enumerated() {
+            pos[num] = pos[num, default: []] + [i]
         }
-        
-        for posList in posMap.values {
-            if posList.count <= ans {
-                continue
-            }
-            for i in 0..<posList.count {
-                var j = i + 1
-                while j < posList.count && posList[j] - posList[i] - (j - i) <= k {
-                    j += 1
+        for nums in pos.values {
+            var res = 1, left = 0, k = k
+            for right in 1..<nums.count {
+                let gap = nums[right] - nums[right-1]  - 1
+                k -= gap
+                while left < right && k < 0 {
+                    left += 1
+                    let payback = nums[left] - nums[left-1] - 1
+                    k += payback
                 }
-                ans = max(ans, j - i + 1)
+                res = max(res, right - left + 1)
             }
+            ans = max(ans, res)
         }
         return ans
     }
     
-    func exceeded(_ nums: [Int], _ k: Int) -> Int {
-        var ans = 0
-        var lo = 0, hi = 0, erase = k, nextLo = 0
-        while lo < nums.count {
-            while hi < nums.count {
-                if nums[hi] != nums[lo] {
-                    if nextLo <= lo {
-                        nextLo = hi
-                    }
-                    if erase == 0 {
-                        break
-                    }
-                    erase -= 1
-                }
-                hi += 1
-            }
-            ans = max(hi - lo - k + erase, ans)
-            erase = k
-            if nextLo > lo {
-                lo = nextLo
-            } else {
-                lo = hi
-            }
-            hi = lo
-        }
-        return ans
-    }
 }
 
 //: [Next](@next)
