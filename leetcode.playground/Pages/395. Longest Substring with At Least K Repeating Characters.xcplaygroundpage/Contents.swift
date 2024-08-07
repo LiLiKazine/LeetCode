@@ -28,52 +28,47 @@
  
  */
 
-
 class Solution {
     func longestSubstring(_ s: String, _ k: Int) -> Int {
         
-        return dfs(Array(s), k)
-    }
-    
-    private func dfs(_ s: [Character], _ k: Int) -> Int {
-        var cnt: [Int] = Array(repeating: 0, count: 26), ans = 0
-        for c in s {
-            cnt[c.index] += 1
-        }
+        var s = Array(s).map { String($0) }
+        var ans = 0
         
-        var c: Character? = nil
-        
-        for i in 0..<cnt.count {
-            let n = cnt[i]
-            if n != 0 && n < k {
-                c = i.characte
-                break
+        for t in 1...26 {
+            var cnt = [String: Int](), left = 0, sum = 0, tot = 0
+            for right in 0..<s.count {
+                let char = s[right]
+                let val = cnt[char, default: 0] + 1
+                cnt[char] = val
+                if val == 1 {
+                    sum += 1
+                }
+                if val == k {
+                    tot += 1
+                }
+                while sum > t && left < right {
+                    let char = s[left]
+                    left += 1
+                    let val = cnt[char, default: 0] - 1
+                    cnt[char] = val
+                    if val == 0 {
+                        sum -= 1
+                    }
+                    if val == k - 1 {
+                        tot -= 1
+                    }
+                }
+                if sum == tot {
+                    ans = max(ans, right - left + 1)
+                }
             }
         }
-        guard let split = c else {
-            return s.count
-        }
         
-        let components = s.split(separator: split).map { Array($0) }
-        for component in components {
-            ans = max(ans, dfs(component, k))
-        }
         return ans
     }
-}
-
-fileprivate extension Character {
     
-    var index: Int {
-        Int(self.asciiValue! - Character("a").asciiValue!)
-    }
 }
 
-fileprivate extension Int {
-    var characte: Character {
-        Character(.init(Character("a").asciiValue! + UInt8(self)))
-    }
-}
 
 let s = "aaabb", k = 3
 let solution = Solution()
