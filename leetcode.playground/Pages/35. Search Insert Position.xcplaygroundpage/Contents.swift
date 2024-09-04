@@ -30,18 +30,16 @@ import Foundation
 
 class Solution {
     func searchInsert(_ nums: [Int], _ target: Int) -> Int {
-        var lo = 0, hi = nums.count - 1
-        while lo <= hi {
-            let mid = (lo + hi) / 2
-            if nums[mid] > target {
-                hi = mid - 1
-            } else if nums[mid] < target {
-                lo = mid + 1
+        var l = 0, r = nums.count
+        while l < r {
+            let mid = l + (r - l) / 2
+            if nums[mid] < target {
+                l = mid + 1
             } else {
-                return mid
+                r = mid
             }
         }
-        return lo
+        return l
     }
 }
 
