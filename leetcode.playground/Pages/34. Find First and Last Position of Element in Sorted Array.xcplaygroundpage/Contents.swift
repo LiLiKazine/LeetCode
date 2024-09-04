@@ -24,27 +24,43 @@ import Foundation
 
 class Solution {
     func searchRange(_ nums: [Int], _ target: Int) -> [Int] {
-        var lo = 0, hi = nums.count - 1
-        while lo <= hi {
-            let mid = (lo + hi) / 2
-            if nums[mid] > target {
-                hi = mid - 1
-            } else if nums[mid] < target {
-                lo = mid + 1
-            } else {
-                var head = mid, tail = mid
-                while head-1 >= 0 && nums[head-1] == nums[mid] {
-                    head-=1
+        let n = nums.count
+        
+        func lowerBound(_ target: Int) -> Int {
+            var l = 0, r = n
+            while l < r {
+                let mid = l + (r - l) / 2
+                if nums[mid] < target {
+                    l = mid + 1
+                } else {
+                    r = mid
                 }
-                while tail+1 < nums.count && nums[tail+1] == nums[mid] {
-                    tail+=1
-                }
-                return [head, tail]
             }
+            return l
         }
-        return [-1, -1]
+        
+        func upperBound(_ target: Int) -> Int {
+            var l = 0, r = n - 1
+            while l <= r {
+                let mid = l + (r - l) / 2
+                if nums[mid] > target {
+                    r = mid - 1
+                } else {
+                    l = mid + 1
+                }
+            }
+            return r
+        }
+        let l = lowerBound(target)
+        if l == n || nums[l] != target {
+            return [-1, -1]
+        }
+        let r = upperBound(target)
+        return [l, r]
+        
     }
 }
+
 let test = Solution()
 let result = test.searchRange([5,7,7,8,8,10], 8)
 //: [Next](@next)
