@@ -34,19 +34,16 @@ import Foundation
 
 class Solution {
     func search(_ nums: [Int], _ target: Int) -> Int {
-        var lo = 0, hi = nums.count - 1
-        while lo < hi {
-            let mid = lo + (hi - lo) / 2
-            if nums[mid] == target {
-                return mid
-            }
-            if nums[mid] > target {
-                hi = mid
+        var l = 0, r = nums.count
+        while l < r {
+            let mid = l + (r - l) / 2
+            if nums[mid] < target {
+                l = mid + 1
             } else {
-                lo = mid + 1
+                r = mid
             }
         }
-        return nums[lo] == target ? lo : -1
+        return l == nums.count || nums[l] != target ? -1 : l
     }
 }
 
