@@ -35,15 +35,18 @@ class Solution {
         let queries = queries.map { f($0) }
         let words = words.map { f($0) }.sorted()
         var ans = [Int]()
+        let n = words.count
         for query in queries {
-            var num = 0
-            for i in 0..<words.count {
-                if query < words[i] {
-                    num = words.count - i
-                    break
+            var l = 0, r = n
+            while l < r {
+                let mid = l + (r - l) / 2
+                if words[mid] <= query {
+                    l = mid + 1
+                } else {
+                    r = mid
                 }
             }
-            ans.append(num)
+            ans.append(n - l)
         }
         return ans
     }
