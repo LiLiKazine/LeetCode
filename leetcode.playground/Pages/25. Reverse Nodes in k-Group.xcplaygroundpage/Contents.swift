@@ -46,44 +46,50 @@ public class ListNode {
 
 class Solution {
     func reverseKGroup(_ head: ListNode?, _ k: Int) -> ListNode? {
-        let sentry = ListNode()
-        sentry.next = head
-        
-        var dummy: ListNode? = sentry
-        
-        while true {
-            var tail = dummy?.next
-            var k = k - 1
-            while k > 0, tail != nil {
-                tail = tail?.next
-                k -= 1
-            }
-            if k > 0 || tail == nil {
-                break
-            }
-            
-            let temp = tail?.next
-            tail?.next = nil
-            let h = reverse(dummy?.next)
-            dummy?.next?.next = temp
-            let nextDummy = dummy?.next
-            dummy?.next = h
-            dummy = nextDummy
-        }
-        return sentry.next
-    }
-
-    private func reverse(_ node: ListNode?) -> ListNode? {
-        let sentry = ListNode()
-        var cur = node
+        var n = 0
+        var cur = head
         while cur != nil {
-            let temp = sentry.next
-            sentry.next = cur
+            n += 1
             cur = cur?.next
-            sentry.next?.next = temp
+        }
+        var sentry = ListNode(0, head)
+        
+        var prev: ListNode? = nil
+        cur = head
+        var p0: ListNode? = sentry
+        
+        while n >= k {
+            n -= k
+            for _ in 0..<k {
+                var next = cur?.next
+                cur?.next = prev
+                prev = cur
+                cur = next
+            }
+            var tail = p0?.next
+            p0?.next?.next = cur
+            p0?.next = prev
+            
+            p0 = tail
+            prev = nil
         }
         return sentry.next
     }
 }
+
+/*
+ 
+     c    n
+ 0 ->1 -> 2 -> 3
+     ^
+     |
+     *(p)
+ 
+     |<- |
+ 0 ->1 ->*   2 -> 3
+     p       c
+ 
+ 
+ */
 
 //: [Next](@next)
