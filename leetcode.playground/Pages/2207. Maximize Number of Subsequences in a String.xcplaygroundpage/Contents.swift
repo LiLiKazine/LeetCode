@@ -44,27 +44,18 @@ class Solution {
     func maximumSubsequenceCount(_ text: String, _ pattern: String) -> Int {
         let pattern = Array(pattern)
         let a = pattern[0], b = pattern[1]
-        if a == b {
-            var cnt = 0
-            for char in text where char == a {
-                cnt += 1
+        var cnt_a = 0, cnt_b = 0, ans = 0
+        for char in text {
+            if char == b {
+                cnt_b += 1
+                ans += cnt_a
             }
-            
-            return ((cnt + 1) * cnt) / 2
-        } else {
-            var cnt_a = 0, cnt_b = 0, ans = 0
-            for char in text {
-                if char == a {
-                    cnt_a += 1
-                }
-                if char == b {
-                    cnt_b += 1
-                    ans += cnt_a
-                }
+            if char == a {
+                cnt_a += 1
             }
-            ans += max(cnt_a, cnt_b)
-            return ans
         }
+        ans += max(cnt_a, cnt_b)
+        return ans
     }
 }
 
