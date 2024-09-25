@@ -52,40 +52,37 @@
 class Solution {
     func minAbsoluteSumDiff(_ nums1: [Int], _ nums2: [Int]) -> Int {
         
-        let mod = 1000000007, rec = nums1.sorted()
+        let mod = 1000000007, arr = nums1.sorted(), len = nums1.count
         
-        var sum = 0, maxn = 0
-        for i in 0..<nums1.count {
-            let dif = abs(nums1[i] - nums2[i])
-            sum = (sum + dif) % mod
-            let j = lowerBound(nums2[i], rec)
-            if j < rec.count {
-                maxn = max(maxn, dif - (rec[j] - nums2[i]))
+        var ans = 0, offset = 0
+        
+        func lower_bound(of n: Int) -> Int {
+            var l = 0, r = len
+            while l < r {
+                let mid = l + (r - l) / 2
+                if arr[mid] < n {
+                    l = mid + 1
+                } else {
+                    r = mid
+                }
             }
-            if j > 0 {
-                maxn = max(maxn, dif - (nums2[i] - rec[j - 1]))
-            }
+            return l
         }
         
-        return (sum - maxn + mod) % mod
-    }
-    
-    private func lowerBound(_ target: Int, _ arr: [Int]) -> Int {
-        var lo = 0, hi = arr.count - 1
-        if arr[hi] < target {
-            return hi + 1
-        }
-        while lo < hi {
-            let mid = lo + (hi - lo) / 2
-            if arr[mid] < target {
-                lo = mid + 1
-            } else {
-                hi = mid
+        for i in 0..<len {
+            let dif = abs(nums1[i] - nums2[i]) % mod
+            ans += dif
+            ans %= mod
+            let r = lower_bound(of: nums2[i])
+            if r > 0 {
+                offset = max(offset, dif - (nums2[i] - arr[r - 1]))
+            }
+            if r < len {
+                offset = max(offset, dif - (arr[r] - nums2[i]))
             }
         }
-        return lo
+        return (ans - offset + mod) % mod
     }
 }
-
 
 //: [Next](@next)
