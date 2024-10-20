@@ -36,25 +36,24 @@ import Foundation
 class Solution {
     func isMajorityElement(_ nums: [Int], _ target: Int) -> Bool {
         let cnt = nums.count
-        var lo = 0, hi = cnt - 1
-        while hi - lo + 1 > cnt / 2 {
-            if nums[lo] == target && nums[hi] == target && hi - lo + 1 > cnt / 2 {
-                return true
+        func lowerBound(_ nums: [Int], _ target: Int) -> Int {
+            var l = 0, r = nums.count
+            while l < r {
+                let mid = l + (r - l) / 2
+                if nums[mid] < target {
+                    l = mid + 1
+                } else {
+                    r = mid
+                }
             }
-            if nums[lo] > target {
-                return false
-            }
-            if nums[lo] < target {
-                lo += 1
-            }
-            if nums[hi] < target {
-                return false
-            }
-            if nums[hi] > target {
-                hi -= 1
-            }
+            return l
         }
-        return false
+        let l = lowerBound(nums, target)
+        if l == nums.count || l > nums.count / 2 {
+            return false
+        }
+        let r = lowerBound(nums, target + 1)
+        return r - l > nums.count / 2
     }
 }
 
