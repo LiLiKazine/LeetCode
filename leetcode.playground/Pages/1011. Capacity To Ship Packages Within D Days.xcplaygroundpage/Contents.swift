@@ -51,33 +51,30 @@
  */
 
 class Solution {
-    func shipWithinDays(_ weights: [Int], _ D: Int) -> Int {
-        guard !weights.isEmpty else {
-            return 0
-        }
-        var left = 1, right = 0
-        for weight in weights {
-            left = max(left, weight)
-            right += weight
-        }
-        while left < right {
-            let mid = (left + right) / 2
-            var nums = 1, shipment = 0
+    func shipWithinDays(_ weights: [Int], _ days: Int) -> Int {
+        var l = weights.max()!, r = weights.reduce(0, +)
+        var ans = r
+        
+        while l <= r {
+            let mid = (l + r) / 2
+            var comsume = 1
+            var carrying = 0
             for weight in weights {
-                if shipment + weight <= mid {
-                    shipment += weight
+                if carrying + weight <= mid {
+                    carrying += weight
                 } else {
-                    shipment = weight
-                    nums += 1
+                    comsume += 1
+                    carrying = weight
                 }
             }
-            if nums > D {
-                left = mid + 1
+            if comsume <= days {
+                ans = mid
+                r = mid - 1
             } else {
-                right = mid
+                l = mid + 1
             }
         }
-        return left
+        return ans
     }
 }
 
