@@ -35,73 +35,36 @@
  
  */
 
-/*
- 
- class Solution {
-     public int[] findRedundantConnection(int[][] edges) {
-         int nodesCount = edges.length;
-         int[] parent = new int[nodesCount + 1];
-         for (int i = 1; i <= nodesCount; i++) {
-             parent[i] = i;
-         }
-         for (int i = 0; i < nodesCount; i++) {
-             int[] edge = edges[i];
-             int node1 = edge[0], node2 = edge[1];
-             if (find(parent, node1) != find(parent, node2)) {
-                 union(parent, node1, node2);
-             } else {
-                 return edge;
-             }
-         }
-         return new int[0];
-     }
-
-     public void union(int[] parent, int index1, int index2) {
-         parent[find(parent, index1)] = find(parent, index2);
-     }
-
-     public int find(int[] parent, int index) {
-         if (parent[index] != index) {
-             parent[index] = find(parent, parent[index]);
-         }
-         return parent[index];
-     }
- }
- A % 5 * 2 % 5 == A * 2 % 5
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/redundant-connection/solution/rong-yu-lian-jie-by-leetcode-solution-pks2/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
 
 class Solution {
     func findRedundantConnection(_ edges: [[Int]]) -> [Int] {
-        let nodeNum = edges.count
-        var union: [Int] = []
-        for i in 0..<nodeNum {
-            union.append(i)
+        let n = edges.count
+        var union = Array(0...n)
+        
+        func find(_ x: Int) -> Int {
+            if union[x] == x {
+                return x
+            }
+            union[x] = find(union[x])
+            return union[x]
         }
+        
+        func connect(_ x: Int, _ y: Int) -> Bool {
+            let x = find(x), y = find(y)
+            if x == y {
+                return false
+            }
+            union[x] = y
+            return true
+        }
+        
         for edge in edges {
-            let node1 = edge[0] - 1, node2 = edge[1] - 1
-            guard findGroup(&union, node1) != findGroup(&union, node2) else {
+            let u = edge[0], v = edge[1]
+            guard connect(u, v) else {
                 return edge
             }
-            unit(&union, node1, node2)
         }
         return []
-    }
-    
-    func unit(_ union: inout [Int], _ node1: Int, _ node2: Int) {
-        union[findGroup(&union, node1)] = findGroup(&union, node2)
-    }
-     
-    func findGroup(_ union: inout [Int], _ node: Int) -> Int {
-        guard union[node] != node else {
-            return union[node]
-        }
-        union[node] = findGroup(&union, union[node])
-        return union[node]
     }
 }
 
