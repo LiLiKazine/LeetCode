@@ -38,16 +38,16 @@
 class Solution {
     func hIndex(_ citations: [Int]) -> Int {
         let n = citations.count
-        var lo = 0, hi = n - 1
-        while lo <= hi {
-            let mid = lo + (hi - lo) / 2
-            if citations[mid] >= n - mid {
-                hi = mid - 1
+        var l = 1, r = n
+        while l <= r {
+            let mid = l + (r - l) / 2
+            if citations[n - mid] >= mid {
+                l = mid + 1
             } else {
-                lo = mid + 1
+                r = mid - 1
             }
         }
-        return n - lo
+        return r
     }
 }
 
