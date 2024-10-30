@@ -119,55 +119,53 @@ import Foundation
          return res;
      }
  }
- */
+
+*/
+
 
 class Solution {
     
-    var accumulated = [Int: Int]()
-    var priced = [Int: Int]()
+    var x: Int = 0
+    var memo = [[Int]]()
+    var num: Int = 0
     
     func findMaximumNumber(_ k: Int, _ x: Int) -> Int {
-        var l = 1, r = k, ans = 0
-        while l <= r {
+        self.x = x
+        var l = 0, r = (k + 1) << x
+        while l + 1 < r {
             var mid = l + (r - l) / 2
-            // print(l, mid, r)
-            let sum = accumulate(of: mid, x)
-            if sum > k {
-                r = mid
-            } else if sum == k {
-                return mid
+            if countDigitOne(mid) <= k {
+                l = mid;
             } else {
-                ans = max(mid, ans)
-                l = mid + 1
+                r = mid;
             }
         }
-        
-        return ans
+        return l
     }
     
-    func accumulate(of num: Int, _ x: Int) -> Int {
-        if num <= 0 { return  0 }
-        if let value = accumulated[num] {
-            return value
-        }
-        let ans = price(of: num, x) + accumulate(of: num - 1, x)
-        accumulated[num] = ans
-        return ans
+    func countDigitOne(_ num: Int) -> Int {
+        self.num = num
+        let m = 64 - num.leadingZeroBitCount
+        memo = Array(repeating: Array(repeating: -1, count: m + 1), count: m)
+        return dfs(m - 1, 0, true)
     }
-    
-    func price(of num: Int, _ x: Int) -> Int {
-        if num <= 0 { return 0 }
-        if let value = priced[num] {
-            return value
+
+    func dfs(_ i : Int, _ cnt1: Int, _ isLimit: Bool) -> Int {
+        if i < 0 {
+            return cnt1
         }
-        var ans = 0
-        let binary = Array(String(num, radix: 2))
-        for i in stride(from: x-1, to: binary.count, by: +x) {
-            let n = Int(String(binary[i]))!
-            ans += n
+        if (!isLimit && memo[i][cnt1] != -1) {
+            return memo[i][cnt1]
         }
-        priced[num] = ans
-        return ans
+        let up = isLimit ? (num >> i & i) : 1
+        var res = 0
+        for d in 0...up {
+            res += dfs(i - 1, cnt1 + (d == 1 && (i + 1) % x == 0 ? 1 : 0), isLimit && d == up)
+        }
+        if !isLimit {
+            memo[i][cnt1] = res
+        }
+        return cnt1
     }
 }
 
