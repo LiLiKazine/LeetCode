@@ -37,52 +37,48 @@ import Foundation
 
 class Solution {
     func findMaxAverage(_ nums: [Int], _ k: Int) -> Double {
-
+        var l = Double(nums.min()!), r = Double(nums.max()!)
+        let eps = 1e-5
+        
+        func valid(_ x: Double) -> Bool {
+            if k > nums.count {
+                return false
+            }
+            if k == nums.count {
+                return Double(nums.reduce(0, +)) / Double(nums.count) >= x
+            }
+            var sum: Double = 0
+            var prev: Double = 0
+            var min_prev: Double = 0
+            for i in 0..<k {
+                sum += Double(nums[i]) - x
+            }
+            if sum >= 0 {
+                return true
+            }
+            for i in k..<nums.count {
+                let v =
+                sum += Double(nums[i]) - x
+                prev += Double(nums[i - k]) - x
+                min_prev = min(min_prev, prev)
+                if sum >= min_prev {
+                    return true
+                }
+            }
+            return false
+        }
+        
+        while l + eps < r {
+            let mid = (l + r) / 2
+            if valid(mid) {
+                l = mid
+            } else {
+                r = mid
+            }
+        }
+        return r
     }
 }
 
-/*
- public class Solution {
-     public double findMaxAverage(int[] nums, int k) {
-         double max_val = Integer.MIN_VALUE;
-         double min_val = Integer.MAX_VALUE;
-         for (int n: nums) {
-             max_val = Math.max(max_val, n);
-             min_val = Math.min(min_val, n);
-         }
-         double prev_mid = max_val, error = Integer.MAX_VALUE;
-         while (error > 0.00001) {
-             double mid = (max_val + min_val) * 0.5;
-             if (check(nums, mid, k))
-                 min_val = mid;
-             else
-                 max_val = mid;
-             error = Math.abs(prev_mid - mid);
-             prev_mid = mid;
-         }
-         return min_val;
-     }
-     public boolean check(int[] nums, double mid, int k) {
-         double sum = 0, prev = 0, min_sum = 0;
-         for (int i = 0; i < k; i++)
-             sum += nums[i] - mid;
-         if (sum >= 0)
-             return true;
-         for (int i = k; i < nums.length; i++) {
-             sum += nums[i] - mid;
-             prev += nums[i - k] - mid;
-             min_sum = Math.min(prev, min_sum);
-             if (sum >= min_sum)
-                 return true;
-         }
-         return false;
-     }
- }
-
- 作者：LeetCode
- 链接：https://leetcode.cn/problems/maximum-average-subarray-ii/solutions/60426/zui-da-ping-jun-zi-duan-he-ii-by-leetcode/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 
 //: [Next](@next)
