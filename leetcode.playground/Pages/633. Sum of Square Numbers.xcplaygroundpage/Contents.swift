@@ -35,30 +35,14 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     bool judgeSquareSum(int c) {
-         for (long a = 0; a * a <= c; a++) {
-             double b = sqrt(c - a * a);
-             if (b == (int)b) {
-                 return true;
-             }
-         }
-         return false;
-     }
- };
- 
- */
-
 
 class Solution {
     func judgeSquareSum(_ c: Int) -> Bool {
         var a = 0
+        var set = Set<Int>()
         while a * a <= c {
-            let b = Int(Float(c - a * a).squareRoot())
-            if c == a * a + b * b {
+            set.insert(a * a)
+            if set.contains(c - a * a) {
                 return true
             }
             a += 1
