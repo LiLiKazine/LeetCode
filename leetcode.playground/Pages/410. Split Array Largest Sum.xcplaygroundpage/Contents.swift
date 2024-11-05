@@ -29,37 +29,28 @@
 
 class Solution {
     func splitArray(_ nums: [Int], _ m: Int) -> Int {
-        var cache: [Key: Int] = [.init(0, 0): 0]
-        var sums: [Int] = [0] + nums
-        for i in 1..<sums.count {
-            sums[i] += sums[i-1]
-        }
-        print(sums)
-        for i in 1...nums.count {
-            for j in 1...min(m, i) {
-                for k in 0..<i {
-                    let a = cache[.init(k, j-1)] ?? Int.max
-                    let b = sums[i]-sums[k]
-                    if cache[.init(i, j)] == nil {
-                        cache[.init(i, j)] = max(a, b)
-                    } else {
-                        cache[.init(i, j)] = min(max(a, b), cache[.init(i, j)]!)
-                    }
+        var l = nums.max()!, r = nums.reduce(0, +)
+        
+        while l <= r {
+            let mid = l + (r - l) / 2
+            var s = 0, g = 0
+            for n in nums {
+                if s + n <= mid {
+                    s += n
+                } else {
+                    g += 1
+                    s = n
                 }
             }
+            if s > 0 { g += 1 }
+            if g <= m {
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
         }
-        return cache[.init(nums.count, m)]!
+        return l
     }
-    
-    struct Key: Hashable {
-        var i: Int
-        var j: Int
-        init(_ i: Int, _ j: Int) {
-            self.i = i
-            self.j = j
-        }
-    }
-    
 }
 
 let solution = Solution()
