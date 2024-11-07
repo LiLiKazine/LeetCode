@@ -46,6 +46,56 @@
 
 class Solution {
     func minimumEffortPath(_ heights: [[Int]]) -> Int {
+        let row = heights.count, col = heights[0].count
+        let dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        func dfs(_ i: Int, _ j: Int, _ x: Int, _ g: inout [[Int]]) -> Bool {
+            if g[i][j] > 0 || (i == row - 1 && j == col - 1) {
+                return true
+            }
+            if g[i][j] < 0 {
+                return false
+            }
+            g[i][j] = 2 //traversing
+            var res = false
+            for dir in dirs {
+                let next_i = i + dir[0], next_j = j + dir[1]
+                guard next_i >= 0 && next_j >= 0 && next_i < row && next_j < col else {
+                    continue
+                }
+                if g[next_i][next_j] == 2 {
+                    continue
+                }
+                if abs(heights[next_i][next_j] - heights[i][j]) > x {
+                    continue
+                }
+                res = res || dfs(next_i, next_j, x, &g)
+                if res {
+                    break
+                }
+            }
+            g[i][j] = res ? 1 : -1
+            return res
+        }
+        
+        
+        let m = heights.map { $0.max()! }.max()!
+        var l = 0, r = m
+        while l <= r {
+            let x = l + (r - l) / 2
+            var g = Array(repeating: Array(repeating: 0, count: col), count: row)
+            if dfs(0, 0, x, &g) {
+                r = x - 1
+            } else {
+                l = x + 1
+            }
+        }
+        return l
+    }
+}
+
+/*
+class Solution {
+    func minimumEffortPath(_ heights: [[Int]]) -> Int {
         guard heights.count > 0 else {
             return 0
         }
@@ -99,25 +149,12 @@ class Solution {
         }
     }
 }
+     */
 
 let heights = [[4,3,4,10,5,5,9,2],[10,8,2,10,9,7,5,6],[5,8,10,10,10,7,4,2],[5,1,3,1,1,3,1,9],[6,4,10,6,10,9,4,6]]
 let solution = Solution()
 let ans = solution.minimumEffortPath(heights)
 ans
 
-/*
-    let length = heights.count
-    var dp: [[Int]] = Array(repeating: Array(repeating: Int.max, count: length), count: length), dirs: [[Int]] = [[1, 0], [0, 1], [-1, 0], [0, -1]]
-    for i in 0..<length {
-        for j in 0..<length {
-            let height = heights[i][j]
-            for k in 0..<dirs.count {
-                let dir = dirs[k], x = i + dir[0], y = j + dir[1]
-                if 0 <= x && x < length && 0 <= y && y < length {
-                    dp[i][j] = min(dp[x][y] + height, dp[i][j])
-                }
-            }
-        }
-    }
- */
+
 //: [Next](@next)
