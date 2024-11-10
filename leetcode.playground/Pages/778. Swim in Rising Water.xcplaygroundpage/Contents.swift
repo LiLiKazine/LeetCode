@@ -42,6 +42,56 @@
 
 class Solution {
     func swimInWater(_ grid: [[Int]]) -> Int {
+        let row = grid.count, column = grid[0].count
+        let directions: [[Int]] = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+        var l = 0, r = grid.flatMap{ $0 }.max()!
+        
+        func dfs(_ i: Int, _ j: Int, _ t: Int, g: inout [[Int]]) -> Bool {
+            if i == row - 1 && j == column - 1 {
+                return true
+            }
+            if g[i][j] == 2 { // visited
+                return false
+            }
+            if g[i][j] != -1 {
+                return g[i][j] == 1
+            }
+            g[i][j] = 2
+            var res = false
+            defer {
+                g[i][j] = res ? 1 : 0
+            }
+            if grid[i][j] <= t {
+                for dir in directions {
+                    let next_i = i + dir[0], next_j = j + dir[1]
+                    guard next_i >= 0 && next_i < row && next_j >= 0 && next_j < column else {
+                        continue
+                    }
+                    guard grid[next_i][next_j] <= t else {
+                        continue
+                    }
+                    res = res || dfs(next_i, next_j, t, g: &g)
+                }
+            }
+            return res
+        }
+        
+        while l <= r {
+            let t = l + (r - l) / 2
+            var g = Array(repeating: Array(repeating: -1, count: column), count: row)
+            if dfs(0, 0, t, g: &g) {
+                r = t - 1
+            } else {
+                l = t + 1
+            }
+        }
+        return l
+    }
+}
+
+/*
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
         guard grid.count > 0 else {
             return -1
         }
@@ -94,6 +144,7 @@ class Solution {
         }
     }
 }
+ */
 
 
 let grid = [[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]
