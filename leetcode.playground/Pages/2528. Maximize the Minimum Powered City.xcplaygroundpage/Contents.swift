@@ -54,6 +54,48 @@ import Foundation
 class Solution {
     func maxPower(_ stations: [Int], _ r: Int, _ k: Int) -> Int {
         
+        let n = stations.count
+        
+        var prefix = [0]
+        for station in stations {
+            prefix.append(prefix.last! + station)
+        }
+        
+        var power = Array(repeating: 0, count: n), mn = Int.max
+        for i in 0..<n {
+            let lo = max(0, i - r), hi = min(i + r + 1, n)
+            power[i] = prefix[hi] - prefix[lo]
+            mn = min(mn, power[i])
+        }
+       
+        func check(_ x: Int) -> Bool {
+            var sumD = 0, need = 0, dif = Array(repeating: 0, count: n)
+            for i in 0..<n {
+                sumD += dif[i]
+                let m = x - power[i] - sumD
+                if m > 0 {
+                    need += m
+                    if need > k {
+                        return false
+                    }
+                    sumD += m
+                    if i + r * 2 + 1 < n {
+                        dif[i + r * 2 + 1] -= m
+                    }
+                }
+            }
+            return true
+        }
+        var left = mn, right = mn + k + 1
+        while left + 1 < right {
+            let mid = left + (right - left) / 2
+            if check(mid) {
+                left = mid
+            } else {
+                right = mid
+            }
+        }
+        return left
     }
 }
 
