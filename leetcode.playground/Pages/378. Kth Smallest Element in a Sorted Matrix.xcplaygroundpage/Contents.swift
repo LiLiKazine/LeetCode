@@ -23,36 +23,31 @@
  */
 
 class Solution {
-    func kthSmallest(_ matrix: [[Int]], _ k: Int) -> Int {
-        let numOfRow = matrix.first?.count ?? 0
-        let numOfColumn = matrix.count
-        var left = matrix[0][0],
-        right = matrix[numOfColumn-1][numOfRow-1]
-        
-        while left < right {
-            let mid = left + (right - left) / 2
-            let res = checkSum(matrix, mid, k)
-            if res {
-                left = mid + 1
-            } else {
-                right = mid
-            }
-        }
-        return left
-    }
     
-    func checkSum(_ matrix: [[Int]], _ mid: Int, _ k: Int) -> Bool {
-        var sum = 0
-        for i in 0..<matrix.count {
-            for j in 0..<matrix[i].count {
-                if matrix[i][j] <= mid {
-                   sum += 1
+    func kthSmallest(_ matrix: [[Int]], _ k: Int) -> Int {
+        let n = matrix.count
+        func check(_ x: Int) -> Bool {//至少有k个数不大于x
+            var res = 0, r = n - 1, c = 0
+            while r >= 0, c < n {
+                if matrix[r][c] <= x {
+                    res += r + 1
+                    c += 1
                 } else {
-                    break
+                    r -= 1
                 }
             }
+            return res >= k
         }
-        return sum < k
+        var l = matrix[0][0], r = matrix[n-1][n-1]
+        while l <= r {
+            let mid = l + (r - l) / 2
+            if check(mid) {
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
+        }
+        return l
     }
 }
 
