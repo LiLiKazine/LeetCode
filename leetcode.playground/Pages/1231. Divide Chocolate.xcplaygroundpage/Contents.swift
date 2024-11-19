@@ -41,79 +41,32 @@ import Foundation
 
 class Solution {
     func maximizeSweetness(_ sweetness: [Int], _ k: Int) -> Int {
-        
-        var left = sweetness.min()!, right = sweetness.reduce(0, +) / (k + 1)
-        
-        while left < right {
-            let mid = (left + right + 1) / 2
-            
+        var l = 0, r = sweetness.reduce(0, +) + 1
+        func check(_ x: Int) -> Bool {
             var cur = 0
             var peopleWithChocolate = 0
-            
             for sweet in sweetness {
                 cur += sweet
-                if cur >= mid {
+                if cur >= x {
                     cur = 0
                     peopleWithChocolate += 1
                 }
+                if peopleWithChocolate > k {
+                    return true
+                }
             }
-            if peopleWithChocolate >= k + 1 {
-                left = mid
+            return false
+        }
+        while l + 1 < r {
+            let mid = l + (r - l) / 2
+            if check(mid) {
+                l = mid
             } else {
-                right = mid - 1
+                r = mid
             }
         }
-        return right
+        return l
     }
 }
 
-/*
- class Solution {
-     public int maximizeSweetness(int[] sweetness, int k) {
-         // 初始化左右边界。
-         // left = 1 并且 right = total 甜度 / number of people.
-         int numberOfPeople = k + 1;
-         int left = Arrays.stream(sweetness).min().getAsInt();
-         int right = Arrays.stream(sweetness).sum() / numberOfPeople;
-
-         while (left < right) {
-             // 获取左右边界之前的中间值索引。
-             // cur_sweetness 表示当前人的总甜度。
-             // people_with_chocolate 表示有一块巧克力甜度大于等于 mid 的人数。
-             int mid = (left + right + 1) / 2;
-             int curSweetness = 0;
-             int peopleWithChocolate = 0;
-             
-             // 开始为当前人分配块。
-             for (int s : sweetness) {
-                 curSweetness += s;
-                 
-                 // 当他的总甜度不小于 mid，说明我们
-                 // 已经结束了对他的分配，继续处理下一个人
-                 if (curSweetness >= mid) {
-                     peopleWithChocolate += 1;
-                     curSweetness = 0;
-                 }
-             }
-             
-             // 检查我们是否成功给了每个人一块甜度不小于 mid 的巧克力
-             // 并且缩小一半搜索范围。
-             if (peopleWithChocolate >= numberOfPeople) {
-                 left = mid;
-             } else {
-                 right = mid - 1;
-             }
-         }
-         
-         // 一旦左右边界相遇，我们找到了目标值
-         // 就是我们能够得到的最大甜度。
-         return right;
-     }
- }
-
- 作者：力扣官方题解
- 链接：https://leetcode.cn/problems/divide-chocolate/solutions/2419970/fen-xiang-qiao-ke-li-by-leetcode-solutio-yzf7/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- */
 //: [Next](@next)
