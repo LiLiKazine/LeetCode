@@ -73,10 +73,10 @@ class Solution {
         var ans = [Int](), edge = n - 1
         
         func find(_ i: Int) -> Int {
-            if i == union[i] {
-                return i
+            if i != union[i] {
+                union[i] = find(union[i])
             }
-            return find(union[i])
+            return union[i]
         }
         
         for query in queries {
