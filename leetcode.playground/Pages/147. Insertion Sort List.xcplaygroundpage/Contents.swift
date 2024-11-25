@@ -37,64 +37,29 @@ public class ListNode {
     }
 }
 
-/*
- 
- 
- class Solution {
-     public ListNode insertionSortList(ListNode head) {
-         if (head == null) {
-             return head;
-         }
-         ListNode dummyHead = new ListNode(0);
-         dummyHead.next = head;
-         ListNode lastSorted = head, curr = head.next;
-         while (curr != null) {
-             if (lastSorted.val <= curr.val) {
-                 lastSorted = lastSorted.next;
-             } else {
-                 ListNode prev = dummyHead;
-                 while (prev.next.val <= curr.val) {
-                     prev = prev.next;
-                 }
-                 lastSorted.next = curr.next;
-                 curr.next = prev.next;
-                 prev.next = curr;
-             }
-             curr = lastSorted.next;
-         }
-         return dummyHead.next;
-     }
- }
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/insertion-sort-list/solution/dui-lian-biao-jin-xing-cha-ru-pai-xu-by-leetcode-s/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
  
 class Solution {
     func insertionSortList(_ head: ListNode?) -> ListNode? {
-        var sentry: ListNode? = ListNode(0), tail = head, cur = head?.next
-        sentry?.next = head
-        
+        let sentry = ListNode(0)
+        sentry.next = head
+        var p = head, cur = head?.next
         while cur != nil {
-            if tail!.val <= cur!.val {
-                tail = tail?.next
+            if p!.val <= cur!.val {
+                p = p?.next
             } else {
-                var node = sentry, next = node?.next
-                while next!.val < cur!.val {
-                    node = node?.next
-                    next = node?.next
+                var prev = sentry
+                while prev.next != nil && prev.next!.val <= cur!.val {
+                    prev = prev.next!
                 }
-                tail?.next = cur?.next
-                node?.next = cur
-                cur?.next = next
+                p?.next = cur?.next
+                cur?.next = prev.next
+                prev.next = cur
             }
-            cur = tail?.next
+            cur = p?.next
         }
-        return sentry?.next
+        return sentry.next
     }
 }
+
 
 //: [Next](@next)
