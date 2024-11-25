@@ -54,32 +54,30 @@ public class Node {
 
 class Solution {
     func insert(_ head: Node?, _ insertVal: Int) -> Node? {
-        if head == nil {
-            let node = Node(insertVal)
-            node.next = node
+        let node = Node(insertVal)
+        node.next = node
+        guard let head else {
             return node
         }
-        
-        var current = head, isEqual = false
-        
-        while current!.val <= current!.next!.val {
-            current = current?.next
-            if current == head {
-                isEqual = true
-                break
-            }
+        var dummy = head, flag = false, mx = head.val, mi = head.val
+        while dummy.next != head {
+            dummy = dummy.next!
+            mx = max(mx, dummy.val)
+            mi = min(mi, dummy.val)
         }
-        var sentry = current
-        while current!.next!.val < insertVal && !isEqual {
-            current = current?.next
-            if current == sentry {
-                break
-            }
+        if mx == mi {
+            node.next = head.next
+            head.next = node
+            return head
         }
-        let node = current?.next
-        current?.next = Node(insertVal)
-        current?.next?.next = node
-        
+        while !(dummy.val == mx && dummy.next!.val == mi)  {
+            dummy = dummy.next!
+        }
+        while !(insertVal >= mx || insertVal <= mi) && !(dummy.val <= insertVal && dummy.next!.val >= insertVal) {
+            dummy = dummy.next!
+        }
+        node.next = dummy.next
+        dummy.next = node
         return head
     }
 }
