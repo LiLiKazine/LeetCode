@@ -30,31 +30,35 @@
  */
 
 class Solution {
+    
     func networkDelayTime(_ times: [[Int]], _ N: Int, _ K: Int) -> Int {
         let inf = Int.max / 2
-        var g: [[Int]] = Array(repeating: Array(repeating: inf, count: N), count: N)
-        for t in times {
-            let x = t[0] - 1, y = t[1] - 1
-            g[x][y] = t[2]
+        var g = Array(repeating: Array(repeating: inf, count: N), count: N)
+        for time in times {
+            let u = time[0] - 1, v = time[1] - 1, w = time[2]
+            g[u][v] = w
         }
-        var dist: [Int] = Array(repeating: inf, count: N), used = Array(repeating: false, count: N)
-        dist[K - 1] = 0
-        for _ in 0..<N {
-            var x = -1
-            for y in 0..<N {
-                if !used[y] && (x == -1 || dist[y] < dist[x]) {
-                    x = y
+        var dist = Array(repeating: inf, count: N), done = Array(repeating: false, count: N)
+        dist[K-1] = 0
+        while true {
+            var u = -1
+            for i in 0..<N {
+                if !done[i] && (u < 0 || dist[i] < dist[u]) {
+                    u = i
                 }
             }
-            used[x] = true
-            for y in 0..<N {
-                dist[y] = min(dist[y], dist[x] + g[x][y])
+            if u < 0 || dist[u] >= inf {
+                break
+            }
+            
+            done[u] = true
+            for v in 0..<N {
+                dist[v] = min(dist[v], dist[u] + g[u][v])
             }
         }
-        let ans = dist.max() ?? inf
-        return ans == inf ? -1 : ans
+        let m = dist.max()!
+        return m >= inf ? -1 : m
     }
- 
 }
 
 
