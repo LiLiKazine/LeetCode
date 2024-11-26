@@ -31,52 +31,25 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     ListNode *reverseBetween(ListNode *head, int left, int right) {
-         // 设置 dummyNode 是这一类问题的一般做法
-         ListNode *dummyNode = new ListNode(-1);
-         dummyNode->next = head;
-         ListNode *pre = dummyNode;
-         for (int i = 0; i < left - 1; i++) {
-             pre = pre->next;
-         }
-         ListNode *cur = pre->next;
-         ListNode *next;
-         for (int i = 0; i < right - left; i++) {
-             next = cur->next;
-             cur->next = next->next;
-             next->next = pre->next;
-             pre->next = next;
-         }
-         return dummyNode->next;
-     }
- };
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/reverse-linked-list-ii/solution/fan-zhuan-lian-biao-ii-by-leetcode-solut-teyq/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
-
 
 class Solution {
     func reverseBetween(_ head: ListNode?, _ left: Int, _ right: Int) -> ListNode? {
-        var sentry = ListNode(0, head), pre: ListNode? = sentry
+        let sentry = ListNode(0, head)
+        var p0: ListNode? = sentry
         for _ in 0..<left-1 {
-            pre = pre?.next
+            p0 = p0?.next
         }
-        var cur = pre?.next, next: ListNode?
-        for _ in 0..<right - left {
-            next = cur?.next
-            cur?.next = next?.next
-            next?.next = pre?.next
-            pre?.next = next
+        var prev: ListNode? = nil, cur = p0?.next
+        let len = right - left + 1
+        for _ in 0..<len {
+            let nxt = cur?.next
+            cur?.next = prev
+            prev = cur
+            cur = nxt
         }
         
+        p0?.next?.next = cur
+        p0?.next = prev
         return sentry.next
     }
 }
