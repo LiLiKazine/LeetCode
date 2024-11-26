@@ -29,15 +29,14 @@ public class ListNode {
 
 class Solution {
     func reverseList(_ head: ListNode?) -> ListNode? {
-        let origin = ListNode(0)
-        origin.next = head
-        while head?.next != nil {
-            let temp = head?.next
-            head?.next = temp?.next
-            temp?.next = origin.next
-            origin.next = temp
+        var prev: ListNode? = nil, cur = head
+        while cur != nil {
+            let nxt = cur?.next
+            cur?.next = prev
+            prev = cur
+            cur = nxt
         }
-        return origin.next
+        return prev
     }
 }
 
