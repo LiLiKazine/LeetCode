@@ -42,18 +42,28 @@ public class ListNode {
 
 class Solution {
     func swapPairs(_ head: ListNode?) -> ListNode? {
-        let sentry: ListNode? = ListNode(0)
-        sentry?.next = head
-        var node = sentry
-        while node?.next != nil && node?.next?.next != nil {
-            let temp = node?.next
-            node?.next = node?.next?.next
-            temp?.next = node?.next?.next
-            node?.next?.next = temp
-            node = node?.next?.next
-            
+        var n = 0, cur = head
+        while cur != nil {
+            n += 1
+            cur = cur?.next
         }
-        return sentry?.next
+        let sentry = ListNode(0, head)
+        var p0: ListNode? = sentry
+        while n > 1 {
+            n -= 2
+            var prev: ListNode? = nil, cur = p0?.next
+            for _ in 0..<2 {
+                let nxt = cur?.next
+                cur?.next = prev
+                prev = cur
+                cur = nxt
+            }
+            p0?.next?.next = cur
+            var p1 = p0?.next
+            p0?.next = prev
+            p0 = p1
+        }
+        return sentry.next
     }
 }
 
