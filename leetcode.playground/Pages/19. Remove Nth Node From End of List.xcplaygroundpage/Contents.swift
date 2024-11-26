@@ -44,26 +44,18 @@ public class ListNode {
 
 class Solution {
     func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
-        guard var node = head else {
-            return head
+        var tail = head
+        for _ in 0..<n {
+            tail = tail?.next
         }
-        var stack = [head!]
-        while node.next != nil {
-            node = node.next!
-            if stack.count >= n + 1 {
-                stack.removeFirst()
-            }
-            stack.append(node)
+        let sentry = ListNode(0, head)
+        var prev: ListNode? = sentry
+        while tail != nil {
+            tail = tail?.next
+            prev = prev?.next
         }
-        if stack.count == n {
-            return head?.next
-        }
-        if stack.count >= 3 {
-            stack[0].next = stack[2]
-        } else {
-            stack[0].next = nil
-        }
-        return head
+        prev?.next = prev?.next?.next
+        return sentry.next
     }
 }
 
