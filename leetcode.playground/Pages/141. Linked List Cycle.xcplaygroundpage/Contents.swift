@@ -44,27 +44,13 @@
  
  */
 
-
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.next = nil
-    }
-}
-
-
 class Solution {
     func hasCycle(_ head: ListNode?) -> Bool {
-        guard head != nil else {
-            return false
-        }
         var fast = head, slow = head
-        while fast?.next?.next != nil && slow?.next != nil {
+        while fast != nil {
             fast = fast?.next?.next
             slow = slow?.next
-            if fast?.val == slow?.val {
+            if fast != nil && fast === slow {
                 return true
             }
         }
