@@ -18,39 +18,29 @@
  
  */
 
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init() { self.val = 0; self.next = nil; }
-    public init(_ val: Int) { self.val = val; self.next = nil; }
-    public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
-}
-
 class Solution {
     func reorderList(_ head: ListNode?) {
-        guard var node = head else {
-            return
+        var fast = head, slow = head
+        while fast?.next != nil {
+            fast = fast?.next?.next
+            slow = slow?.next
         }
-        var sentry = ListNode(0, node)
-        var nodes = [node]
-        while node.next != nil {
-            node = node.next!
-            nodes.append(node)
+        var prev: ListNode? = nil, cur = slow
+        while cur != nil {
+            let nxt = cur?.next
+            cur?.next = prev
+            prev = cur
+            cur = nxt
         }
-        while !nodes.isEmpty {
-            if nodes.count > 1 {
-                let head = nodes.removeFirst()
-                let tail = nodes.removeLast()
-                sentry.next = head
-                head.next = tail
-                tail.next = nil
-                sentry = tail
-            } else {
-                let node = nodes.removeFirst()
-                node.next = nil
-                sentry.next = node
-            }
+        var p1 = head, p2 = prev
+        while p2 != nil {
+            let nxt1 = p1?.next, nxt2 = p2?.next
+            p1?.next = p2
+            p2?.next = nxt1
+            p1 = nxt1
+            p2 = nxt2
         }
+        p1?.next?.next = nil
     }
 }
 
