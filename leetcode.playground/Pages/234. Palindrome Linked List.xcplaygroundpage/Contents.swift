@@ -20,47 +20,32 @@
  */
 
 
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.next = nil
-    }
-}
-
 class Solution {
     func isPalindrome(_ head: ListNode?) -> Bool {
-        if head?.next == nil {
-            return true
-        }
-        var sentry: ListNode?
-        var fast = head, slow = head
-        while fast?.next?.next != nil {
+        var slow = head, fast = head
+        while fast?.next != nil {
             fast = fast?.next?.next
             slow = slow?.next
         }
-        sentry = slow
-        let tail = sentry?.next
-        while tail?.next != nil {
-            let temp = sentry?.next
-            sentry?.next = tail?.next
-            tail?.next = tail?.next?.next
-            sentry?.next?.next = temp
+        var prev: ListNode? = nil, cur = slow
+        while cur != nil {
+            let nxt = cur?.next
+            cur?.next = prev
+            prev = cur
+            cur = nxt
         }
-        fast = slow?.next
-        slow = head
-        while fast != nil && slow != nil {
-            if fast?.val == slow?.val {
-                fast = fast?.next
-                slow = slow?.next
-                continue
+        var n1 = head, n2 = prev
+        while n2 != nil {
+            if n1!.val != n2!.val {
+                return false
             }
-            return false
+            n1 = n1?.next
+            n2 = n2?.next
         }
         return true
     }
 }
+
 //[1,3,2,4,3,2,1]
 let root = ListNode(1)
 root.next = ListNode(3)
