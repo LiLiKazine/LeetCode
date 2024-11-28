@@ -54,41 +54,13 @@
  
  */
 
-/*
- 
- public class Solution {
-     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-         if (headA == null || headB == null) {
-             return null;
-         }
-         ListNode pA = headA, pB = headB;
-         while (pA != pB) {
-             pA = pA == null ? headB : pA.next;
-             pB = pB == null ? headA : pB.next;
-         }
-         return pA;
-     }
- }
- 
- */
-
 class Solution {
     func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
         var pA = headA, pB = headB
-        guard pA != nil && pB != nil else {
-            return nil
-        }
-        while !(pA == nil && pB == nil) && pA !== pB {
-            if pA == nil  {
-                pA = headB
-            } else {
-                pA = pA?.next
-            }
-            if pB == nil {
-                pB = headA
-            } else {
-                pB = pB?.next
-            }
+        
+        while pA !== pB {
+            pA = pA == nil ? headB : pA?.next
+            pB = pB == nil ? headA : pB?.next
         }
         return pA
     }
