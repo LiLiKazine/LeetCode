@@ -44,63 +44,41 @@ public class ListNode {
 
 class Solution {
     func sortList(_ head: ListNode?) -> ListNode? {
-        guard let head else { return nil }
-        var len = 0, cur: ListNode? = head
-        while cur != nil {
-            len += 1
+        if head == nil || head?.next == nil { return head }
+        var fast = head?.next?.next, slow = head
+        while fast?.next != nil {
+            fast = fast?.next?.next
+            slow = slow?.next
+        }
+        let l1 = head, l2 = slow?.next
+        slow?.next = nil
+        return merge(sortList(l1), sortList(l2))
+    }
+    
+    
+    func merge(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let sentry = ListNode(0)
+        var cur: ListNode? = sentry, l1 = l1, l2 = l2
+        while l1 != nil || l2 != nil {
+            if l1 == nil {
+                cur?.next = l2
+                break
+            }
+            if l2 == nil {
+                cur?.next = l1
+                break
+            }
+            
+            if l1!.val < l2!.val {
+                cur?.next = l1
+                l1 = l1?.next
+            } else {
+                cur?.next = l2
+                l2 = l2?.next
+            }
             cur = cur?.next
         }
-        return sortList(head, len: len)
-    }
-    
-    func sortList(_ head: ListNode, len: Int) -> ListNode {
-        
-        if len > 2 {
-            let half = len / 2
-            var prev: ListNode? = nil, node = head, leftover = half
-            while leftover > 0, let next = node.next {
-                prev = node
-                node = next
-                leftover -= 1
-            }
-            prev?.next = nil
-            let part1 = sortList(head, len: half)
-            let part2 = sortList(node, len: len - half)
-            return merge(part1, part2)
-        } else if let next = head.next {
-            if next.val < head.val {
-                next.next = head
-                head.next = nil
-                return next
-            } else {
-                next.next = nil
-                return head
-            }
-        } else {
-            return head
-        }
-    }
-    
-    func merge(_ node1: ListNode, _ node2: ListNode) -> ListNode {
-        let sentry = ListNode(0)
-        var tail = sentry
-        var node1: ListNode? = node1, node2: ListNode? = node2
-        while let v1 = node1?.val, let v2 = node2?.val {
-            if v1 < v2 {
-                tail.next = node1
-                node1 = node1?.next
-            } else {
-                tail.next = node2
-                node2 = node2?.next
-            }
-            tail = tail.next!
-        }
-        if node1 != nil {
-            tail.next = node1
-        } else {
-            tail.next = node2
-        }
-        return sentry.next!
+        return sentry.next
     }
 }
 
