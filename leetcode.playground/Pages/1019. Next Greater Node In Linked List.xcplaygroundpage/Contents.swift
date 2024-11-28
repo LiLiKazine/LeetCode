@@ -34,43 +34,27 @@
 
 class Solution {
     func nextLargerNodes(_ head: ListNode?) -> [Int] {
-        
-        var ans: [Int] = []
-        
-        let sentry = ListNode()
-        
-        var current = head
-        
-        while let node = current {
-            current = node.next
-            let temp = sentry.next
-            sentry.next = node
-            node.next = temp
+        var stk = [Int](), cur = head
+        while cur != nil {
+            stk.append(cur!.val)
+            cur = cur?.next
         }
-        
-        var stack: [Int] = []
-                
-        var pointer = sentry.next
-        
-        while let node = pointer {
-            
-            pointer = pointer?.next
-            
-            while let top = stack.popLast() {
-                if node.val < top {
-                    ans.append(top)
-                    stack.append(top)
-                    stack.append(node.val)
-                    break
-                }
+        let n = stk.count
+        var mono = [stk[n-1]]
+        stk[n-1] = 0
+        for i in stride(from: n - 2, through: 0, by: -1) {
+            let cur = stk[i]
+            while mono.count > 0 && mono[0] <= cur {
+                mono.removeFirst()
             }
-            if stack.isEmpty {
-                ans.append(0)
-                stack.append(node.val)
+            if mono.isEmpty {
+                stk[i] = 0
+            } else {
+                stk[i] = mono[0]
             }
+            mono.insert(cur, at: 0)
         }
-        return ans.reversed()
-
+        return stk
     }
 }
 
