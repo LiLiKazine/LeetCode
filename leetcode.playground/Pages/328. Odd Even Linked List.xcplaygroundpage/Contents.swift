@@ -37,15 +37,16 @@ public class ListNode {
  
 class Solution {
     func oddEvenList(_ head: ListNode?) -> ListNode? {
-        var oddTail = head, evenTail = head?.next
-        while evenTail?.next != nil {
-            let temp = oddTail?.next
-            oddTail?.next = evenTail?.next
-            evenTail?.next = evenTail?.next?.next
-            oddTail?.next?.next = temp
-            oddTail = oddTail?.next
-            evenTail = evenTail?.next
+        var odd = head, even = head?.next
+        let sentry = ListNode(0, even)
+        // 1 2 3 4 5 6
+        while even?.next != nil {
+            odd?.next = even?.next
+            even?.next = even?.next?.next
+            odd = odd?.next
+            even = even?.next
         }
+        odd?.next = sentry.next
         return head
     }
 }
