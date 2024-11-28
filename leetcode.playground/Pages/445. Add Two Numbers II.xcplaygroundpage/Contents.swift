@@ -20,51 +20,34 @@
 
 import Foundation
 
-
-// Definition for singly-linked list.
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.next = nil
-    }
-}
-
 class Solution {
     func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        var stack1: [ListNode] = [], stack2: [ListNode] = [], l1 = l1, l2 = l2
-        while l1 != nil {
-            stack1.append(l1!)
-            l1 = l1?.next
-        }
-        while l2 != nil {
-            stack2.append(l2!)
-            l2 = l2?.next
-        }
-        var temp: Int = 0
-        var res: [Int] = []
-        while !stack1.isEmpty || !stack2.isEmpty {
-            let v1 = stack1.popLast()?.val ?? 0, v2 = stack2.popLast()?.val ?? 0
-            let val = (temp + v1 + v2) % 10
-            temp = (temp + v1 + v2) / 10
-            res.insert(val, at: 0)
-        }
-        if temp != 0 {
-            res.insert(temp, at: 0)
-        }
-        var ans: ListNode?, tail: ListNode?
-        for val in res {
-            if ans == nil {
-                ans = ListNode(val)
-                tail = ans
-            } else {
-                let node = ListNode(val)
-                tail?.next = node
-                tail = tail?.next
+        func reverse(_ p: ListNode?) -> ListNode? {
+            var prev: ListNode? = nil, cur = p
+            while cur != nil {
+                let nxt = cur?.next
+                cur?.next = prev
+                prev = cur
+                cur = nxt
             }
+            return prev
         }
-        return ans
+        var l1 = reverse(l1), l2 = reverse(l2)
+        let sentry = ListNode(0)
+        var n = 0, tail: ListNode? = sentry
+        while l1 != nil || l2 != nil {
+            let v1 = l1?.val ?? 0, v2 = l2?.val ?? 0
+            let sum = v1 + v2 + n
+            n = sum / 10
+            let val = sum % 10
+            tail?.next = ListNode(val)
+            tail = tail?.next
+            l1 = l1?.next, l2 = l2?.next
+        }
+        if n > 0 {
+            tail?.next = ListNode(n)
+        }
+        return reverse(sentry.next)
     }
 }
 
