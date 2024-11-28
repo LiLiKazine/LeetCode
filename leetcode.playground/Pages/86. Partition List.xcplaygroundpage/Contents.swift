@@ -14,34 +14,25 @@
  Output: 1->2->2->4->3->5
  
  */
-//
-//public class ListNode {
-//    public var val: Int
-//    public var next: ListNode?
-//    public init(_ val: Int) {
-//        self.val = val
-//        self.next = nil
-//    }
-//}
- 
+
 class Solution {
     func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
         let sentrySmall = ListNode(0), sentryLarge = ListNode(0)
-        sentrySmall.next = head
-        
-        var small: ListNode? = sentrySmall, large: ListNode? = sentryLarge
-        while small?.next != nil {
-            if small!.next!.val >= x {
-                large?.next = small?.next
-                large = large?.next
-                small?.next = large?.next
-                large?.next = nil
+        var sTail: ListNode? = sentrySmall, lTail: ListNode? = sentryLarge
+        var cur = head
+        while cur != nil {
+            let val = cur!.val
+            if val < x {
+                sTail?.next = cur
+                sTail = cur
             } else {
-                small = small?.next
+                lTail?.next = cur
+                lTail = cur
             }
+            cur = cur?.next
         }
-        
-        small?.next = sentryLarge.next
+        lTail?.next = nil
+        sTail?.next = sentryLarge.next
         return sentrySmall.next
     }
 }
