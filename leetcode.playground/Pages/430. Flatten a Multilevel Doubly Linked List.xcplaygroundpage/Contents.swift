@@ -98,8 +98,8 @@ class Solution {
                 head?.child = nil
                 childTail?.next = nxt
                 nxt?.prev = childTail
-                tail = head
-                head = childTail
+                tail = childTail
+                head = nxt
             } else {
                 tail = head
                 head = head?.next
