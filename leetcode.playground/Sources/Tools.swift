@@ -4,6 +4,17 @@ public class Tools {
     
 }
 
+public class Node {
+    public var val: Int
+    public var next: Node?
+    public var random: Node?
+    public init(_ val: Int) {
+        self.val = val
+        self.next = nil
+        self.random = nil
+    }
+}
+
 public class TreeNode {
     public var val: Int
     public var left: TreeNode?
