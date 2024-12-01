@@ -38,17 +38,104 @@
 import Foundation
 
 class LFUCache {
+    
+    class ListNode : CustomStringConvertible {
+        let key: Int
+        var value: Int
+        var freq: Int
+        var next: ListNode?
+        var prev: ListNode?
+        init(key: Int, value: Int, freq: Int = 1, next: ListNode? = nil, prev: ListNode? = nil) {
+            self.key = key
+            self.value = value
+            self.freq = freq
+            self.next = next
+            self.prev = prev
+        }
+        
+        var description: String {
+            "key: \(key), value: \(value), freq: \(freq)"
+        }
+    }
+    
+    let capacity: Int
+    
+    var sentryList = [ListNode(key: 0, value: 0)]
+    
+    var cache: [Int: ListNode] = [:]
 
     init(_ capacity: Int) {
-        
+        self.capacity = capacity
     }
     
     func get(_ key: Int) -> Int {
-        return 0
+        guard let node = cache[key] else {
+            // print("get \(key)", -1)
+            return -1
+        }
+        read(node)
+        // print("get \(key)", cache)
+        return node.value
     }
     
     func put(_ key: Int, _ value: Int) {
-        
+        if let node = cache[key] {
+            node.value = value
+            read(node)
+        } else {
+            let node = ListNode(key: key, value: value)
+            if cache.count == capacity {
+                remove()
+            }
+            insert(node)
+        }
+        // print("put \(key):\(value)", cache)
+    }
+    
+    func remove() {
+        // print("remove", sentryList.map(\.next))
+        for i in 1..<sentryList.count {
+            let sentry = sentryList[i]
+            guard let tail = sentry.prev, tail !== sentry else {
+                continue
+            }
+            tail.prev?.next = tail.next
+            tail.next?.prev = tail.prev
+            cache.removeValue(forKey: tail.key)
+//            var cur = sentry
+//            while cur.next != nil {
+//                cur = cur.next!
+//            }
+//            guard cur !== sentry else {
+//                continue
+//            }
+//            cur.prev?.next = nil
+//            cache.removeValue(forKey: cur.key)
+            break
+        }
+    }
+    
+    func read(_ node: ListNode) {
+        node.freq += 1
+        node.prev?.next = node.next
+        node.next?.prev = node.prev
+        insert(node)
+    }
+    
+    func insert(_ node: ListNode) {
+        if sentryList.count <= node.freq {
+            let sentry = ListNode(key: 0, value: 0)
+            sentry.prev = sentry
+            sentry.next = sentry
+            sentryList.append(sentry)
+        }
+        let sentry = sentryList[node.freq]
+        let nxt = sentry.next
+        sentry.next = node
+        node.prev = sentry
+        node.next = nxt
+        nxt?.prev = node
+        cache[node.key] = node
     }
 }
 
