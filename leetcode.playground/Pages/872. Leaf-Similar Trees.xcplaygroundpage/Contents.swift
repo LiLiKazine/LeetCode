@@ -49,25 +49,21 @@
 
 class Solution {
     func leafSimilar(_ root1: TreeNode?, _ root2: TreeNode?) -> Bool {
-        let leave1 = leaf(root1), leave2 = leaf(root2)
-        return leave1 == leave2
+        var leaves1: [Int] = []
+        var leaves2: [Int] = []
+        dfs(root1, leaves: &leaves1)
+        dfs(root2, leaves: &leaves2)
+        return leaves1 == leaves2
     }
     
-    private func leaf(_ node: TreeNode?) -> [Int] {
-        guard let node = node else {
-            return []
-        }
+    func dfs(_ node: TreeNode?, leaves: inout [Int]) {
+        guard let node else { return }
         if node.left == nil && node.right == nil {
-            return [node.val]
+            leaves.append(node.val)
+            return
         }
-        var res: [Int] = []
-        if let left = node.left {
-            res.append(contentsOf: leaf(left))
-        }
-        if let right = node.right {
-            res.append(contentsOf: leaf(right))
-        }
-        return res
+        dfs(node.left, leaves: &leaves)
+        dfs(node.right, leaves: &leaves)
     }
 }
 
