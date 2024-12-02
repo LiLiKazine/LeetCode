@@ -40,51 +40,6 @@
  
  */
 
-/*
- 
- class Solution {
-     public int sumNumbers(TreeNode root) {
-         if (root == null) {
-             return 0;
-         }
-         int sum = 0;
-         Queue<TreeNode> nodeQueue = new LinkedList<TreeNode>();
-         Queue<Integer> numQueue = new LinkedList<Integer>();
-         nodeQueue.offer(root);
-         numQueue.offer(root.val);
-         while (!nodeQueue.isEmpty()) {
-             TreeNode node = nodeQueue.poll();
-             int num = numQueue.poll();
-             TreeNode left = node.left, right = node.right;
-             if (left == null && right == null) {
-                 sum += num;
-             } else {
-                 if (left != null) {
-                     nodeQueue.offer(left);
-                     numQueue.offer(num * 10 + left.val);
-                 }
-                 if (right != null) {
-                     nodeQueue.offer(right);
-                     numQueue.offer(num * 10 + right.val);
-                 }
-             }
-         }
-         return sum;
-     }
- }
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/solution/qiu-gen-dao-xie-zi-jie-dian-shu-zi-zhi-he-by-leetc/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
-
-/*  4
-   9   0
-nil 1
- 
- */
 public class TreeNode {
     public var val: Int
     public var left: TreeNode?
@@ -98,26 +53,18 @@ public class TreeNode {
 
 class Solution {
     func sumNumbers(_ root: TreeNode?) -> Int {
-        guard let node = root else {
-            return 0
-        }
-        let ans = sum("0", node: node)
-        return ans;
-    }
-    
-    func sum(_ num: String, node: TreeNode) -> Int {
-        let newNum = num + String(node.val)
         var ans = 0
-        if node.left == nil && node.right == nil {
-            ans = Int(newNum)!
-            return ans
+        func dfs(_ node: TreeNode?, _ val: Int) {
+            guard let node else { return }
+            let val = val * 10 + node.val
+            if node.left == nil && node.right == nil {
+                ans += val
+                return
+            }
+            dfs(node.left, val)
+            dfs(node.right, val)
         }
-        if let leftNode = node.left {
-            ans += sum(newNum, node: leftNode)
-        }
-        if let rightNode = node.right {
-            ans += sum(newNum, node: rightNode)
-        }
+        dfs(root, 0)
         return ans
     }
 }
