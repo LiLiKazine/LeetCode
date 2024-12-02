@@ -44,33 +44,24 @@ public class TreeNode {
 
 class Solution {
     
-    var set = Set<Int>()
-    
     func twoSumBSTs(_ root1: TreeNode?, _ root2: TreeNode?, _ target: Int) -> Bool {
-        guard let root1, let root2 else { return false}
+        var set = Set<Int>()
         
-        traversal(root1, target: target)
-        
-        return find(root2, target: target)
-    }
-    
-    func traversal(_ node: TreeNode?, target: Int) {
-        guard let node else { return }
-        traversal(node.left, target: target)
-        set.insert(node.val)
-        traversal(node.right, target: target)
-    }
-    
-    func find(_ node: TreeNode?, target: Int) -> Bool {
-        guard let node else { return false }
-        if set.contains(target - node.val) {
-            return true
+        func record(_ root: TreeNode?) {
+            guard let root else { return }
+            set.insert(root.val)
+            record(root.left)
+            record(root.right)
         }
-        var ans = false
-        ans = ans || find(node.left, target: target)
-        if ans { return true }
-        ans = ans || find(node.right, target: target)
-        return ans
+        
+        func find(_ root: TreeNode?, _ target: Int) -> Bool {
+            guard let root else { return false }
+            if set.contains(target - root.val) { return true }
+            return find(root.left, target) || find(root.right, target)
+        }
+        
+        record(root1)
+        return find(root2, target)
     }
 }
 
