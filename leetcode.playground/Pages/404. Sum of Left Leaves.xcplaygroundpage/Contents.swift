@@ -21,19 +21,21 @@
 
 class Solution {
     func sumOfLeftLeaves(_ root: TreeNode?) -> Int {
-        return leftVal(root)
+        var ans = 0
+    
+        func dfs(_ node: TreeNode?, isLeft: Bool = false) {
+            guard let node else { return }
+            if node.left == nil && node.right == nil && isLeft {
+                ans += node.val
+            }
+            dfs(node.left, isLeft: true)
+            dfs(node.right)
+        }
+        
+        dfs(root)
+        return ans
     }
     
-    private func leftVal(_ node: TreeNode?) -> Int {
-        guard let node = node else {
-            return 0
-        }
-        var val = 0
-        if let left = node.left, left.left == nil, left.right == nil {
-            val = left.val
-        }
-        return val + leftVal(node.left) + leftVal(node.right)
-    }
 }
 
 let tree = buildTreeNode([1,2,3,4,5])
