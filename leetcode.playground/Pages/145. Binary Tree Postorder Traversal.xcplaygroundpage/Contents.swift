@@ -147,9 +147,20 @@ public class TreeNode {
 }
 
 class Solution {
-    func postorderTraversal(_ root: TreeNode?) -> [Int] {
-        
-        return iterate(root)
+    class Solution {
+        func postorderTraversal(_ root: TreeNode?) -> [Int] {
+            
+            var ans = [Int]()
+            
+            func dfs(_ node: TreeNode?) {
+                guard let node else { return }
+                dfs(node.left)
+                dfs(node.right)
+                ans.append(node.val)
+            }
+            dfs(root)
+            return ans
+        }
     }
     
     func iterate(_ node: TreeNode?) -> [Int] {
