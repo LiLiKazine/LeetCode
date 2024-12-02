@@ -38,21 +38,25 @@
 
 class Solution {
     func findSecondMinimumValue(_ root: TreeNode?) -> Int {
-        guard let root = root else { return -1 }
-        var ans = -1, rootVal = root.val
+        
+        var mi = Int.max, ans = Int.max
+        
         func dfs(_ node: TreeNode?) {
-            guard let node = node else { return }
-            if ans != -1 && node.val > ans {
-                return
+            guard let node else { return }
+            if node.val < mi {
+                ans = mi
+                mi = node.val
             }
-            if node.val > rootVal {
+            else if node.val != mi && node.val < ans {
                 ans = node.val
             }
             dfs(node.left)
             dfs(node.right)
         }
+        
+        
         dfs(root)
-        return ans
+        return ans == Int.max ? -1 : ans
     }
 }
 
