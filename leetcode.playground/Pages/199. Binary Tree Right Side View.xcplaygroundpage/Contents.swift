@@ -36,19 +36,22 @@ public class TreeNode {
 
 class Solution {
     func rightSideView(_ root: TreeNode?) -> [Int] {
-        return next([], root == nil ? [] : [root!])
-    }
-    
-    func next(_ ans: [Int], _ nodes: [TreeNode]) -> [Int] {
-        if let right = nodes.last {
-            let newNodes = nodes.reduce([]) { (res, node) -> [TreeNode] in
-                let twin = [node.left, node.right]
-                return res + twin.compactMap({$0})
+        var ans = [Int]()
+        
+        func dfs(_ node: TreeNode?, _ depth: Int) {
+            guard let node else {
+                return
             }
-            return next(ans + [right.val], newNodes)
-        } else {
-            return ans
+            if ans.count == depth {
+                ans.append(node.val)
+            } else {
+                ans[depth] = node.val
+            }
+            dfs(node.left, depth + 1)
+            dfs(node.right, depth + 1)
         }
+        dfs(root, 0)
+        return ans
     }
 }
 
