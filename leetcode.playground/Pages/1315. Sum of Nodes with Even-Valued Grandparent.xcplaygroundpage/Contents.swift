@@ -40,36 +40,21 @@ public class TreeNode {
 
 class Solution {
     func sumEvenGrandparent(_ root: TreeNode?) -> Int {
-        guard root != nil else {
-            return 0
-        }
-        var ans = 0, nodes: [TreeNode] = [root!]
-        while !nodes.isEmpty {
-            let node = nodes.removeFirst()
-            if node.val % 2 == 0 {
-                ans += sum(node)
-            }
-            if let left = node.left {
-                nodes.append(left)
-            }
-            
-            if let right = node.right {
-                nodes.append(right)
-            }
-        }
-        return ans
+        var ans = 0
         
+        func dfs(_ node: TreeNode?, _ p: Int, _ gp: Int) {
+            guard let node else { return }
+            if gp % 2 == 0 {
+                ans += node.val
+            }
+            dfs(node.left, node.val, p)
+            dfs(node.right, node.val, p)
+        }
+        
+        dfs(root, 1, 1)
+        return ans
     }
     
-    func sum(_ node: TreeNode?) -> Int {
-        let v1 = node?.left?.left?.val ?? 0
-        let v2 = node?.left?.right?.val ?? 0
-        let v3 = node?.right?.left?.val ?? 0
-        let v4 = node?.right?.right?.val ?? 0
-        
-        return v1 + v2 + v3 + v4
-        
-    }
 }
 
 //: [Next](@next)
