@@ -49,15 +49,24 @@ public class TreeNode {
 
 class Solution {
     func longestConsecutive(_ root: TreeNode?) -> Int {
-        return find(root, value: (root?.val ?? 0) - 1, cnt: 0)
+        var ans = 0
+        
+        func dfs(_ node: TreeNode?, _ len: Int) {
+            guard let node else { return }
+            let len = len + 1
+            ans = max(ans, len)
+            if let left = node.left {
+                dfs(left, left.val == node.val + 1 ? len : 0)
+            }
+            if let right = node.right {
+                dfs(right, right.val == node.val + 1 ? len : 0)
+            }
+        }
+        
+        dfs(root, 0)
+        return ans
     }
     
-    func find(_ node: TreeNode?, value: Int, cnt: Int) -> Int {
-        guard let node else { return cnt }
-        
-        var nextCnt = node.val == value + 1 ? cnt + 1 : 1
-        return max(cnt, find(node.left, value: node.val, cnt: nextCnt), find(node.right, value: node.val, cnt: nextCnt))
-    }
 }
 
 
