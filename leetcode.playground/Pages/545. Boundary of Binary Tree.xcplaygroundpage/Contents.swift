@@ -68,61 +68,52 @@ public class TreeNode {
  
 class Solution {
     func boundaryOfBinaryTree(_ root: TreeNode?) -> [Int] {
-        guard let root else { return [] }
-        if root.left == nil && root.right == nil {
-            return [root.val]
-        }
-        let left = findLeft(root.left, res: [])
-        let right = findRight(root.right, res: [])
-        let bottom = findBottom([root])
-        return [root.val] + left + bottom + right.reversed()
-    }
-    
-    func findLeft(_ node: TreeNode?, res: [Int]) -> [Int] {
-        guard let node else { return res }
         
-        if node.left == nil && node.right == nil { return res }
+        var ans = [Int]()
         
-        if let left = node.left {
-            return findLeft(node.left, res: res + [node.val])
-        }
-        
-        return findLeft(node.right, res: res + [node.val])
-    }
-    
-    func findRight(_ node: TreeNode?, res: [Int]) -> [Int] {
-        guard let node else { return res }
-        
-        if node.left == nil && node.right == nil { return res }
-        
-        if let left = node.right {
-            return findRight(node.right, res: res + [node.val])
-        }
-        
-        return findRight(node.left, res: res + [node.val])
-    }
-    
-    func findBottom(_ nodes: [TreeNode]) -> [Int] {
-        var cur = [TreeNode]()
-        var allLeaves = true
-        for node in nodes {
+        func ldfs(_ node: TreeNode?) {
+            guard let node else { return }
+            if node.left != nil || node.right != nil {
+                ans.append(node.val)
+            }
             if let left = node.left {
-                cur.append(left)
-                allLeaves = false
+                ldfs(left)
+            } else if let right = node.right {
+                ldfs(right)
             }
+        }
+        func bdfs(_ node: TreeNode?) {
+            guard let node else { return }
+            if node !== root && node.left == nil && node.right == nil {
+                ans.append(node.val)
+            } else {
+                bdfs(node.left)
+                bdfs(node.right)
+            }
+        }
+        func rdfs(_ node: TreeNode?) {
+            guard let node else { return }
             if let right = node.right {
-                cur.append(right)
-                allLeaves = false
+                rdfs(right)
+            } else if let left = node.left {
+                rdfs(left)
             }
-            if node.left == nil && node.right == nil {
-                cur.append(node)
+            if node.left != nil || node.right != nil {
+                ans.append(node.val)
             }
         }
-        if allLeaves {
-            return cur.map { $0.val }
+        
+        if let root {
+            ans.append(root.val)
         }
-        return findBottom(cur)
+        ldfs(root?.left)
+        bdfs(root)
+        rdfs(root?.right)
+        
+        return ans
+        
     }
+    
 }
 
 //: [Next](@next)
