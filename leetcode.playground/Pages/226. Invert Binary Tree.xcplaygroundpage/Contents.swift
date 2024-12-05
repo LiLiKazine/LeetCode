@@ -46,18 +46,14 @@ public class TreeNode {
 
 class Solution {
     func invertTree(_ root: TreeNode?) -> TreeNode? {
-        var nodes: [TreeNode] = [root].compactMap{ $0 }
-        while !nodes.isEmpty {
-            var tempNodes: [TreeNode?] = []
-            for i in 0..<nodes.count {
-                let temp = nodes[i].left
-                nodes[i].left = nodes[i].right
-                nodes[i].right = temp
-                tempNodes.append(nodes[i].left)
-                tempNodes.append(nodes[i].right)
-            }
-            nodes = tempNodes.compactMap{ $0 }
+        guard let root else {
+            return nil
         }
+        let right = root.right
+        root.right = root.left
+        root.left = right
+        invertTree(root.left)
+        invertTree(root.right)
         return root
     }
 }
