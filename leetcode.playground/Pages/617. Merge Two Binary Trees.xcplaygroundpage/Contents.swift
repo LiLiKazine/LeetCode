@@ -43,28 +43,21 @@ public class TreeNode {
 
 class Solution {
     func mergeTrees(_ t1: TreeNode?, _ t2: TreeNode?) -> TreeNode? {
-        guard t1 != nil || t2 != nil else {
-            return nil
+        guard let t1, let t2 else {
+            return t1 == nil ? t2 : t1
         }
-        
-        var root = TreeNode(0)
-        next(&root, t1, t2)
-        return root
-    }
-    
-    func next(_ node: inout TreeNode, _ t1: TreeNode?, _ t2: TreeNode?) {
-        node.val = (t1?.val ?? 0) + (t2?.val ?? 0)
-        if t1?.left != nil || t2?.left != nil {
-            var left = TreeNode(0);
-            node.left = left
-            next(&left, t1?.left, t2?.left)
+        t1.val += t2.val
+        if let left = t1.left {
+            mergeTrees(t1.left, t2.left)
+        } else {
+            t1.left = t2.left
         }
-        if t1?.right != nil || t2?.right != nil {
-            var right = TreeNode(0);
-            node.right = right
-            next(&right, t1?.right, t2?.right)
+        if let right = t1.right {
+            mergeTrees(t1.right, t2.right)
+        } else {
+            t1.right = t2.right
         }
-        
+        return t1
     }
 }
 
