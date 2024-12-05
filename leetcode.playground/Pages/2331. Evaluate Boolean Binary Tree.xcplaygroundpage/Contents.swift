@@ -58,24 +58,19 @@ class TreeNode {
 
 class Solution {
     func evaluateTree(_ root: TreeNode?) -> Bool {
-        guard let node = root else { return false }
-        return value(of: node)
-    }
-    
-    func value(of node: TreeNode) -> Bool {
         
-        if let left = node.left, let right = node.right {
-            if node.val == 2 {
-                return value(of: left) || value(of: right)
-            } else {
-                return value(of: left) && value(of: right)
-            }
+        guard let root else {
+            return false
+        }
+        
+        guard let left = root.left, let right = root.right else {
+            return root.val != 0
+        }
+        
+        if root.val == 2 {
+            return evaluateTree(left) || evaluateTree(right)
         } else {
-            if node.val == 0 {
-                return false
-            } else {
-                return true
-            }
+            return evaluateTree(left) && evaluateTree(right)
         }
         
     }
