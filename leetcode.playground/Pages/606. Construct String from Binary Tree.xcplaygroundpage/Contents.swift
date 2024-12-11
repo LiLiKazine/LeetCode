@@ -49,30 +49,30 @@ public class TreeNode {
  
 class Solution {
     func tree2str(_ t: TreeNode?) -> String {
-        guard let node = t else {
-            return ""
+        var ans = ""
+        
+        func dfs(_ p: TreeNode?) {
+            guard let p else { return }
+            
+            ans += "\(p.val)"
+            
+            if let left = p.left {
+                ans += "("
+                dfs(left)
+                ans += ")"
+            }
+            
+            if let right = p.right {
+                if p.left == nil {
+                    ans += "()"
+                }
+                ans += "("
+                dfs(right)
+                ans += ")"
+            }
         }
-        let ans = recursive(node)
+        dfs(t)
         return ans
-    }
-    
-    func recursive(_ node: TreeNode) -> String {
-        var s = ""
-        s.append(String(node.val))
-        if node.left == nil && node.right == nil {
-            return s
-        }
-        s.append("(")
-        if let left = node.left {
-            s.append(recursive(left))
-        }
-        s.append(")")
-        if let right = node.right {
-            s.append("(")
-            s.append(recursive(right))
-            s.append(")")
-        }
-        return s
     }
 }
 
