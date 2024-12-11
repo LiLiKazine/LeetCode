@@ -39,82 +39,25 @@
  */
 
 
-public class TreeNode {
-    public var val: Int
-    public var left: TreeNode?
-    public var right: TreeNode?
-    public init() { self.val = 0; self.left = nil; self.right = nil; }
-    public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
-    public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
-        self.val = val
-        self.left = left
-        self.right = right
-    }
-}
 
 class Solution {
     func btreeGameWinningMove(_ root: TreeNode?, _ n: Int, _ x: Int) -> Bool {
-        
-        guard let root = root else { return false }
-        
-        guard let (_, target) = find(x: x, in: root) else {
-            return false
+        func size(_ p: TreeNode?) -> Int {
+            guard let p else { return 0 }
+            return 1 + size(p.left) + size(p.right)
         }
         
-        let leftNum = subTreeNodes(target.left), rightNum = subTreeNodes(target.right)
-        let parentNum = max(0, n - leftNum - rightNum - 1)
-        
-        if leftNum > rightNum + parentNum + 1 {
-            return true
-        }
-        if rightNum > leftNum + parentNum + 1 {
-            return true
-        }
-        if parentNum > leftNum + rightNum + 1 {
-            return true
+        func node(_ p: TreeNode?) -> TreeNode? {
+            guard let p else { return nil }
+            if p.val == x { return p }
+            return node(p.left) ?? node(p.right)
         }
         
-        return false
+        guard let p = node(root) else { return false }
+        let l = size(p.left), r = size(p.right), k = size(root) - l - r - 1
+        return k > l + r + 1 || l > k + r + 1 || r > k + l + 1
     }
-    
-    func find(x: Int, in tree: TreeNode) -> (parent: TreeNode?, target: TreeNode)? {
-        if tree.val == x {
-            return (nil, tree)
-        }
-        var finalResult: (parent: TreeNode?, target: TreeNode)?
-        if let left = tree.left {
-            if left.val == x {
-                return (tree, left)
-            } else if let result = find(x: x, in: left) {
-                finalResult = result
-            }
-        }
-        
-        if let right = tree.right {
-            if right.val == x {
-                return (tree, right)
-            } else if let result = find(x: x, in: right) {
-                finalResult = result
-            }
-        }
-        return finalResult
-    }
-    
-    func subTreeNodes(_ root: TreeNode?) -> Int {
-        guard let root = root else {
-            return 0
-        }
-        
-        var sum = 1
-        if let left = root.left {
-            sum += subTreeNodes(left)
-        }
-        if let right = root.right {
-            sum += subTreeNodes(right)
-        }
-        return sum
-    }
-        
+     
 }
 
 //: [Next](@next)
