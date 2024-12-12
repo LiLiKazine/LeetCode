@@ -56,20 +56,24 @@ public class TreeNode {
 class Solution {
     
     func largestBSTSubtree(_ root: TreeNode?) -> Int {
-        let (ans, _, _, _) = find(root)
-        return ans
-    }
-    
-    func find(_ node: TreeNode?) -> (Int, Int, Int, Bool) {
-        guard let node else { return (0, Int.max, Int.min, true) }
         
-        let (cntL, lowerL, upperL, isBstL) = find(node.left)
-        let (cntR, lowerR, upperR, isBstR) = find(node.right)
-        if node.val > upperL && isBstL && node.val < lowerR && isBstR {
-            return (cntL + cntR + 1, min(node.val, lowerL), max(node.val, upperR), true)
+        var ans = 0
+        func dfs(_ p: TreeNode?) -> (Int, Int, Int) {
+            guard let p else { return (0, Int.max, Int.min) }
+            
+            let (lsize, lmin, lmax) = dfs(p.left)
+            let (rsize, rmin, rmax) = dfs(p.right)
+            print(p.val, lsize, rsize)
+            if p.val > lmax && p.val < rmin {
+                let size = lsize + rsize + 1
+                ans = max(ans, size)
+                return (size, min(p.val, lmin), max(p.val, rmax))
+            }
+            return (0, Int.min, Int.max)
         }
         
-        return (max(cntL, cntR), 0, 0, false)
+        dfs(root)
+        return ans
     }
 }
 
