@@ -47,25 +47,26 @@ public class TreeNode {
 
 class Solution {
     
-    var map = [Int: [Int]]()
-    
     func findLeaves(_ root: TreeNode?) -> [[Int]] {
-        dfs(root)
-        let keys = map.keys.sorted { $0 < $1 }
+        
         var ans = [[Int]]()
-        for key in keys {
-            ans.append(map[key]!)
+        
+        func dfs(_ p: TreeNode?) -> Int {
+            guard let p else { return -1 }
+            
+            var i = Int.min
+            i = max(i, dfs(p.left))
+            i = max(i, dfs(p.right))
+            i += 1
+            while ans.count < i + 1 { ans.append([]) }
+            ans[i].append(p.val)
+            return i
         }
+        dfs(root)
         return ans
+        
     }
     
-    func dfs(_ node: TreeNode?) -> Int {
-        guard let node else { return 0 }
-        let dp = max(dfs(node.left), dfs(node.right)) + 1
-        let arr = map[dp] ?? []
-        map[dp] = arr + [node.val]
-        return dp + 1
-    }
 }
 
 //: [Next](@next)
