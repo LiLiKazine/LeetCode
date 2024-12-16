@@ -40,33 +40,6 @@
  
  */
 
-/*
- 
- class Solution {
-     int ans;
-     public int longestUnivaluePath(TreeNode root) {
-         ans = 0;
-         arrowLength(root);
-         return ans;
-     }
-     public int arrowLength(TreeNode node) {
-         if (node == null) return 0;
-         int left = arrowLength(node.left);
-         int right = arrowLength(node.right);
-         int arrowLeft = 0, arrowRight = 0;
-         if (node.left != null && node.left.val == node.val) {
-             arrowLeft += left + 1;
-         }
-         if (node.right != null && node.right.val == node.val) {
-             arrowRight += right + 1;
-         }
-         ans = Math.max(ans, arrowLeft + arrowRight);
-         return Math.max(arrowLeft, arrowRight);
-     }
- }
-
- */
-
 public class TreeNode {
     public var val: Int
     public var left: TreeNode?
@@ -79,33 +52,31 @@ public class TreeNode {
 }
  
 class Solution {
-    var ans = 0
-    
+
     func longestUnivaluePath(_ root: TreeNode?) -> Int {
         
-        findLongest(root)
+        var ans = 0
+        
+        func dfs(_ p: TreeNode?) -> Int {
+            guard let p else { return 0 }
+            
+            var l = dfs(p.left), r = dfs(p.right)
+            if let left = p.left, left.val != p.val {
+                l = 0
+            }
+            if let right = p.right, right.val != p.val {
+                r = 0
+            }
+            
+            ans = max(ans, l + r)
+            return max(l, r) + 1
+        }
+        
+        dfs(root)
         
         return ans
+     
     }
-    
-    func findLongest(_ root: TreeNode?) -> Int {
-        guard root != nil else {
-            return 0
-        }
-        
-        let left = findLongest(root?.left), right = findLongest(root?.right)
-        var leftLength = 0, rightLength = 0
-        if root?.left?.val == root?.val {
-            leftLength = left + 1
-        }
-        if root?.right?.val == root?.val {
-            rightLength = right + 1
-        }
-        ans = max(ans, leftLength + rightLength)
-        return max(leftLength, rightLength)
-        
-    }
-
 }
 
 //: [Next](@next)
