@@ -49,7 +49,7 @@ import Foundation
 
 
 class Solution {
-    func findTilt(_ root: TreeNode?) -> Int {        
+    func findTilt(_ root: TreeNode?) -> Int {
         var ans = 0
         func dfs(_ p: TreeNode?) -> Int {
             guard let p else { return 0 }
