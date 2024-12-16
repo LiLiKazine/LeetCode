@@ -50,42 +50,19 @@ public class TreeNode {
 
 class Solution {
     
-    private var cache = [Key: Int]()
-    
     func maxPathSum(_ root: TreeNode?) -> Int {
-        let _ = maxPathSum(node: root)
-        return cache.values.reduce(Int.min) { $0 > $1 ? $0 : $1 }
-    }
-    
-    func maxPathSum(node: TreeNode?) -> Int? {
-        guard let node else { return nil }
-        if let val = cache[key(of: node)] {
-            return val
+        var ans = Int.min
+        
+        func dfs(_ p: TreeNode?) -> Int {
+            guard let p else { return 0 }
+            let l = dfs(p.left), r = dfs(p.right)
+            ans = max(ans, l + r + p.val)
+            return max(0, max(l, r) + p.val)
         }
-        var val = node.val
-        let left = maxPathSum(node: node.left)
-        let right = maxPathSum(node: node.right)
-        if let left, let right {
-            val = max(val, left + right + node.val)
-        }
-        if let left {
-            val = max(val, left, left + node.val)
-        }
-        if let right {
-            val = max(val, right, right + node.val)
-        }
-        cache[key(of: node)] = val
-        return val
-    }
-    
-    private struct Key: Hashable {
-        let pointer: Int
-        let val: Int
-    }
-    
-    private func key(of node: TreeNode) -> Key {
-        let pointer = Unmanaged.passUnretained(node).toOpaque()
-        return .init(pointer: pointer.hashValue, val: node.val)
+        
+        dfs(root)
+        
+        return ans
     }
     
 }
