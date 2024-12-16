@@ -50,38 +50,77 @@ public class TreeNode {
 
 class Solution {
     func longestConsecutive(_ root: TreeNode?) -> Int {
-        let val = (root?.val ?? 0) - 1
-        return max(
-            find(root, value: val, cnt: 0, isIncrease: true, canBiforcate: true),
-            find(root, value: val, cnt: 0, isIncrease: false, canBiforcate: true)
-        )
-    }
-    
-    func find(_ node: TreeNode?, value: Int, cnt: Int, isIncrease: Bool, canBiforcate: Bool) -> Int {
-        guard let node else { return cnt }
-        let nextVal = isIncrease ? value + 1 : value - 1
-        if !canBiforcate && node.val != nextVal {
-            return cnt
+        
+        var ans = 0
+        
+        func dfs(_ p: TreeNode?) -> (inc: Int, dec: Int) {
+            guard let p else { return (0, 0) }
+            var (linc, ldec) = dfs(p.left)
+            var (rinc, rdec) = dfs(p.right)
+            if let left = p.left {
+               if left.val != p.val + 1 {
+                   linc = 0
+               }
+                if left.val != p.val - 1 {
+                    ldec = 0
+                }
+            }
+            if let right = p.right {
+                if right.val != p.val + 1 {
+                    rinc = 0
+                }
+                if right.val != p.val - 1 {
+                    rdec = 0
+                }
+            }
+            ans = max(ans, linc + rdec + 1, ldec + rinc + 1)
+            return (max(linc, rinc) + 1, max(ldec, rdec) + 1)
         }
-        let nextCnt = node.val == nextVal ? cnt + 1 : 1
-        // print("val:", node.val, "prev:", value, "cnt:", cnt, isIncrease, canBiforcate, "nextVal:", nextVal, "nextCnt:", nextCnt)
-        var ans = max(
-            cnt,
-            find(node.left, value: node.val, cnt: nextCnt, isIncrease: isIncrease, canBiforcate: canBiforcate),
-            find(node.right, value: node.val, cnt: nextCnt, isIncrease: isIncrease, canBiforcate: canBiforcate)
-        )
-        if canBiforcate {
-            ans = max(
-                ans,
-                find(node.left, value: node.val, cnt: 1, isIncrease: true, canBiforcate: false) + find(node.right, value: node.val, cnt: 1, isIncrease: false, canBiforcate: false) - 1,
-                find(node.left, value: node.val, cnt: 1, isIncrease: false, canBiforcate: false) + find(node.right, value: node.val, cnt: 1, isIncrease: true, canBiforcate: false) - 1
-            )
-        }
+        dfs(root)
         return ans
+        
     }
     
 }
 
+/*
+ public class Solution {
+    int maxval = 0;
+    
+    public int longestConsecutive(TreeNode root) {
+        longestPath(root);
+        return maxval;
+    }
+    
+    public int[] longestPath(TreeNode root) {
+        if (root == null) {
+            return new int[] {0,0};
+        }
+        
+        int inr = 1, dcr = 1;
+        if (root.left != null) {
+            int[] left = longestPath(root.left);
+            if (root.val == root.left.val + 1) {
+                dcr = left[1] + 1;
+            } else if (root.val == root.left.val - 1) {
+                inr = left[0] + 1;
+            }
+        }
+        
+        if (root.right != null) {
+            int[] right = longestPath(root.right);
+            if (root.val == root.right.val + 1) {
+                dcr = Math.max(dcr, right[1] + 1);
+            } else if (root.val == root.right.val - 1) {
+                inr = Math.max(inr, right[0] + 1);
+            }
+        }
+        
+        maxval = Math.max(maxval, dcr + inr - 1);
+        return new int[] {inr, dcr};
+    }
+ }
+ */
 
 
 
