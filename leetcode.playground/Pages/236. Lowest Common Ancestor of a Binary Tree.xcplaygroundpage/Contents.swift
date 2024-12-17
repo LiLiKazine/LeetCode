@@ -53,64 +53,19 @@ public class TreeNode {
 
 class Solution {
     
-    var routeP = [TreeNode]()
-    var routeQ = [TreeNode]()
-    
     func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
-        guard let root, let p, let q else { return nil }
-        dfs([root], p, q)
-        
-        var ans: TreeNode?
-        
-        while routeP.first?.val == routeQ.first?.val {
-            ans = routeP.removeFirst()
-            routeQ.removeFirst()
+       
+        if root == nil || root === p || root === q {
+            return root
         }
-        return ans
-    }
-    
-    private func dfs(_ current: [TreeNode], _ p: TreeNode, _ q: TreeNode) {
-        guard let last = current.last else {
-            return
+        let l = lowestCommonAncestor(root?.left, p, q), r = lowestCommonAncestor(root?.right, p, q)
+        if l != nil && r != nil {
+            return root
         }
-        if last.val == p.val {
-            routeP = current
-        }
-        if last.val == q.val {
-            routeQ = current
-        }
-        if routeP.count > 0 && routeQ.count > 0 {
-            return
-        }
-        if let left = last.left {
-            dfs(current + [left], p, q)
-        }
-        if let right = last.right {
-            dfs(current + [right], p, q)
-        }
+        return l ?? r
     }
     
 }
 
-/*
-
- class Solution {
-     func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
-         guard let node = root else { return nil }
-         if node === p || node === q { return node }
-         let r = lowestCommonAncestor(node.right, p, q)
-         let l = lowestCommonAncestor(node.left, p, q)
-         if r == nil && l == nil {
-             return nil
-         } else if r == nil {
-             return l
-         } else if l == nil {
-             return r
-         } else {
-             return node
-         }
-     }
- }
- */
 
 //: [Next](@next)
