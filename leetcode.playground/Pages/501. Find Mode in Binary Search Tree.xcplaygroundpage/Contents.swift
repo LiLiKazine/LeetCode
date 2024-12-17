@@ -31,61 +31,6 @@
  
  */
 
-/*
- 
- class Solution {
- public:
-     int base, count, maxCount;
-     vector<int> answer;
-
-     void update(int x) {
-         if (x == base) {
-             ++count;
-         } else {
-             count = 1;
-             base = x;
-         }
-         if (count == maxCount) {
-             answer.push_back(base);
-         }
-         if (count > maxCount) {
-             maxCount = count;
-             answer = vector<int> {base};
-         }
-     }
-
-     vector<int> findMode(TreeNode* root) {
-         TreeNode *cur = root, *pre = nullptr;
-         while (cur) {
-             if (!cur->left) {
-                 update(cur->val);
-                 cur = cur->right;
-                 continue;
-             }
-             pre = cur->left;
-             while (pre->right && pre->right != cur) {
-                 pre = pre->right;
-             }
-             if (!pre->right) {
-                 pre->right = cur;
-                 cur = cur->left;
-             } else {
-                 pre->right = nullptr;
-                 update(cur->val);
-                 cur = cur->right;
-             }
-         }
-         return answer;
-     }
- };
-
- 作者：LeetCode-Solution
- 链接：https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/solution/er-cha-sou-suo-shu-zhong-de-zhong-shu-by-leetcode-/
- 来源：力扣（LeetCode）
- 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
- 
- */
-
 
 public class TreeNode {
     public var val: Int
@@ -99,32 +44,37 @@ public class TreeNode {
 }
 
 class Solution {
-    var cache = [Int: Int]()
-    var ans = [Int]()
     func findMode(_ root: TreeNode?) -> [Int] {
-        sumup(root)
+        var ans = [Int](), maxcnt = 0
+        
+        var prev: TreeNode? = nil, cnt = 0
+        func dfs(_ p: TreeNode?) {
+            guard let p else { return }
+            
+            dfs(p.left)
+            
+            if let prev, prev.val == p.val {
+                cnt += 1
+            } else {
+                cnt = 0
+            }
+            if cnt > maxcnt {
+                ans.removeAll()
+            }
+            maxcnt = max(maxcnt, cnt)
+            if maxcnt == cnt {
+                ans.append(p.val)
+            }
+            prev = p
+            
+            dfs(p.right)
+            
+        }
+        dfs(root)
+        
         return ans
     }
     
-    func sumup(_ node: TreeNode?) {
-        guard let node = node else {
-            return
-        }
-        
-        let count = (cache[node.val] ?? 0) + 1
-        if ans.isEmpty {
-            ans.append(node.val)
-        } else {
-            if count > cache[ans.first!]! {
-                ans = [node.val]
-            } else if count == cache[ans[0]]! && !ans.contains(node.val) {
-                ans.append(node.val)
-            }
-        }
-        cache[node.val] = count
-        sumup(node.left)
-        sumup(node.right)
-    }
 }
 
 //: [Next](@next)
