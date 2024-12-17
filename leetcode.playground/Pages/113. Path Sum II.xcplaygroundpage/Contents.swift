@@ -53,30 +53,18 @@ public class TreeNode {
 
 class Solution {
     
-    var ans = [[Int]]()
-    var route = [Int]()
-    
     func pathSum(_ root: TreeNode?, _ targetSum: Int) -> [[Int]] {
         guard let root else { return [] }
-        pathSum(root, targetSum - root.val)
-        return ans
+        if root.val == targetSum && root.left == nil && root.right == nil {
+            return [[root.val]]
+        }
+        let left = pathSum(root.left, targetSum - root.val).map { [root.val] + $0 }
+        let right = pathSum(root.right, targetSum - root.val).map { [root.val] + $0 }
+        
+        return  left + right
+        
     }
     
-    func pathSum(_ node: TreeNode, _ targetSum: Int) {
-        route.append(node.val)
-        if targetSum == 0 && node.left == nil && node.right == nil {
-            if route.count > 0 {
-                ans.append(route)
-            }
-        }
-        if let left = node.left {
-            pathSum(left, targetSum - left.val)
-        }
-        if let right = node.right {
-            pathSum(right, targetSum - right.val)
-        }
-        route.popLast()
-    }
 }
 
 //: [Next](@next)
