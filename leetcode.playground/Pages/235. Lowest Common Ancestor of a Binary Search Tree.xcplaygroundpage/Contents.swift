@@ -45,54 +45,20 @@ public class TreeNode {
     }
 }
 
-
 class Solution {
     func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {
-        guard var node = root, p != nil, q != nil else {
-            return nil
-        }
-        let vl = min(p!.val, q!.val), vr = max(q!.val, p!.val)
-        guard node.val != vl && node.val != vr else {
-            return node
-        }
-        while node.val < vl || node.val > vr {
-            if node.val < vl {
-                node = node.right!
-            } else if node.val > vr {
-                node = node.left!
-            } else {
-                break
-            }
-        }
         
-        return node
+        guard let root, let p, let q else { return nil }
+        
+        if root.val < p.val && root.val < q.val {
+            return lowestCommonAncestor(root.right, p, q)
+        }
+        else if root.val > p.val && root.val > q.val {
+            return lowestCommonAncestor(root.left, p, q)
+        }
+        return root
     }
 }
 
-//let solution = Solution()
-//let root = TreeNode(2)
-//root.left = TreeNode(1)
-//root.right = TreeNode(3)
-//let left = TreeNode(1)
-//let right = TreeNode(3)
-
-/*
- 
- [2,1,3]
- 3
- 1
- 
- [3,1,4,null,2]
- 2
- 4
- 
- [2,1]
- 1
- 2
- 
- [6,2,8,0,4,7,9,null,null,3,5]
- 2
- 4
- */
 
 //: [Next](@next)
