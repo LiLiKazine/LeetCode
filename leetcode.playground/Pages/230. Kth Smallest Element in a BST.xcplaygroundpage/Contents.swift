@@ -49,19 +49,20 @@ public class TreeNode {
 
 class Solution {
     func kthSmallest(_ root: TreeNode?, _ k: Int) -> Int {
-        var flat: [Int] = []
-        search(root!, &flat)
-        return flat[k-1]
-    }
-    
-    func search(_ node: TreeNode, _ arr: inout [Int]){
-        if let left = node.left {
-            search(left, &arr)
+        
+        var ans = 0, prev = 0
+        func dfs(_ p: TreeNode?) {
+            guard let p, prev < k else { return }
+            dfs(p.left)
+            prev += 1
+            if prev == k {
+                ans = p.val
+            }
+            
+            dfs(p.right)
         }
-        arr.append(node.val)
-        if let right = node.right {
-            search(right, &arr)
-        }
+        dfs(root)
+        return ans
     }
 }
 
