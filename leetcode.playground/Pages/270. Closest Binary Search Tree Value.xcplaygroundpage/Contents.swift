@@ -44,32 +44,28 @@ public class TreeNode {
 class Solution {
         
     func closestValue(_ root: TreeNode?, _ target: Double) -> Int {
-        guard let root else { return 0 }
-        let (ans, _) = find(root, target: target)
+        var ans = Int.max, dif: Double = .greatestFiniteMagnitude
+        
+        func dfs(_ p: TreeNode?) {
+            guard let p else { return }
+            
+            let gap = Double(p.val) - target
+            
+            if abs(gap) < dif {
+                dif = abs(gap)
+                ans = p.val
+            }
+            else if abs(gap) == dif {
+                ans = min(ans, p.val)
+            }
+            if Double(p.val) < target {
+                dfs(p.right)
+            } else {
+                dfs(p.left)
+            }
+        }
+        dfs(root)
         return ans
-    }
-    
-    func find(_ node: TreeNode, target: Double) -> (Int, Double) {
-        let value = Double(node.val)
-        
-        if value == target { return (node.val, 0) }
-        
-        var (ans, dif) = (node.val, abs(value - target))
-        if let left = node.left {
-            let (l_a, l_d) = find(left, target: target)
-            if l_d <= dif {
-                ans = l_a
-                dif = l_d
-            }
-        }
-        if let right = node.right {
-            let (r_a, r_d) = find(right, target: target)
-            if r_d < dif {
-                ans = r_a
-                dif = r_d
-            }
-        }
-        return (ans, dif)
     }
 }
 
