@@ -40,35 +40,19 @@
 class Solution {
         
     func minDiffInBST(_ root: TreeNode?) -> Int {
-        var arr = recursive(root)
-        guard !arr.isEmpty else {
-            return 0
-        }
-        var pre = arr.removeFirst(), ans = 105
-        for val in arr {
-            ans = min(ans, abs(pre - val))
-            pre = val
-        }
+        var ans = Int.max, prev: Int? = nil
         
+        func dfs(_ p: TreeNode?)  {
+            guard let p else { return }
+            dfs(p.left)
+            if let prev {
+                ans = min(abs(prev - p.val), ans)
+            }
+            prev = p.val
+            dfs(p.right)
+        }
+        dfs(root)
         return ans
-    }
-    
-    
-    func recursive(_ node: TreeNode?) -> [Int] {
-        guard let node = node else {
-            return []
-        }
-        var ret: [Int] = []
-        if let left = node.left {
-            let pre = recursive(left)
-            ret += pre
-        }
-        ret.append(node.val)
-        if let right = node.right {
-            let pre = recursive(right)
-            ret += pre
-        }
-        return ret
     }
 }
 
