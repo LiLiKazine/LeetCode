@@ -47,39 +47,21 @@
 
 import Foundation
 
-public class TreeNode {
-    public var val: Int
-    public var left: TreeNode?
-    public var right: TreeNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.left = nil
-        self.right = nil
-    }
-}
-
 class Solution {
     func increasingBST(_ root: TreeNode?) -> TreeNode? {
-        let vals = straight(root)
-        var root: TreeNode?, tail: TreeNode?
-        for (i, val) in vals.enumerated() {
-            if i == 0 {
-                root = TreeNode(val)
-                tail = root
-            } else {
-                tail?.right = TreeNode(val)
-                tail = tail?.right
-            }
+        
+        func dfs(_ p: TreeNode?) -> (TreeNode?, TreeNode?) {
+            guard let p else { return (nil, nil) }
+            let (lmin, lmax) = dfs(p.left)
+            lmax?.right = p
+            let (rmin, rmax) = dfs(p.right)
+            p.left = nil
+            p.right = rmin
+            return (lmin ?? p, rmax ?? p)
         }
-        return root
-    }
-    
-    func straight(_ node: TreeNode?) -> [Int] {
-        if let val = node?.val {
-            return straight(node?.left) + [val] + straight(node?.right)
-        } else {
-            return []
-        }
+        
+        let (ans, _) = dfs(root)
+        return ans
     }
 }
 
