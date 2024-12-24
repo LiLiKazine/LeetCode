@@ -38,25 +38,27 @@ public class TreeNode {
 }
 
 class Solution {
-    var map: [Int: Int] = [:]
+    
     func buildTree(_ preorder: [Int], _ inorder: [Int]) -> TreeNode? {
-        var copy = preorder
-        for (i, v) in inorder.enumerated() {
-            map[v] = i
+        let n = preorder.count
+        guard n > 0 else { return nil }
+        
+        let rootVal = preorder[0]
+        if n == 1 { return TreeNode(rootVal) }
+
+        let root = TreeNode(rootVal)
+        
+        let pivot = inorder.firstIndex(of: rootVal)!
+        if pivot > 0 {
+            root.left = buildTree(Array(preorder[1..<pivot+1]), Array(inorder[0..<pivot]))
         }
-        return backTracing(&copy, 0, inorder.count)
+        if pivot + 1 < inorder.count {
+            root.right = buildTree(Array(preorder[(pivot+1)...]), Array(inorder[(pivot+1)...]))
+        }
+        
+        return root
     }
     
-    func backTracing(_ preorder: inout [Int], _ h: Int, _ t: Int) -> TreeNode? {
-        if let val = preorder.first, let i = map[val], h < t {
-            let root = TreeNode(val)
-            preorder.removeFirst()
-            root.left = backTracing(&preorder, h, i)
-            root.right = backTracing(&preorder, i+1, t)
-            return root
-        }
-        return nil
-    }
 }
 
 let test = Solution()

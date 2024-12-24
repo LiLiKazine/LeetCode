@@ -42,7 +42,7 @@ class Solution {
             }
             prev = p.val
             dfs(p.right)
-        }        
+        }
         dfs(root)
         return ans
     }
