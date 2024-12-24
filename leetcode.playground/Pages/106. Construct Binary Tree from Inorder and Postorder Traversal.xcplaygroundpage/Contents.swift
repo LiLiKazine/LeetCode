@@ -42,20 +42,25 @@ class Solution {
         for (i, v) in inorder.enumerated() {
             map[v] = i
         }
-        var copy = postorder
-        return backTracing(&copy, 0, inorder.count)
-    }
-    
-    func backTracing(_ postorder: inout [Int], _ h: Int, _ t: Int) -> TreeNode? {
-        if let mid = postorder.last, let i = map[mid], h < t {
-            let root = TreeNode(mid)
-            postorder.removeLast()
-            root.right = backTracing(&postorder, i+1, t)
-            root.left = backTracing(&postorder, h, i)
+        func build(_ inorder: [Int].SubSequence, _ postorder: [Int].SubSequence) -> TreeNode? {
+            
+            if inorder.endIndex <= inorder.startIndex {
+                return nil
+            }
+            let root = TreeNode(postorder.last!)
+            let pivot = map[postorder.last!]!
+            let offset = pivot - inorder.startIndex
+            if pivot > inorder.startIndex {
+                root.left = build(inorder[inorder.startIndex..<pivot], postorder[postorder.startIndex..<postorder.startIndex + offset])
+            }
+            if pivot + 1 < inorder.endIndex {
+                root.right = build(inorder[pivot+1..<inorder.endIndex], postorder[postorder.startIndex + offset..<postorder.endIndex - 1])
+            }
+            
             return root
-        } else {
-            return nil
         }
+        
+        return build(inorder[0...], postorder[0...])
     }
 }
 
