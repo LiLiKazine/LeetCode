@@ -39,17 +39,18 @@ public class TreeNode {
  
 class Solution {
     func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
-        guard nums.count > 0 else { return nil }
-        return form(lo: 0, hi: nums.count-1, nums: nums)
-    }
-    
-    func form(lo: Int, hi: Int, nums: [Int]) -> TreeNode? {
-        guard lo <= hi else { return nil }
-        let mid = (lo + hi) / 2
-        let node = TreeNode(nums[mid])
-        node.left = form(lo: lo, hi: mid-1, nums: nums)
-        node.right = form(lo: mid+1, hi: hi, nums: nums)
-        return node
+        if nums.isEmpty { return nil }
+        let mid = nums.count / 2
+        
+        let root = TreeNode(nums[mid])
+        if mid > 0 {
+            root.left = sortedArrayToBST(Array(nums[..<mid]))
+        }
+        if mid < nums.count - 1 {
+            let i = mid + 1
+            root.right = sortedArrayToBST(Array(nums[i...]))
+        }
+        return root
     }
 }
 
