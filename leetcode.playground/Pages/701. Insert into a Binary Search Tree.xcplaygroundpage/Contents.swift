@@ -60,27 +60,13 @@ public class TreeNode {
 
 class Solution {
     func insertIntoBST(_ root: TreeNode?, _ val: Int) -> TreeNode? {
-        guard var node = root else {
+        guard let root else {
             return TreeNode(val)
         }
-        while true {
-            if node.val > val {
-                if let left = node.left {
-                    node = left
-                    continue
-                } else {
-                    node.left = TreeNode(val)
-                    break
-                }
-            } else {
-                if let right = node.right {
-                    node = right
-                    continue
-                } else {
-                    node.right = TreeNode(val)
-                    break
-                }
-            }
+        if root.val < val {
+            root.right = insertIntoBST(root.right, val)
+        } else {
+            root.left = insertIntoBST(root.left, val)
         }
         return root
     }
