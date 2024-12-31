@@ -22,43 +22,28 @@
  
  */
 
-public class TreeNode {
-    public var val: Int
-    public var left: TreeNode?
-    public var right: TreeNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.left = nil
-        self.right = nil
-    }
-}
- 
 class Solution {
     func zigzagLevelOrder(_ root: TreeNode?) -> [[Int]] {
         guard let root = root else {
             return []
         }
-        var flag = true, lev = [root], ans = [[Int]]()
-        while !lev.isEmpty {
-            var tempVal: [Int] = [], tempNodes: [TreeNode] = []
-            for node in lev {
-                if flag {
-                    tempVal.append(node.val)
-                } else {
-                    tempVal.insert(node.val, at: 0)
-                }
+        var isOdd = true, queue = [root], ans: [[Int]] = []
+        
+        while queue.count > 0 {
+            var vals = [Int]()
+            for _ in 0..<queue.count {
+                let node = queue.removeFirst()
+                vals.append(node.val)
                 if let left = node.left {
-                    tempNodes.append(left)
+                    queue.append(left)
                 }
                 if let right = node.right {
-                    tempNodes.append(right)
+                    queue.append(right)
                 }
             }
-            ans.append(tempVal)
-            flag.toggle()
-            lev = tempNodes
+            ans.append(isOdd ? vals : vals.reversed())
+            isOdd.toggle()
         }
-        
         return ans
     }
 }
