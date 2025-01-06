@@ -20,38 +20,25 @@
  
  */
 
-public class TreeNode {
-    public var val: Int
-    public var left: TreeNode?
-    public var right: TreeNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.left = nil
-        self.right = nil
-    }
-}
 
 class Solution {
     func averageOfLevels(_ root: TreeNode?) -> [Double] {
-        var ans = [Double](), nodes = [root]
-        while !nodes.isEmpty {
-            var sum = 0, num = 0, nexts = [TreeNode?]()
-            for node in nodes {
-                if let node = node {
-                    sum += node.val
-                    num += 1
-                    if let left = node.left {
-                        nexts.append(left)
-                    }
-                    if let right = node.right {
-                        nexts.append(right)
-                    }
-                }
+        guard let root else { return [] }
+        var ans = [Double]()
+        var queue = [root]
+        
+        while queue.count > 0 {
+            let size = queue.count
+            var sum = 0
+            
+            for _ in 0..<size {
+                let node = queue.removeFirst()
+                sum += node.val
+                
+                if let left = node.left { queue.append(left) }
+                if let right = node.right { queue.append(right) }
             }
-            if num > 0 {
-                ans.append(Double(sum)/Double(num))
-            }
-            nodes = nexts
+            ans.append(Double(sum) / Double(size))
         }
         return ans
     }
