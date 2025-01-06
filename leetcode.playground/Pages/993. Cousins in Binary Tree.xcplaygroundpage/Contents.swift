@@ -39,49 +39,33 @@
  
  */
 
-/*
- 
- class Solution {
-     public boolean isCousins(TreeNode root, int x, int y) {
-         int[] xi = dfs(root, null, 0, x);
-         int[] yi = dfs(root, null, 0, y);
-         return xi[1] == yi[1] && xi[0] != yi[0];
-     }
-     int[] dfs(TreeNode root, TreeNode fa, int depth, int t) {
-         if (root == null) return new int[]{-1, -1}; // 使用 -1 代表为搜索不到 t
-         if (root.val == t) {
-             return new int[]{fa != null ? fa.val : 1, depth}; // 使用 1 代表搜索值 t 为 root
-         }
-         int[] l = dfs(root.left, root, depth + 1, t);
-         if (l[0] != -1) return l;
-         return dfs(root.right, root, depth + 1, t);
-     }
- }
- 
- */
 
 class Solution {
     
     func isCousins(_ root: TreeNode?, _ x: Int, _ y: Int) -> Bool {
-        let xi = dfs(0, root, nil, x),
-            yi = dfs(0, root, nil, y)
-        return xi.0 != yi.0 && xi.1 == yi.1
+        guard let root else { return false }
         
-    }
-    
-    private func dfs(_ depth: Int, _ node: TreeNode?, _ parent: TreeNode?, _ target: Int) -> (Int, Int) {
-        guard let node = node else {
-            return (-1, -1)
-        }
-        if node.val == target {
-            return (parent?.val ?? 1, depth)
-        }
-        let left = dfs(depth + 1, node.left, node, target)
-        if left.0 != -1 {
-            return left
-        }
-        return dfs(depth + 1, node.right, node, target)
+        var queue = [root]
         
+        while queue.count > 0 {
+            let size = queue.count
+            var findX = false, findY = false
+            
+            for _ in 0..<size {
+                let node = queue.removeFirst()
+                if let left = node.left, let right = node.right, ((x == left.val && y == right.val) || (x == right.val && y == left.val)) {
+                    return false
+                }
+                if node.val == x { findX = true }
+                if node.val == y { findY = true }
+                if let left = node.left { queue.append(left) }
+                if let right = node.right { queue.append(right) }
+            }
+            
+            if findX && findY { return true }
+            if findX || findY { return false }
+        }
+        return false
     }
     
 }
