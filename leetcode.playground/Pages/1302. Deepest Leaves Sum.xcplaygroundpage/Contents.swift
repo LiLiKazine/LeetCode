@@ -22,42 +22,22 @@
  
  */
 
-public class TreeNode {
-    public var val: Int
-    public var left: TreeNode?
-    public var right: TreeNode?
-    public init(_ val: Int) {
-        self.val = val
-        self.left = nil
-        self.right = nil
-    }
-}
-
 class Solution {
     func deepestLeavesSum(_ root: TreeNode?) -> Int {
-        guard let node = root else {
-            return 0
-        }
-        var cache = [node]
-        while true {
-            var temp = [TreeNode]()
-            for node in cache {
-                if let left = node.left {
-                    temp.append(left)
-                }
-                if let right = node.right {
-                    temp.append(right)
-                }
+        var maxd: Int = 0, ans = 0
+        
+        func dfs(_ node: TreeNode?, _ depth: Int) {
+            guard let node else { return }
+            if depth > maxd {
+                maxd = depth
+                ans = 0
             }
-            if temp.isEmpty {
-                break
-            } else {
-                cache = temp
-            }
+            if depth == maxd { ans += node.val }
+            dfs(node.left, depth + 1)
+            dfs(node.right, depth + 1)
         }
-        return cache.reduce(0) { (res, node) -> Int in
-            return res + node.val
-        }
+        dfs(root, 0)
+        return ans
     }
 }
 
