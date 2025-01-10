@@ -44,45 +44,33 @@
 class Solution {
     
     func distanceK(_ root: TreeNode?, _ target: TreeNode?, _ k: Int) -> [Int] {
-        guard let root, let target else {
-            return []
-        }
-        var parentMap = [Int: TreeNode]()
-        func record( _ node: TreeNode, parent: TreeNode?) {
-            if let parent {
-                parentMap[node.val] = parent
-            }
+        guard let target else { return [] }
+        var route = [Int: [Int]]()
+        func dfs(_ node: TreeNode?) {
+            guard let node else { return }
             if let left = node.left {
-                record(left, parent: node)
+                route[node.val, default: []].append(left.val)
+                route[left.val, default: []].append(node.val)
+                dfs(left)
             }
             if let right = node.right {
-                record(right, parent: node)
+                route[node.val, default: []].append(right.val)
+                route[right.val, default: []].append(node.val)
+                dfs(right)
             }
         }
-        record(root, parent: nil)
-        var ans = [Int]()
-        
-        func find(from node: TreeNode, _ previous: TreeNode?,  _ k: Int) {
-            if k == 0 {
-                ans.append(node.val)
-                return
+        dfs(root)
+        var k = k, res = [target.val], visited = Set(res)
+        while k > 0 && res.count > 0 {
+            var next = [Int]()
+            for val in res {
+                next += route[val, default: []].filter { visited.insert($0).inserted }
             }
-            if let parent = parentMap[node.val], parent.val != previous?.val {
-                find(from: parent, node, k - 1)
-            }
-            if let left = node.left, left.val != previous?.val {
-                find(from: left, node, k - 1)
-            }
-            if let right = node.right, right.val != previous?.val {
-                find(from: right, node, k - 1)
-            }
+            res = next
+            k -= 1
         }
-        
-        find(from: target, nil, k)
-        
-        return ans
+        return res
     }
-   
 }
 
 //: [Next](@next)
