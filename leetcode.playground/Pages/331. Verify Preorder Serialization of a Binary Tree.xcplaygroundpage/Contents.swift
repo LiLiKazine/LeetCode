@@ -38,30 +38,22 @@
 
 class Solution {
     func isValidSerialization(_ preorder: String) -> Bool {
-        var nodes = preorder.split(separator: ",").map { String($0) }, stack: [Int] = [1], i = 0
-        while i < nodes.count {
-            if stack.isEmpty {
+        let preorder = preorder.split(separator: ",").map { String($0) }
+        var stk = [1]
+        for n in preorder {
+            if stk.isEmpty {
                 return false
             }
-            switch nodes[i] {
-            case "#":
-                stack.append(stack.removeLast() - 1)
-                if stack.last! == 0 {
-                    stack.removeLast()
-                }
-            default:
-                stack.append(stack.removeLast() - 1)
-                if stack.last! == 0 {
-                    stack.removeLast()
-                }
-                stack.append(2)
+            stk[0] -= 1
+            if stk[0] == 0 {
+                stk.removeFirst()
             }
-            
-            i += 1
+            if n != "#" {
+                stk.append(2)
+            }
         }
-        return stack.isEmpty
+        return stk.isEmpty
     }
-    
 }
 
 //let preorder = "1,#,#,1"
