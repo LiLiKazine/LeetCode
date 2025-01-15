@@ -77,31 +77,25 @@ public class Node {
 
 class Solution {
     func connect(_ root: Node?) -> Node? {
-        recursive(root)
+        
+        func dfs(_ node: Node?, _ right: Node?) {
+            guard let node else { return }
+            node.next = right
+            
+            var right = right
+            while right?.left == nil && right?.right == nil && right?.next != nil {
+                right = right?.next
+            }
+            var next = right?.left ?? right?.right
+            if let right = node.right {
+                dfs(node.right, next)
+                dfs(node.left, right)
+            } else {
+                dfs(node.left, next)
+            }
+        }
+        dfs(root, nil)
         return root
-    }
-    
-    func recursive(_ node: Node?) {
-        guard node != nil else {
-            return
-        }
-        node?.left?.next = node?.right ?? findNext(node)
-        node?.right?.next = findNext(node)
-        recursive(node?.right)
-        recursive(node?.left)
-    }
-    
-    func findNext(_ node: Node?) -> Node? {
-        if node == nil {
-            return nil
-        }
-        if let next = node?.next?.left {
-            return next
-        }
-        if let next = node?.next?.right {
-            return next
-        }
-        return findNext(node?.next)
     }
 }
 
