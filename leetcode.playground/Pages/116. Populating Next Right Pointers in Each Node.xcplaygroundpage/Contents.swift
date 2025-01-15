@@ -57,24 +57,16 @@ public class Node {
 
 class Solution {
     func connect(_ root: Node?) -> Node? {
-        guard root != nil else {
-            return nil
+        
+        func connectNodes(_ node: Node?, _ right: Node?) {
+            guard let node else { return }
+            node.next = right
+            connectNodes(node.left, node.right)
+            connectNodes(node.right, right?.left)
         }
-        var stack = [root!], temp = [Node]()
-        while !stack.isEmpty || !temp.isEmpty {
-            if stack.isEmpty {
-                stack = temp
-                temp = []
-            }
-            let node = stack.removeFirst()
-            if let left = node.left {
-                temp.append(left)
-            }
-            if let right = node.right {
-                temp.append(right)
-            }
-            node.next = stack.first
-        }
+        
+        connectNodes(root, nil)
+        
         return root
     }
 }
